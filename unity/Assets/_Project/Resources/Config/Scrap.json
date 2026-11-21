@@ -1,0 +1,9 @@
+{
+  "hms1": 1,
+  "hms2": 0.85,
+  "castIron": 0.9,
+  "mixed": 0.7,
+  "reuseMin": 1.6,
+  "reuseMax": 2.5,
+  "dirt": 0
+}

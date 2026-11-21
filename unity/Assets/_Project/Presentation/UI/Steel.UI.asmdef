@@ -1,0 +1,7 @@
+{
+  "name": "Steel.UI",
+  "rootNamespace": "Steel.Presentation.UI",
+  "references": [
+    "Steel.Services"
+  ]
+}

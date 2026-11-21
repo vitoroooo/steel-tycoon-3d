@@ -1,0 +1,6 @@
+{
+  "name": "Steel.Core",
+  "rootNamespace": "Steel.Core",
+  "references": [],
+  "noEngineReferences": true
+}

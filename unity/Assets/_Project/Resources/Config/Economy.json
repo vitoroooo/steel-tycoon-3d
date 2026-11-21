@@ -1,0 +1,17 @@
+{
+  "baseIbn": 10000,
+  "cycleAmplitude": 0.15,
+  "cycleRealSeconds": 5184000,
+  "dailyNoiseFraction": 0.03,
+  "noiseSeed": 73,
+  "supplyLimit": 0.05,
+  "supplyTargetKg": 1000000,
+  "scrapReferenceFraction": 0.55,
+  "refreshRealSeconds": 600,
+  "aiBuyK1Fraction": 0.7,
+  "aiBuyK2Fraction": 1,
+  "npcSellK1Fraction": 0.72,
+  "aiSellBandarFraction": 0.85,
+  "aiSellSmelterFraction": 1.06,
+  "transactionTax": 0.02
+}

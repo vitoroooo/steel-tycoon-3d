@@ -1,0 +1,41 @@
+# Arsitektur Fase 1 (Prototipe Single-Player K1 → K2)
+
+Sumber kebutuhan: PRD §17.1, angka dari docs/ECONOMY_SPEC.md (hasil Fase 0).
+
+## Prinsip
+- Maksimal 100 baris per file; satu tanggung jawab per file; folder per sistem.
+- Logika game = C# murni (tanpa UnityEngine) di `Steel.Core`, bisa dites cepat.
+- Unity hanya presentasi (scene, 3D, UI) dan memanggil Core lewat interface.
+- Dunia terbuka third-person ala GTA: berjalan dan mengemudi gerobak/triseda/pikap/truk.
+- Visual 3D HD detail (stylized boleh), **bukan low-poly**; gunakan URP + aset HD.
+- Mobile memakai touch joystick; keyboard untuk editor. Menu manajemen sebagai overlay.
+- Semua angka balancing di data (JSON di `Resources/Config`), bukan di kode.
+- Waktu game deterministik: 1 jam game = 10 menit nyata; offline maks 8 jam nyata.
+- Fase 2 (server otoritatif) cukup mengganti implementasi interface `Services`.
+
+## Struktur `unity/Assets/_Project/`
+| Folder | Assembly | Isi |
+|---|---|---|
+| `Core/Economy` | Steel.Core | IBN, harga AI, margin, pajak |
+| `Core/Scrap` | Steel.Core | Tumpukan rongsok, grade tersembunyi, inspeksi, sortir (§6.1) |
+| `Core/Fleet` | Steel.Core | Gerobak/triseda/pikap, kapasitas, waktu trip (§5.1) |
+| `Core/World` | Steel.Core | Cuaca, status lahan, karat stok terbuka (§6.4) |
+| `Core/Equipment` | Steel.Core | Keausan alat, 3 pilihan perbaikan (§6.5) |
+| `Core/Progression` | Steel.Core | Syarat & buka Kasta 2, papan harga beli, setoran AI |
+| `Core/Time` | Steel.Core | Jam game, tick, simulasi offline |
+| `Core/State` | Steel.Core | GameState + save/load (JSON) |
+| `Services` | Steel.Services | Interface + implementasi lokal (pengganti backend) |
+| `Presentation/UI` | Steel.UI | HUD (§12.1), nav bawah (§12.2), dialog konfirmasi |
+| `Presentation/World` | Steel.World | Kota 3D HD (URP), kamera third-person |
+| `Presentation/Player` | Steel.Player | Character controller dan interaksi tumpukan di dunia |
+| `Presentation/Vehicles` | Steel.Vehicles | Kendaraan yang bisa dikemudikan |
+| `Presentation/Input` | Steel.Input | Touch joystick mobile dan keyboard |
+| `Tests/EditMode` | Steel.Tests | Unit test Core (NUnit) |
+
+## Aturan dependensi
+`Presentation → Services → Core`. Core tidak boleh referensi Unity atau layer lain.
+Handoff skeleton hanya membuat folder/asmdef presentasi; belum ada gameplay atau aset HD.
+
+## Build & tes (headless, Docker game-ci)
+- Tes: `unity-editor -batchmode -runTests -testPlatform EditMode`
+- Build: Android APK via image `unityci/editor:*-android-*`.

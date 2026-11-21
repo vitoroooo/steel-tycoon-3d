@@ -1,0 +1,7 @@
+{
+  "name": "Steel.Vehicles",
+  "rootNamespace": "Steel.Presentation.Vehicles",
+  "references": [
+    "Steel.Services"
+  ]
+}
