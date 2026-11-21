@@ -11,5 +11,6 @@ Legal text: https://creativecommons.org/publicdomain/zero/1.0/
 - https://polyhaven.com/a/rollershutter_window_01
 - https://polyhaven.com/a/rollershutter_door
 Original glTF, bin and 1K PBR maps. No attribution required.
-checksums.json records exact source URLs, provider-verified MD5 download checks,
-sizes and SHA256 for every file. Selected mesh nodes are instanced/rescaled by the generator.
+Downloads were verified against provider MD5 values.
+checksums.json records exact source URLs, sizes and SHA256 for every file.
+Selected mesh nodes are instanced/rescaled by the generator.

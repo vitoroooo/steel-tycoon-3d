@@ -60,5 +60,15 @@ namespace Steel.PlayTests
             Assert.AreEqual(v.X, host.Game.Vehicle.X, .05f);
             Assert.AreEqual(0, host.Game.Vehicle.Speed); Assert.IsTrue(host.Game.Vehicle.Occupied);
         }
+        [UnityTest] public IEnumerator CameraLowersUnderAwningInsteadOfEnteringWorker()
+        {
+            var roof = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            roof.transform.position = new Vector3(150, 3.1f, 150);
+            roof.transform.localScale = new Vector3(100, .3f, 100); Physics.SyncTransforms();
+            var focus = new Vector3(150, 1.35f, 150);
+            Vector3 camera = CameraCollision.Resolve(focus, new Vector3(0, 3.2f, -6));
+            Assert.Greater(Vector3.Distance(focus, camera), 5);
+            Assert.Less(camera.y, 2.5f); Object.Destroy(roof); yield return null;
+        }
     }
 }

@@ -9,4 +9,4 @@ License for both: https://creativecommons.org/publicdomain/zero/1.0/
 Attribution is not required; artist/source retained for provenance.
 checksums.json records the archive, extracted files and pickup SHA256 values/URLs.
 Changes: Unity animation import/in-place root motion, URP material conversion,
-presentation scale; original FBX and GLB bytes are retained.
+presentation scale, smoothed worker normals and skin tint; original FBX/GLB bytes retained.

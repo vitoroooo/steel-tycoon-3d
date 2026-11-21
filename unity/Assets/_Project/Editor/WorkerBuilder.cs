@@ -68,6 +68,7 @@ namespace Steel.Editor
         private static Material WorkerMaterial(Material source)
         {
             Color color = source.HasProperty("_Color") ? source.GetColor("_Color") : Color.gray;
+            if (source.name == "Skin") color = new Color(.4f, .24f, .16f);
             var material = CityMaterials.Plain("Worker " + source.name, color, 0, .28f);
             if (source.HasProperty("_MainTex")) material.mainTexture = source.GetTexture("_MainTex");
             return material;

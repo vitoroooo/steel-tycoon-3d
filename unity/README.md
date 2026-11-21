@@ -44,7 +44,8 @@ Run with DISPLAY=:0 and optional -screenshot /home/ubuntu/shots/hd-walking.png.
 The screenshot argument captures the actual player after four seconds.
 See Assets/ThirdParty/PolyHaven/LICENSES.md for CC0 sources and checksum provenance.
 Downloads are1K diffuse/normal/roughness + HDRI, 11.76MB (<150MB).
-New models: run python unity/Tools/download_models.py from the repo root (78.67MB source downloads).
+Poly Haven model refresh: python unity/Tools/download_models.py from the repo root (~30MB).
+Combined new source downloads, including the Quaternius archive/pikap, total78.67MB.
 See ThirdParty/PolyHavenModels/LICENSES.md and ThirdParty/Quaternius/LICENSES.md for
 CC0 models and SHA256 manifests. glTFast6.11 imports glTF; the worker uses FBX idle/walk clips.
 The generator adds gabled roofs, corrugated awnings, scanned shutters, fences and cables.
