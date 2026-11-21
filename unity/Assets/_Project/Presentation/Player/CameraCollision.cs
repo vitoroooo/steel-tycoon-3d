@@ -4,13 +4,16 @@ namespace Steel.Presentation.Player
 {
     public static class CameraCollision
     {
+        private const int Mask = Physics.DefaultRaycastLayers;
         private static float Clearance(Vector3 focus, Vector3 offset)
         {
-            float length = offset.magnitude;
-            if (Physics.SphereCast(focus, 1.1f, offset.normalized, out var hit, length,
-                Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-                return Mathf.Max(.05f, hit.distance - .2f);
-            return length;
+            float length = offset.magnitude, clear = length; Vector3 direction = offset.normalized;
+            if (Physics.SphereCast(focus, 1.1f, direction, out var wide, length, Mask, QueryTriggerInteraction.Ignore))
+                clear = Mathf.Max(.05f, wide.distance - .2f);
+            // The wide sweep skips colliders it already overlaps, so a thin sweep catches walls beside the focus.
+            if (Physics.SphereCast(focus, .2f, direction, out var thin, length, Mask, QueryTriggerInteraction.Ignore))
+                clear = Mathf.Min(clear, Mathf.Max(.05f, thin.distance - .1f));
+            return clear;
         }
         public static Vector3 Resolve(Vector3 focus, Vector3 desired)
         {

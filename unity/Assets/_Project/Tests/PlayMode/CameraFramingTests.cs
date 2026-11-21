@@ -20,6 +20,16 @@ namespace Steel.PlayTests
             Assert.Greater(Vector3.Distance(pole.transform.position, focus + t * line), 1.1f);
             Assert.Greater(line.magnitude, 7); Object.Destroy(pole); yield return null;
         }
+        [UnityTest] public IEnumerator WallBesideFocusKeepsCameraOnPlayerSide()
+        {
+            var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.transform.position = new Vector3(210, 3, 208.8f);
+            wall.transform.localScale = new Vector3(30, 12, 1); Physics.SyncTransforms();
+            Vector3 focus = new Vector3(210, 3, 210);
+            Vector3 camera = CameraCollision.Resolve(focus, new Vector3(0, 1, -8));
+            Assert.Greater(camera.z, 209.3f, "Camera ended inside or behind the wall");
+            Object.Destroy(wall); yield return null;
+        }
         [Test] public void ClearViewKeepsDesiredCameraPosition()
         {
             var focus = new Vector3(180, 3, 180); var offset = new Vector3(0, 1, -8);
