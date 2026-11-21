@@ -12,12 +12,17 @@ namespace Steel.Presentation.Vehicles
         private GameHost host;
         public IMoveInput MoveInput { get; set; }
         private Rigidbody body;
+        private BoxCollider box;
         private float speed;
+        private Vector3 HalfExtents => Vector3.Scale(box.size * .5f, transform.lossyScale);
+        private Vector3 Center(Quaternion rotation) =>
+            body.position + rotation * Vector3.Scale(box.center, transform.lossyScale);
         private void Start()
         {
             host = FindObjectOfType<GameHost>();
             if (MoveInput == null) MoveInput = FindObjectOfType<SliceInput>();
             body = GetComponent<Rigidbody>(); body.isKinematic = true;
+            box = GetComponent<BoxCollider>();
             body.interpolation = RigidbodyInterpolation.Interpolate;
             GetComponent<FallRecovery>().Recovered += ResetMotion; ResetMotion();
         }
@@ -38,9 +43,10 @@ namespace Steel.Presentation.Vehicles
                 (Mathf.Abs(axes.y) < .01f ? v.Braking : v.Acceleration) * Time.fixedDeltaTime);
             float turn = axes.x * v.TurnDegrees * Mathf.Clamp(speed / 4, -1, 1) * Time.fixedDeltaTime;
             Quaternion rotation = body.rotation * Quaternion.Euler(0, turn, 0);
+            if (RotationBlocked(rotation)) rotation = body.rotation;
             Vector3 delta = rotation * Vector3.forward * speed * Time.fixedDeltaTime;
-            if (delta.sqrMagnitude > 0 && Physics.BoxCast(body.position + Vector3.up,
-                new Vector3(.85f, .65f, 2.05f), delta.normalized, out _, rotation,
+            if (delta.sqrMagnitude > 0 && Physics.BoxCast(Center(rotation),
+                HalfExtents, delta.normalized, out _, rotation,
                 delta.magnitude + .08f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
             { delta = Vector3.zero; speed = 0; }
             Vector3 position = body.position + delta;
@@ -48,6 +54,13 @@ namespace Steel.Presentation.Vehicles
                 Physics.DefaultRaycastLayers)) position.y = ground.point.y + .035f;
             body.MovePosition(position); body.MoveRotation(rotation);
             host.Game.ReportVehicle(position.x, position.z, speed);
+        }
+        private bool RotationBlocked(Quaternion rotation)
+        {
+            foreach (var hit in Physics.OverlapBox(Center(rotation), HalfExtents, rotation,
+                Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                if (hit.attachedRigidbody != body && !hit.transform.IsChildOf(transform)) return true;
+            return false;
         }
         public void Toggle()
         {
