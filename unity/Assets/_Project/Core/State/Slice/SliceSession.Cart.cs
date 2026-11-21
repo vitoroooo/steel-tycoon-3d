@@ -10,7 +10,7 @@ namespace Steel.Core.State.Slice
         /// <summary>Takes the push bar; anything carried by hand is dropped into the cart.</summary>
         public void GrabCart()
         {
-            if (Pickup.Occupied) throw new InvalidOperationException("Keluar dari pikap dahulu.");
+            if (Fleet.Driven != null) throw new InvalidOperationException("Turun dari kendaraan dahulu.");
             if (Cart.Cargo.CarriedKg + backpack.CarriedKg > Cart.Rules.CapacityKg)
                 throw new InvalidOperationException("Gerobak penuh. Jual muatan dahulu.");
             Cart.Grab(Position);

@@ -58,10 +58,13 @@ namespace Steel.Tests.Fleet
 
         [Test] public void PickupCannotBeEnteredWhilePushingCart()
         {
+            game = new LocalGameService(Support.Wealthy.Source());
+            Support.Wealthy.Own(game, FleetCatalog.Pikap);
             StandAtCart();
             game.GrabCart();
-            game.SetPosition(game.Vehicle.X, game.Vehicle.Z);
-            Assert.Throws<InvalidOperationException>(() => game.EnterVehicle());
+            game.SetPosition(game.VehicleOf(FleetCatalog.Pikap).X, game.VehicleOf(FleetCatalog.Pikap).Z);
+            var refusal = Assert.Throws<InvalidOperationException>(() => game.EnterVehicle(FleetCatalog.Pikap));
+            StringAssert.Contains("gerobak", refusal.Message);
         }
     }
 }

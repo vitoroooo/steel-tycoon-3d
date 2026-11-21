@@ -17,7 +17,7 @@ namespace Steel.Editor.Characters
             reach.Right = Chain(visual.transform, "R", 1);
         }
 
-        private static ArmChain Chain(Transform root, string side, float sign)
+        private static LimbChain Chain(Transform root, string side, float sign)
         {
             Transform[] bones = root.GetComponentsInChildren<Transform>();
             Transform Bone(string part) => bones.First(b => b.name == "Bip01 " + side + " " + part);
@@ -27,9 +27,9 @@ namespace Steel.Editor.Characters
             // The thumb sits on opposite sides of the two hands, so the cross product flips with the side.
             Vector3 palm = sign * Vector3.Cross(fingers, thumb).normalized;
             Transform[] joints = FingerJoints.Select(j => Bone("Finger" + j)).ToArray();
-            return new ArmChain
+            return new LimbChain
             {
-                Upper = Bone("UpperArm"), Fore = Bone("Forearm"), Hand = hand, Fingers = joints,
+                Upper = Bone("UpperArm"), Lower = Bone("Forearm"), Tip = hand, Fingers = joints,
                 OpenFingers = joints.Select(j => j.localRotation).ToArray(),
                 GripOffset = Quaternion.Inverse(Quaternion.LookRotation(fingers, -palm)),
                 CurlAxis = Vector3.Cross(fingers, palm).normalized

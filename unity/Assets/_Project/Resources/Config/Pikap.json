@@ -9,6 +9,6 @@
   "turnDegrees": 65,
   "enterRange": 3.5,
   "exitMaxSpeed": 0.6,
-  "spawnX": -12,
-  "spawnZ": 4
+  "spawnX": 18.5,
+  "spawnZ": 7.5
 }

@@ -14,7 +14,7 @@ namespace Steel.Services
         {
             safety = new WorldSafety(source.Read("City"));
             session = new SliceSession(new SliceRules(source.Read("City")),
-                new SliceWorld(source.Read("Piles")), scrap, new Core.Fleet.PickupRules(source.Read("Vehicle")),
+                new SliceWorld(source.Read("Piles")), scrap, FleetCatalog.Create(source),
                 new Core.Fleet.CartRules(source.Read("Gerobak")));
         }
         public GameView View => new GameView
@@ -46,8 +46,8 @@ namespace Steel.Services
                     return new InteractionView { Id = "cart", Title = "Gerobak dorong",
                         Detail = Cart.Held ? "Muatan " + Cart.CargoKg + " / " + Cart.CapacityKg + " kg" : "Dorong untuk membawa sampai 50 kg" };
                 if (Vehicle.Occupied || Vehicle.Nearby)
-                    return new InteractionView { Id = "vehicle", Title = "Pikap bekas",
-                        Detail = Vehicle.Occupied ? "Berhenti lalu keluar" : "Pikap pinjaman · kapasitas 1 ton" };
+                    return new InteractionView { Id = "vehicle", Title = VehicleText.Name(Vehicle),
+                        Detail = VehicleText.Detail(Vehicle) };
                 return null;
             }
         }

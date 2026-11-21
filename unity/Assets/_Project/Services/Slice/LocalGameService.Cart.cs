@@ -9,7 +9,7 @@ namespace Steel.Services
                 var cart = session.Cart;
                 return new CartView
                 {
-                    Held = cart.Held, Nearby = !session.Pickup.Occupied && cart.InReach(session.Position),
+                    Held = cart.Held, Nearby = session.Fleet.Driven == null && cart.InReach(session.Position),
                     X = (float)cart.Position.X, Z = (float)cart.Position.Z,
                     PushSpeed = (float)cart.Rules.PushSpeed,
                     CargoKg = cart.Cargo.CarriedKg, CapacityKg = cart.Rules.CapacityKg

@@ -27,13 +27,14 @@ namespace Steel.Editor
             host.AddComponent<SliceInput>(); host.AddComponent<ScreenshotCapture>();
             Transform player = Characters.PlayerBuilder.Create(layout);
             Vehicles.GerobakBuilder.Create(player);
-            Transform pickup = VehicleBuilder.Create();
+            Vehicles.TrisedaBuilder.Create(player); Vehicles.PikapBuilder.Create(player);
+            Vehicles.DealerBuilder.Create();
             var camera = new GameObject("Main Camera", typeof(Camera)); camera.tag = "MainCamera";
             camera.AddComponent<AudioListener>(); camera.GetComponent<Camera>().fieldOfView = 62;
             camera.GetComponent<Camera>().nearClipPlane = .1f; camera.GetComponent<Camera>().farClipPlane = 200;
             var data = camera.AddComponent<UniversalAdditionalCameraData>(); data.renderPostProcessing = true;
             data.antialiasing = AntialiasingMode.FastApproximateAntialiasing;
-            var orbit = camera.AddComponent<OrbitCamera>(); orbit.Target = player; orbit.VehicleTarget = pickup;
+            var orbit = camera.AddComponent<OrbitCamera>(); orbit.Target = player;
             new GameObject("HUD").AddComponent<CityHud>();
             var settings = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset")[0]);
             settings.FindProperty("activeInputHandler").intValue = 1; settings.ApplyModifiedPropertiesWithoutUndo();

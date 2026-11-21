@@ -7,25 +7,44 @@ namespace Steel.Core.State.Slice
     public sealed partial class SliceSession
     {
         private readonly Backpack backpack;
-        public PickupState Pickup { get; }
-        public Backpack Bag => Pickup.Occupied ? Pickup.Cargo : Cart.Held ? Cart.Cargo : backpack;
-        public void EnterPickup()
+        public Garage Fleet { get; }
+
+        /// <summary>Where picked-up scrap goes: the driven vehicle, the pushed cart, or the hands.</summary>
+        public Backpack Bag =>
+            Fleet.Driven != null ? Fleet.Driven.Cargo : Cart.Held ? Cart.Cargo : backpack;
+
+        public void BuyMotor(string id)
         {
+            var motor = Fleet.Find(id);
+            if (!motor.InReach(Position))
+                throw new InvalidOperationException("Dekati " + motor.Rules.Label + " terlebih dahulu.");
+            if (!motor.Owned && Cash < motor.Rules.Price)
+                throw new InvalidOperationException("Kas belum cukup untuk membeli " + motor.Rules.Label + ".");
+            motor.Buy(); Cash -= motor.Rules.Price;
+        }
+
+        public void EnterMotor(string id)
+        {
+            var motor = Fleet.Find(id);
             if (Cart.Held) throw new InvalidOperationException("Lepas gerobak dahulu.");
-            if (Pickup.Cargo.CarriedKg + backpack.CarriedKg > Pickup.Rules.CapacityKg)
-                throw new InvalidOperationException("Bak pikap penuh.");
-            Pickup.Enter(Position);
-            foreach (var pile in backpack.Items) Pickup.Cargo.Add(pile);
-            backpack.Clear(); Position = Pickup.Position;
+            if (Fleet.Driven != null) throw new InvalidOperationException("Turun dari kendaraan dahulu.");
+            if (motor.Cargo.CarriedKg + backpack.CarriedKg > motor.Rules.CapacityKg)
+                throw new InvalidOperationException("Bak " + motor.Rules.Label + " penuh.");
+            motor.Enter(Position);
+            foreach (var pile in backpack.Items) motor.Cargo.Add(pile);
+            backpack.Clear(); Position = motor.Position;
         }
-        public void ExitPickup(WorldPoint point)
+
+        public void ExitMotor(WorldPoint point)
         {
-            Pickup.Exit(point); Position = point;
+            var motor = Fleet.Driven ?? throw new InvalidOperationException("Anda tidak sedang berkendara.");
+            motor.Exit(point); Position = point;
         }
-        public void ReportPickup(WorldPoint point, double speed)
+
+        public void ReportMotor(string id, WorldPoint point, double speed)
         {
-            Pickup.ReportPose(point, speed);
-            if (Pickup.Occupied) Position = point;
+            var motor = Fleet.Find(id); motor.ReportPose(point, speed);
+            if (motor.Occupied) Position = point;
         }
     }
 }

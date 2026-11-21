@@ -6,7 +6,7 @@ namespace Steel.Presentation.Characters
     [DefaultExecutionOrder(50)]   // after the animator, HipsAnchor and whatever moves the grips
     public sealed class ArmReach : MonoBehaviour
     {
-        public ArmChain Left, Right;
+        public LimbChain Left, Right;
         private const float BlendSeconds = .25f;
         private Transform leftGrip, rightGrip;
         private bool holding;

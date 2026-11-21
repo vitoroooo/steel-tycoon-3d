@@ -26,7 +26,6 @@ namespace Steel.Presentation.Player
                 controller.enabled = false;
                 var view = host.Game.View;
                 transform.position = new Vector3(view.PlayerX, .3f, view.PlayerZ);
-                Visual.gameObject.SetActive(!driving);
                 controller.enabled = !driving; wasDriving = driving;
                 if (driving) return;
                 verticalSpeed = 0;

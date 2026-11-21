@@ -29,6 +29,7 @@ namespace Steel.Editor.Characters
             visual.AddComponent<LocomotionAnimator>();
             visual.AddComponent<HipsAnchor>().Bind(visual.transform.Find(RocketboxImportRules.RootBone));
             ArmBinder.Bind(visual);
+            LegBinder.Bind(visual);
             return visual;
         }
     }

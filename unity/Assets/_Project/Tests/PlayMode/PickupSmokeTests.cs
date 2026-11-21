@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using Steel.Presentation.Input;
 using Steel.Services;
+using Steel.PlayTests.Support;
 using Steel.Presentation.Vehicles;
 using Steel.Presentation.Player;
 
@@ -19,11 +20,11 @@ namespace Steel.PlayTests
         }
         [UnityTest] public IEnumerator EnterDriveExitPickup()
         {
-            yield return SceneManager.LoadSceneAsync("City"); yield return null;
-            var host = Object.FindObjectOfType<GameHost>(); var driver = Object.FindObjectOfType<PickupDriver>();
-            var player = Object.FindObjectOfType<PlayerMover>(); var v = host.Game.Vehicle;
+            yield return OwnedFleet.LoadWealthyCity();
+            var host = Object.FindObjectOfType<GameHost>(); var driver = OwnedFleet.Buy(host, FleetCatalog.Pikap);
+            var player = Object.FindObjectOfType<PlayerMover>(); var v = host.Game.VehicleOf(FleetCatalog.Pikap);
             host.Game.SetPosition(v.X, v.Z); driver.Toggle(); yield return null;
-            Assert.IsTrue(host.Game.Vehicle.Occupied); Assert.IsFalse(player.GetComponent<CharacterController>().enabled);
+            Assert.IsTrue(host.Game.VehicleOf(FleetCatalog.Pikap).Occupied); Assert.IsFalse(player.GetComponent<CharacterController>().enabled);
             Vector3 before = driver.transform.position;
             var source = new MoveSource { Value = Vector2.up }; driver.MoveInput = source;
             float end = Time.fixedTime + 2;
@@ -32,10 +33,10 @@ namespace Steel.PlayTests
             while (Time.fixedTime < end) yield return new WaitForFixedUpdate();
             var after = driver.transform.position;
             Assert.Greater(Vector2.Distance(new Vector2(before.x, before.z), new Vector2(after.x, after.z)), 2);
-            Assert.AreEqual(driver.transform.position.x, host.Game.Vehicle.X, .2f);
-            Assert.AreEqual(driver.transform.position.z, host.Game.Vehicle.Z, .2f);
+            Assert.AreEqual(driver.transform.position.x, host.Game.VehicleOf(FleetCatalog.Pikap).X, .2f);
+            Assert.AreEqual(driver.transform.position.z, host.Game.VehicleOf(FleetCatalog.Pikap).Z, .2f);
             driver.Toggle(); yield return null;
-            Assert.IsFalse(host.Game.Vehicle.Occupied); Assert.IsTrue(player.GetComponent<CharacterController>().enabled);
+            Assert.IsFalse(host.Game.VehicleOf(FleetCatalog.Pikap).Occupied); Assert.IsTrue(player.GetComponent<CharacterController>().enabled);
             Assert.IsTrue(player.Visual.gameObject.activeSelf);
         }
         [UnityTest] public IEnumerator CameraSphereDoesNotCrossWall()
@@ -48,17 +49,17 @@ namespace Steel.PlayTests
         }
         [UnityTest] public IEnumerator FallingPickupRecoversAtItsConfiguredSpawn()
         {
-            yield return SceneManager.LoadSceneAsync("City"); yield return null;
-            var host = Object.FindObjectOfType<GameHost>(); var driver = Object.FindObjectOfType<PickupDriver>();
-            var v = host.Game.Vehicle; host.Game.SetPosition(v.X, v.Z); driver.Toggle();
+            yield return OwnedFleet.LoadWealthyCity();
+            var host = Object.FindObjectOfType<GameHost>(); var driver = OwnedFleet.Buy(host, FleetCatalog.Pikap);
+            var v = host.Game.VehicleOf(FleetCatalog.Pikap); host.Game.SetPosition(v.X, v.Z); driver.Toggle();
             driver.GetComponent<Rigidbody>().position = new Vector3(150, host.Layout.FallY - 3, 150);
             float end = Time.fixedTime + .12f;
             while (Time.fixedTime < end) yield return new WaitForFixedUpdate();
             Assert.AreEqual(v.X, driver.transform.position.x, .05f);
             Assert.AreEqual(v.Z, driver.transform.position.z, .05f);
             Assert.Greater(driver.transform.position.y, host.Layout.FallY);
-            Assert.AreEqual(v.X, host.Game.Vehicle.X, .05f);
-            Assert.AreEqual(0, host.Game.Vehicle.Speed); Assert.IsTrue(host.Game.Vehicle.Occupied);
+            Assert.AreEqual(v.X, host.Game.VehicleOf(FleetCatalog.Pikap).X, .05f);
+            Assert.AreEqual(0, host.Game.VehicleOf(FleetCatalog.Pikap).Speed); Assert.IsTrue(host.Game.VehicleOf(FleetCatalog.Pikap).Occupied);
         }
         [UnityTest] public IEnumerator CameraLowersUnderAwningInsteadOfEnteringWorker()
         {

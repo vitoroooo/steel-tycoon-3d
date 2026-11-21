@@ -10,6 +10,8 @@ namespace Steel.Presentation.Characters
         private const float SampleSeconds = .05f;
         private const float Damping = .12f;
         private static readonly int Speed = Animator.StringToHash("Speed");
+        /// <summary>Holds the idle clip while something else carries the avatar, such as a vehicle.</summary>
+        public bool Frozen { get; set; }
         private Animator animator;
         private Vector3 sampleStart;
         private float elapsed;
@@ -33,7 +35,7 @@ namespace Steel.Presentation.Characters
                 sampleStart = transform.position;
                 elapsed = 0;
             }
-            animator.SetFloat(Speed, speed, Damping, Time.deltaTime);
+            animator.SetFloat(Speed, Frozen ? 0 : speed, Damping, Time.deltaTime);
         }
     }
 }

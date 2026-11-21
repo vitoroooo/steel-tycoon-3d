@@ -6,6 +6,7 @@ using UnityEngine.InputSystem.OnScreen;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using Steel.Services;
+using Steel.PlayTests.Support;
 using Steel.Presentation.Player;
 using Steel.Presentation.UI;
 using Steel.Presentation.Vehicles;
@@ -16,12 +17,12 @@ namespace Steel.PlayTests
     {
         private GameHost host;
         private CityHud hud;
-        private PickupDriver driver;
+        private MotorDriver driver;
         private IEnumerator Load()
         {
-            yield return SceneManager.LoadSceneAsync("City"); yield return null;
+            yield return OwnedFleet.LoadWealthyCity();
             host = Object.FindObjectOfType<GameHost>(); hud = Object.FindObjectOfType<CityHud>();
-            driver = Object.FindObjectOfType<PickupDriver>();
+            driver = OwnedFleet.Buy(host, FleetCatalog.Pikap);
         }
         private void PutActor(float x, float z)
         {
@@ -39,18 +40,18 @@ namespace Steel.PlayTests
             AssertOneContext(); Assert.AreEqual("CARI RONGSOK", hud.ActionText.text);
             double cash = host.Game.View.Cash; hud.Act(); Assert.AreEqual(cash, host.Game.View.Cash);
             driver.GetComponent<Rigidbody>().position = new Vector3(0, .09f, 30);
-            host.Game.ReportVehicle(0, 30, 0);
+            host.Game.ReportVehicle(FleetCatalog.Pikap, 0, 30, 0);
             float end = Time.fixedTime + .12f;
             while (Time.fixedTime < end) yield return new WaitForFixedUpdate();
             PutActor(1.7f, 30); yield return null;
-            AssertOneContext(); Assert.AreEqual("MASUK PIKAP", hud.ActionText.text);
+            AssertOneContext(); Assert.AreEqual("NAIK PIKAP", hud.ActionText.text);
             hud.Act(); yield return null;
-            AssertOneContext(); Assert.AreEqual("KELUAR PIKAP", hud.ActionText.text);
+            AssertOneContext(); Assert.AreEqual("TURUN PIKAP", hud.ActionText.text);
             Assert.AreEqual(1000, host.Game.View.CapacityKg);
-            host.Game.ReportVehicle(0, 30, 1); hud.Act();
-            Assert.IsTrue(host.Game.Vehicle.Occupied); StringAssert.Contains("Hentikan", hud.NoticeText.text);
-            host.Game.ReportVehicle(0, 30, 0); hud.Act(); yield return null;
-            AssertOneContext(); Assert.IsFalse(host.Game.Vehicle.Occupied, hud.NoticeText.text);
+            host.Game.ReportVehicle(FleetCatalog.Pikap, 0, 30, 1); hud.Act();
+            Assert.IsTrue(host.Game.VehicleOf(FleetCatalog.Pikap).Occupied); StringAssert.Contains("Hentikan", hud.NoticeText.text);
+            host.Game.ReportVehicle(FleetCatalog.Pikap, 0, 30, 0); hud.Act(); yield return null;
+            AssertOneContext(); Assert.IsFalse(host.Game.VehicleOf(FleetCatalog.Pikap).Occupied, hud.NoticeText.text);
             Assert.AreEqual(15, host.Game.View.CapacityKg);
         }
         [UnityTest] public IEnumerator PilePriorityAndBottomRegionsStaySeparate()

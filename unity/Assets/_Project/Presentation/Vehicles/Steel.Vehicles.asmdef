@@ -1,1 +1,1 @@
-{"name": "Steel.Vehicles", "rootNamespace": "Steel.Presentation.Vehicles", "references": ["Steel.Services", "Steel.Input", "Steel.World", "Steel.Characters"]}
+{"name": "Steel.Vehicles", "rootNamespace": "Steel.Presentation.Vehicles", "references": ["Steel.Services", "Steel.Input", "Steel.World", "Steel.Characters", "Steel.Player"]}

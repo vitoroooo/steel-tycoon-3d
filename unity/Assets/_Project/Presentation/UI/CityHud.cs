@@ -13,7 +13,7 @@ namespace Steel.Presentation.UI
         public Text CashText, LoadText, MarketText, PromptText, ActionText, RouteText, NoticeText, SaleText;
         public GameObject SalePanel;
         public RectTransform SafeRoot;
-        private PickupDriver pickup;
+        private MotorDriver[] drivers;
         private GameHost host;
         private SliceInput input;
         private readonly CultureInfo culture = CultureInfo.GetCultureInfo("id-ID");
@@ -21,7 +21,7 @@ namespace Steel.Presentation.UI
         private void Start()
         {
             host = FindObjectOfType<GameHost>(); input = FindObjectOfType<SliceInput>(); HudLayout.Build(this);
-            pickup = FindObjectOfType<PickupDriver>();
+            drivers = FindObjectsOfType<MotorDriver>();
         }
         private void Update()
         {
@@ -36,7 +36,7 @@ namespace Steel.Presentation.UI
             string action = near == null ? "CARI RONGSOK" : near.Id == "home" ? "SORTIR" :
                 near.Id == "factory" ? "LIHAT HARGA" :
                 near.Id == "cart" ? (host.Game.Cart.Held ? "LEPAS GEROBAK" : "DORONG GEROBAK") : near.Id == "vehicle" ?
-                (host.Game.Vehicle.Occupied ? "KELUAR PIKAP" : "MASUK PIKAP") : near.Inspected ? "PUNGUT" : "PERIKSA";
+                VehicleText.Action(host.Game.Vehicle) : near.Inspected ? "PUNGUT" : "PERIKSA";
             ActionText.text = action;
             VehicleHud.Refresh(this, host.Game.Vehicle);
             PromptText.text = near == null ? "Jelajahi kawasan industri\nCari tumpukan rongsok di tepi jalan" :
@@ -56,7 +56,7 @@ namespace Steel.Presentation.UI
             {
                 var near = host.Game.Nearby;
                 if (near == null) return;
-                if (near.Id == "vehicle") pickup.Toggle();
+                if (near.Id == "vehicle") NoticeText.text = VehicleHud.Toggle(drivers, host.Game.Vehicle);
                 else if (near.Id == "cart") ToggleCart();
                 else if (near.Id == "home") { host.Game.SortAtHome(); NoticeText.text = "Muatan tersortir. Bawa ke Pabrik AI."; }
                 else if (near.Id == "factory") ShowOffer();

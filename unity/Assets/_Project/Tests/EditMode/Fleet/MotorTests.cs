@@ -4,14 +4,20 @@ using Steel.Core.Fleet;
 using Steel.Core.Scrap;
 using Steel.Core.State.Slice;
 using Steel.Services;
+using Steel.Tests.Support;
 
 namespace Steel.Tests.Fleet
 {
-    public sealed class PickupTests
+    public sealed class MotorTests
     {
-        private PickupState car;
-        [SetUp] public void Setup() =>
-            car = new PickupState(new PickupRules(new ResourceConfigSource().Read("Vehicle")));
+        private const string Id = FleetCatalog.Pikap;
+        private MotorState car;
+        private static VehicleView Car(IGameService game) => game.VehicleOf(Id);
+        [SetUp] public void Setup()
+        {
+            car = new MotorState(new MotorRules("pikap", "pikap", new ResourceConfigSource().Read("Pikap")));
+            car.Buy();
+        }
         [Test] public void PrdCapacityAndTripAreConfigured()
         {
             Assert.AreEqual(1000, car.Cargo.CapacityKg); Assert.AreEqual(3600, car.Rules.TripRealSeconds);
@@ -51,23 +57,23 @@ namespace Steel.Tests.Fleet
         }
         [Test] public void PickupCargoCanExceedBackpackAndSellThroughService()
         {
-            IGameService game = new LocalGameService(new ResourceConfigSource());
+            IGameService game = new LocalGameService(Wealthy.Source());
             var layout = new CityLayout(new ResourceConfigSource());
             var first = layout.Piles[0]; game.SetPosition(first.Position.X, first.Position.Z);
             game.Inspect(first.Id); game.PickUp(first.Id);
-            game.SetPosition(game.Vehicle.X, game.Vehicle.Z); game.EnterVehicle();
-            Assert.AreEqual(12, game.Vehicle.CargoKg); Assert.AreEqual(1000, game.View.CapacityKg);
+            Wealthy.Own(game, Id); game.EnterVehicle(Id);
+            Assert.AreEqual(12, Car(game).CargoKg); Assert.AreEqual(1000, game.View.CapacityKg);
             for (int i = 1; i < layout.Piles.Length; i++)
             {
-                var pile = layout.Piles[i]; game.ReportVehicle(pile.Position.X, pile.Position.Z, 0);
+                var pile = layout.Piles[i]; game.ReportVehicle(Id, pile.Position.X, pile.Position.Z, 0);
                 game.Inspect(pile.Id); game.PickUp(pile.Id);
             }
-            Assert.Greater(game.Vehicle.CargoKg, 50);
-            game.ReportVehicle(layout.Home.X, layout.Home.Z, 0); game.SortAtHome();
-            game.ReportVehicle(layout.Factory.X, layout.Factory.Z, 0);
+            Assert.Greater(Car(game).CargoKg, 50);
+            game.ReportVehicle(Id, layout.Home.X, layout.Home.Z, 0); game.SortAtHome();
+            game.ReportVehicle(Id, layout.Factory.X, layout.Factory.Z, 0);
             double cash = game.View.Cash; game.PreviewSale(); game.ConfirmSale();
-            Assert.Greater(game.View.Cash, cash); Assert.AreEqual(0, game.Vehicle.CargoKg);
-            game.ExitVehicle(game.Vehicle.X + 2, game.Vehicle.Z); Assert.AreEqual(15, game.View.CapacityKg);
+            Assert.Greater(game.View.Cash, cash); Assert.AreEqual(0, Car(game).CargoKg);
+            game.ExitVehicle(Car(game).X + 2, Car(game).Z); Assert.AreEqual(15, game.View.CapacityKg);
         }
     }
 }
