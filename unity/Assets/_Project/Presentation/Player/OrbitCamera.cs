@@ -11,7 +11,7 @@ namespace Steel.Presentation.Player
         public Transform VehicleTarget { get; set; }
         private SliceInput input;
         private GameHost host;
-        private float yaw, pitch;
+        private float yaw, pitch, boom;
         /// <summary>Seconds the camera takes to catch up, so starts, stops and mounting a vehicle glide.</summary>
         private const float FollowTime = .09f, ReframeTime = .35f;
         private Vector3 focus, focusVelocity;
@@ -24,7 +24,7 @@ namespace Steel.Presentation.Player
         }
         private void LateUpdate()
         {
-            Vector2 delta = input.Look * host.Layout.LookSensitivity;
+            Vector2 delta = input.TakeOrbit() + input.Look * host.Layout.LookSensitivity;
             yaw += delta.x; pitch = Mathf.Clamp(pitch - delta.y, 8, 55);
             var rotation = Quaternion.Euler(pitch, yaw, 0);
             bool driving = VehicleTarget != null;
@@ -34,7 +34,8 @@ namespace Steel.Presentation.Player
             focus = settled ? Vector3.SmoothDamp(focus, wanted, ref focusVelocity, FollowTime) : wanted;
             settled = true;
             Vector3 offset = rotation * Vector3.back * host.Layout.CameraDistance * reach;
-            transform.position = CameraCollision.Resolve(focus, offset);
+            transform.position = Application.isMobilePlatform
+                ? CameraCollision.AlongSwipe(focus, offset, ref boom, Time.deltaTime) : CameraCollision.Resolve(focus, offset);
             transform.LookAt(focus);
         }
     }

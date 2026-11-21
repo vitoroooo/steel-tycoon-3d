@@ -1,6 +1,6 @@
 namespace Steel.Services
 {
-    public sealed class VehicleView
+    public struct VehicleView
     {
         public string Id, Label;
         public bool Owned, Occupied, Nearby;

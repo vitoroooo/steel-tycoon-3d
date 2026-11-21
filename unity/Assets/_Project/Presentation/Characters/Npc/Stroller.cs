@@ -11,6 +11,7 @@ namespace Steel.Presentation.Characters.Npc
         private const float StepReach = .6f, Settle = .08f;
 
         private int next;
+        private readonly RaycastHit[] groundHits = new RaycastHit[16];
         private float speed, wait, turnRate, fallRate;
 
         private void Start() => next = Route.Length > 1 ? 1 : 0;
@@ -53,8 +54,9 @@ namespace Steel.Presentation.Characters.Npc
         {
             Vector3 knee = new Vector3(at.x, at.y + StepReach, at.z);
             float top = float.MinValue;
-            foreach (var hit in Physics.RaycastAll(knee, Vector3.down, StepReach * 2, ~0, QueryTriggerInteraction.Ignore))
-                if (!hit.transform.IsChildOf(transform)) top = Mathf.Max(top, hit.point.y);
+            int count = Physics.RaycastNonAlloc(knee, Vector3.down, groundHits, StepReach * 2, ~0, QueryTriggerInteraction.Ignore);
+            for (int i = 0; i < count; i++)
+                if (!groundHits[i].transform.IsChildOf(transform)) top = Mathf.Max(top, groundHits[i].point.y);
             if (top > float.MinValue) return top;
             return at.y;
         }

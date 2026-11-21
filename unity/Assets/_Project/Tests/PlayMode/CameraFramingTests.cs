@@ -35,5 +35,22 @@ namespace Steel.PlayTests
             var focus = new Vector3(180, 3, 180); var offset = new Vector3(0, 1, -8);
             Assert.AreEqual(focus + offset, CameraCollision.Resolve(focus, offset));
         }
+        [Test] public void MobileWallShortensBoomWithoutTurningAwayFromSwipe()
+        {
+            var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            try
+            {
+                var focus = new Vector3(320, 3, 320); var offset = Vector3.back * 6;
+                wall.transform.position = focus + Vector3.back * 3;
+                wall.transform.localScale = new Vector3(5, 8, 1); Physics.SyncTransforms();
+                float boom = 6;
+                var position = CameraCollision.AlongSwipe(focus,offset,ref boom,.016f);
+                Assert.Less(boom,2.5f); Assert.AreEqual(focus.x,position.x);
+                float before = boom; wall.SetActive(false); Physics.SyncTransforms();
+                CameraCollision.AlongSwipe(focus,offset,ref boom,.016f);
+                Assert.Greater(boom,before); Assert.Less(boom,6);
+            }
+            finally { Object.DestroyImmediate(wall); }
+        }
     }
 }

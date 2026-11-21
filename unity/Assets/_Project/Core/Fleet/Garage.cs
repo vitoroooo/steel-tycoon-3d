@@ -19,14 +19,27 @@ namespace Steel.Core.Fleet
             motors = rules.Select(r => new MotorState(r)).ToArray();
         }
 
-        public MotorState Driven => motors.FirstOrDefault(m => m.Occupied);
+        public MotorState Driven
+        {
+            get { foreach (var m in motors) if (m.Occupied) return m; return null; }
+        }
 
-        public MotorState Find(string id) =>
-            motors.FirstOrDefault(m => m.Rules.Id == id) ??
+        public MotorState Find(string id)
+        {
+            foreach (var m in motors) if (m.Rules.Id == id) return m;
             throw new ArgumentException("Unknown vehicle: " + id);
+        }
 
-        public MotorState Nearest(WorldPoint point) =>
-            motors.OrderBy(m => m.Position.Distance(point)).First();
+        public MotorState Nearest(WorldPoint point)
+        {
+            var best = motors[0]; double distance = best.Position.Distance(point);
+            for (int i = 1; i < motors.Length; i++)
+            {
+                double d = motors[i].Position.Distance(point);
+                if (d < distance) { distance = d; best = motors[i]; }
+            }
+            return best;
+        }
 
         public void AdvanceTrip(double seconds)
         {
