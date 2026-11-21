@@ -24,7 +24,7 @@ namespace Steel.Services
             market = new AiPriceBook(economy);
             scrap = new ScrapPricing(new ScrapConfig(source.Read("Scrap")));
             market.Refresh(0, economy.SupplyTargetKg);
-            clock.HourTick += _ => market.Refresh(clock.RealSeconds, economy.SupplyTargetKg);
+            clock.HourTick += hour => market.RefreshBucket(hour, economy.SupplyTargetKg);
         }
 
         public ScrapPile CreatePile(double kilograms, ScrapGrade grade) => new ScrapPile(kilograms, grade);

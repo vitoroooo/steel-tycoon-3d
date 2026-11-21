@@ -7,6 +7,24 @@ namespace Steel.Tests.Services
 {
     public sealed class LocalGameTests
     {
+        private sealed class FractionalSource : IConfigSource
+        {
+            public string Read(string name)
+            {
+                if (name == "Time") return TestConfig.With(name, "realSecondsPerGameHour", 600.1);
+                if (name == "Economy") return TestConfig.With(name, "refreshRealSeconds", 600.1);
+                return TestConfig.Read(name);
+            }
+        }
+
+        [Test]
+        public void FractionalIntervalsRefreshTheSeventhTick()
+        {
+            IGameService game = new LocalGameService(new FractionalSource());
+            game.CatchUp(4300);
+            Assert.AreEqual(7 * 600.1, game.Prices.RefreshedAtRealSeconds, 1e-8);
+        }
+
         [Test]
         public void ResourcesComposeClockPricesAndScrapWithoutScene()
         {

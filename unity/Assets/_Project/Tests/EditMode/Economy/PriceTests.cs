@@ -6,6 +6,19 @@ namespace Steel.Tests.Economy
 {
     public sealed class PriceTests
     {
+        [Test]
+        public void FractionalElapsedBoundaryAndIntegerBucketsAgree()
+        {
+            var c = new EconomyConfig(TestConfig.With("Economy", "refreshRealSeconds", 600.1));
+            var elapsed = new AiPriceBook(c);
+            var ticked = new AiPriceBook(c);
+            elapsed.Refresh(4200.7, c.SupplyTargetKg);
+            ticked.RefreshBucket(7, c.SupplyTargetKg);
+            Assert.AreEqual(7, elapsed.CurrentBucket);
+            Assert.AreEqual(ticked.Current.Ibn, elapsed.Current.Ibn);
+            Assert.AreEqual(7 * 600.1, elapsed.Current.RefreshedAtRealSeconds, 1e-8);
+        }
+
         private EconomyConfig config;
 
         [SetUp]
