@@ -20,7 +20,7 @@ namespace Steel.Editor.Showroom
             camera.Shoot(new Vector3(20, 2.5f, -26), 350, 6, 20, new RectInt(tw * 2, th, tw, th));     // gate and weighbridge
             camera.Shoot(new Vector3(41, 3.5f, -52), 262, 6, 11, new RectInt(0, 0, tw, th));           // into the furnace bay
             camera.Shoot(new Vector3(23, 3.5f, -51), 20, 14, 30, new RectInt(tw, 0, tw, th));          // scrap bays and gantry
-            camera.Shoot(new Vector3(43, 20, -31), 320, -24, 46, new RectInt(tw * 2, 0, tw, th));      // stacks against the sky
+            camera.Shoot(new Vector3(48, 30, -30), 305, -4, 62, new RectInt(tw * 2, 0, tw, th));       // stacks and their smoke
             camera.Save(ShowroomStage.SheetPath("pabrik"));
         }
     }

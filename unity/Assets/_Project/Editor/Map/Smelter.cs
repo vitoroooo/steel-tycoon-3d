@@ -32,8 +32,8 @@ namespace Steel.Editor.Map
                 Solid.Box(hot, Vector3.up * .5f, new Vector3(1.1f, 1, 6));
             }
             Glow("Pijar billet", hall.transform.TransformPoint(9.5f, 1.8f, -5.4f), 9, 3.5f);
-            Stack(new Vector3(47, 0, -29), 1, new Color(.86f, .86f, .84f, .55f));
-            Stack(new Vector3(39, 0, -30), .75f, new Color(.42f, .4f, .39f, .5f));
+            Stack(new Vector3(47, 0, -29), 1, new Color(.56f, .55f, .53f, .75f));
+            Stack(new Vector3(39, 0, -30), .75f, new Color(.3f, .29f, .28f, .7f));
             SmokeBuilder.Create("Uap atap peleburan", hall.transform.TransformPoint(-4, 15.2f, 0), 2.2f, new Color(.8f, .78f, .74f, .22f), 9);
         }
 

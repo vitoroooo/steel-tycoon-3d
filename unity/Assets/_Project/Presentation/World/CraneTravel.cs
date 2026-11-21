@@ -10,8 +10,9 @@ namespace Steel.Presentation.World
         private const float Acceleration = .5f, RopeLength = 4.5f, Damping = .6f;
 
         private float target, speed, wait, angle, swing;
+        private Quaternion rest;
 
-        private void Start() => target = Reach;
+        private void Start() { target = Reach; rest = Load.localRotation; }
 
         private void Update()
         {
@@ -31,7 +32,8 @@ namespace Steel.Presentation.World
             swing += (-Physics.gravity.magnitude / RopeLength * Mathf.Sin(angle) - push / RopeLength * Mathf.Cos(angle)
                 - Damping * swing) * dt;
             angle += swing * dt;
-            Load.localRotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
+            // About the crane's own axis, whichever way the exporter turned the trolley.
+            Load.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, transform.forward) * Trolley.rotation * rest;
         }
     }
 }

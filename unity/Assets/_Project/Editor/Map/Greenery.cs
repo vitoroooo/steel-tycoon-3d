@@ -29,7 +29,7 @@ namespace Steel.Editor.Map
                 plant.transform.SetParent(CityGeometry.Root, false);
                 plant.transform.SetPositionAndRotation(new Vector3(clump.x, -.1f, clump.y), Quaternion.Euler(0, clump.z, 0));
                 plant.transform.localScale = Vector3.one * clump.w;
-                foreach (Transform part in plant.GetComponentsInChildren<Transform>()) part.gameObject.isStatic = true;
+                Placement.Settle(plant);
                 var trunk = plant.AddComponent<CapsuleCollider>();   // only the stem blocks; leaves brush past
                 trunk.center = Vector3.up * 1.15f; trunk.radius = .14f; trunk.height = 2.3f;
             }

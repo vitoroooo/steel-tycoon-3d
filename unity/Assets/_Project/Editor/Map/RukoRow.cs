@@ -28,7 +28,7 @@ namespace Steel.Editor.Map
                 unit.name = "Ruko / " + shops[i];
                 unit.transform.SetParent(CityGeometry.Root, false);
                 unit.transform.SetPositionAndRotation(first + step * i, facing);
-                foreach (Transform part in unit.GetComponentsInChildren<Transform>()) part.gameObject.isStatic = true;
+                Placement.Settle(unit);
                 Solid(unit, floors);
                 CityGeometry.Sign(shops[i], unit.transform.TransformPoint(0, SignHeight, Depth / 2 + .12f),
                     SignSize, SignText, yaw + 180);

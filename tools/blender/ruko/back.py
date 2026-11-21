@@ -44,14 +44,21 @@ def upper_window(level):
     return parts
 
 
-def laundry(level):
-    """Poles pushed out of the back window with the day's washing on them."""
+def laundry_rail(level):
+    """Poles pushed out of the back window; returns the parts and the point the washing swings about."""
     y, z = d.BACK - .04, d.floor_z(level) + 2.25
     parts = []
     for x in (-.2, 2.2):
         parts.append(ready(tube('LaundryArm', [(x, y, z), (x, y - .9, z + .05)], .012, 'steel', bend=0, sides=5), 0, 1))
     parts.append(ready(tube('LaundryPole', [(-.3, y - .8, z + .05), (2.3, y - .8, z + .05)], .014, 'wood',
                             bend=0, sides=6), 0, 1))
+    return parts, (1.0, y - .8, z + .05)
+
+
+def laundry(level):
+    """The day's washing, kept apart from the building so the wind can move it."""
+    y, z = d.BACK - .04, d.floor_z(level) + 2.25
+    parts = []
     for i, colour in enumerate(CLOTHES):
         height = .5 + (i % 3) * .12
         cloth = box('Laundry', (.38, .012, height), (-.05 + i * .5, y - .8, z + .03 - height / 2), colour,

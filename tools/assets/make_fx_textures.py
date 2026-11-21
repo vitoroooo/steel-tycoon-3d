@@ -17,14 +17,13 @@ def falloff():
 
 
 def puff(rng):
-    """White with a lumpy alpha: several overlapping soft discs, so puffs do not read as perfect circles."""
-    x, y, _ = falloff()
-    alpha = np.zeros((SIZE, SIZE))
+    """White with a lumpy alpha: a soft body broken up by overlapping billows, so puffs do not read as discs."""
+    x, y, body = falloff()
+    billows = np.zeros((SIZE, SIZE))
     for _ in range(26):
-        cx, cy, radius = rng.uniform(-.42, .42), rng.uniform(-.42, .42), rng.uniform(.22, .5)
-        alpha = np.maximum(alpha, np.clip(1 - np.hypot(x - cx, y - cy) / radius, 0, 1) ** 1.6 * rng.uniform(.5, 1))
-    alpha *= np.clip(1.15 - np.hypot(x, y), 0, 1) ** .8      # always fades out before the quad's edge
-    return alpha
+        cx, cy, radius = rng.uniform(-.5, .5), rng.uniform(-.5, .5), rng.uniform(.25, .55)
+        billows = np.maximum(billows, np.clip(1 - np.hypot(x - cx, y - cy) / radius, 0, 1) ** .8 * rng.uniform(.6, 1))
+    return np.clip(body * 2.2, 0, 1) * (.35 + .65 * billows)   # always fades out before the quad's edge
 
 
 def save(name, alpha):

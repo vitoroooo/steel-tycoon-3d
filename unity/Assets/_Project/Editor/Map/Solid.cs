@@ -13,14 +13,13 @@ namespace Steel.Editor.Map
             box.AddComponent<BoxCollider>().size = size;
         }
 
-        /// <summary>Puts a model in the city: position, heading, static flags; moving children are left free.</summary>
+        /// <summary>Puts a model in the city: position, heading and scale.</summary>
         internal static GameObject Stand(GameObject model, Vector3 position, float yaw, float scale = 1)
         {
             model.transform.SetParent(CityGeometry.Root, false);
             model.transform.SetPositionAndRotation(position, Quaternion.Euler(0, yaw, 0));
             model.transform.localScale = Vector3.one * scale;
-            foreach (Transform part in model.GetComponentsInChildren<Transform>())
-                part.gameObject.isStatic = part.name != "Trolley" && part.name != "Load";
+            Models.Placement.Settle(model);
             return model;
         }
     }

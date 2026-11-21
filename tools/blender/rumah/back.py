@@ -43,14 +43,23 @@ def yard():
     return parts
 
 
+LINE_Y, LINE_Z = Y - d.KITCHEN - .9, 1.7
+
+
 def washing_line():
-    y, z = Y - d.KITCHEN - .9, 1.7
     parts = []
     for x in (-d.HALF + .3, d.HALF - .3):
-        parts.append(ready(tube('LinePost', [(x, y, 0), (x, y, z + .1)], .025, 'bamboo', bend=0, sides=6), 0, .5))
-    parts.append(ready(tube('Line', [(-d.HALF + .3, y, z), (d.HALF - .3, y, z)], .005, 'steel', bend=0, sides=4), 0, 1))
+        parts.append(ready(tube('LinePost', [(x, LINE_Y, 0), (x, LINE_Y, LINE_Z + .1)], .025, 'bamboo', bend=0, sides=6), 0, .5))
+    parts.append(ready(tube('Line', [(-d.HALF + .3, LINE_Y, LINE_Z), (d.HALF - .3, LINE_Y, LINE_Z)], .005, 'steel',
+                            bend=0, sides=4), 0, 1))
+    return parts
+
+
+def washing():
+    """The clothes on the line, kept apart from the house so the wind can move them."""
+    parts = []
     for i, colour in enumerate(CLOTHES):
         height = .55 + (i % 3) * .15
-        parts.append(ready(box('Washing', (.5, .012, height), (-2.0 + i * .8, y, z - height / 2), colour,
+        parts.append(ready(box('Washing', (.5, .012, height), (-2.0 + i * .8, LINE_Y, LINE_Z - height / 2), colour,
                                rot=(.05 * (i % 3 - 1), 0, 0)), 0, 1))
     return parts

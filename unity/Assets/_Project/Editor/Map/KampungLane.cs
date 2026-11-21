@@ -26,7 +26,7 @@ namespace Steel.Editor.Map
                 house.name = "Rumah kampung " + (i + 1);
                 house.transform.SetParent(CityGeometry.Root, false);
                 house.transform.SetPositionAndRotation(new Vector3(x, 0, RukoStreets.LaneNorth - 4 - i * Pitch), facing);
-                foreach (Transform part in house.GetComponentsInChildren<Transform>()) part.gameObject.isStatic = true;
+                Placement.Settle(house);
                 Solid(house);
                 var plant = PorchPlants[i % PorchPlants.Length];
                 ModelLibrary.Place(plant.model, house.transform.TransformPoint(plant.along, .15f, 3.4f), plant.height, i * 40);

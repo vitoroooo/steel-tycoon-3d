@@ -40,9 +40,12 @@ def bunch():
 
 
 def build():
+    """The stem and bunch stand still; each crown is its own child (Goyang*) so Unity can rock it in the wind."""
     root = scene.root('Pisang')
-    parts = stem(0, 0, HEIGHT, .11) + leaf.crown((.32, .19, HEIGHT - .08), 9, 1.9) + bunch()
+    top, shoot = (.32, .19, HEIGHT - .08), (-.55 + .32 * .2, .35 + .19 * .2, .95)
+    parts = stem(0, 0, HEIGHT, .11) + bunch() + stem(-.55, .35, 1.0, .06)
     parts.append(leaf.leaf(1.7, .6, 4.0, .15, 1.25, (.3, .18, HEIGHT - .3), 'leaf_dry', twist=.6))
-    parts += stem(-.55, .35, 1.0, .06) + leaf.crown((-.55 + .32 * .2, .35 + .19 * .2, .95), 4, 1.0, start=1.0)   # the sucker
     scene.join('Body', parts, root)
+    scene.pivot(scene.join('GoyangDaun', leaf.crown(top, 9, 1.9), root), top)
+    scene.pivot(scene.join('GoyangDaunAnak', leaf.crown(shoot, 4, 1.0, start=1.0), root), shoot)   # the sucker
     return 'Nature', 'Pisang'
