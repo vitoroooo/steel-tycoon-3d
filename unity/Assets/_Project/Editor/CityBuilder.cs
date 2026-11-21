@@ -19,7 +19,7 @@ namespace Steel.Editor
             var layout = new CityLayout(new ResourceConfigSource());
             CityGeometry.Root = new GameObject("Sukabaja").transform;
             CityLighting.Create();
-            var ground = Ground.GroundBuilder.Create(layout); Ground.GroundDecals.Create(layout);
+            var ground = Ground.GroundBuilder.Create(layout);
             StreetBuilder.Create();
             Map.RukoStreets.Create(); Map.KampungLane.Create(); Map.Greenery.Create(); Map.Fences.Create();
             Map.BackAlley.Create(Map.RukoStreets.AlleyX, Map.RukoStreets.AlleySouth, Map.RukoStreets.AlleyNorth, 2.6f);
@@ -27,7 +27,8 @@ namespace Steel.Editor
             OverheadWires.Create();
             CityBoundsBuilder.Create(layout);
             YardBuilder.Create(layout); PileBuilder.Create(layout);
-            Ground.GroundCover.Plant(ground, layout);
+            Map.Smelter.Create(); Map.SmelterYard.Create(layout); Map.ContainerDepot.Create();
+            Ground.GroundDecals.Create(layout); Ground.GroundCover.Plant(ground, layout);
             var host = new GameObject("Game Services"); host.AddComponent<GameHost>();
             host.AddComponent<SliceInput>(); host.AddComponent<ScreenshotCapture>();
             Transform player = Characters.PlayerBuilder.Create(layout);
@@ -49,7 +50,7 @@ namespace Steel.Editor
             EditorSceneManager.SaveScene(scene, "Assets/_Project/Scenes/City.unity");
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene("Assets/_Project/Scenes/City.unity", true) };
             AssetDatabase.SaveAssets();
-            Debug.Log("CITY_GENERATED: 8 piles, lapak, factory, URP PBR + ACES + bloom + SSAO");
+            Debug.Log("CITY_GENERATED: 8 piles, lapak, smelter, URP PBR + ACES + bloom + SSAO");
         }
         [MenuItem("Steel/Build Linux Slice")]
         public static void BuildLinux()

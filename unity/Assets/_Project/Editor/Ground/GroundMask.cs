@@ -28,6 +28,17 @@ namespace Steel.Editor.Ground
 
         internal bool Covers(int row, int column) => covered[row, column];
 
+        /// <summary>True when anything is built within <paramref name="radius"/> metres of a world position.</summary>
+        internal bool Covers(float x, float z, float radius)
+        {
+            int left = Cell(x - radius, GroundZones.Centre.x), right = Cell(x + radius, GroundZones.Centre.x);
+            int south = Cell(z - radius, GroundZones.Centre.z), north = Cell(z + radius, GroundZones.Centre.z);
+            for (int row = south; row <= north; row++)
+                for (int column = left; column <= right; column++)
+                    if (covered[row, column]) return true;
+            return false;
+        }
+
         private void Mark(Bounds bounds)
         {
             int left = Cell(bounds.min.x - Margin, GroundZones.Centre.x), right = Cell(bounds.max.x + Margin, GroundZones.Centre.x);

@@ -37,7 +37,7 @@ namespace Steel.Editor.Showroom
             camera.Shoot(eye, bearing + 180, -height, 0, new RectInt(0, 0, 1, 1));   // first frame warms up shaders
             camera.Shoot(eye, bearing + 180, -height, 0, new RectInt(0, h / 2, w / 2, h / 2));     // sun should be mid-frame
             camera.Shoot(eye, bearing, -12, 0, new RectInt(w / 2, h / 2, w / 2, h / 2));       // away from the sun
-            Vector3 puddle = GameObject.Find("Genangan").transform.position;
+            Vector3 puddle = new Vector3(-22, 0, -30);   // open ground south-west of the crossing
             camera.Shoot(puddle, bearing, 16, 9, new RectInt(0, 0, w / 2, h / 2));                      // a puddle, lit from behind
             camera.Shoot(new Vector3(30, 1.2f, -30), 320, 6, 0, new RectInt(w / 2, 0, w / 2, h / 2));   // open south-east
             camera.Save(ShowroomStage.SheetPath("langit-tanah"));
