@@ -10,13 +10,20 @@ namespace Steel.Core.State.Slice
     {
         public SliceRules Rules { get; }
         public SliceWorld World { get; }
-        public WorldPoint Position { get; set; }
+        private WorldPoint position;
+        public WorldPoint Position
+        {
+            get => position;
+            set { position = value; Cart?.Follow(value); }
+        }
         public double Cash { get; private set; }
         private readonly ScrapPricing pricing;
-        public SliceSession(SliceRules rules, SliceWorld world, ScrapPricing pricing, PickupRules pickupRules)
+        public SliceSession(SliceRules rules, SliceWorld world, ScrapPricing pricing, PickupRules pickupRules,
+            CartRules cartRules)
         {
             Rules = rules; World = world; this.pricing = pricing;
             backpack = new Backpack(rules.CarryCapKg); Pickup = new PickupState(pickupRules);
+            Cart = new CartState(cartRules);
             Cash = rules.StartCash; Position = rules.Spawn;
         }
         private void RequireNear(WorldPoint point)

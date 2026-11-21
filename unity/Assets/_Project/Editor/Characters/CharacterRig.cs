@@ -28,6 +28,7 @@ namespace Steel.Editor.Characters
             animator.applyRootMotion = false;
             visual.AddComponent<LocomotionAnimator>();
             visual.AddComponent<HipsAnchor>().Bind(visual.transform.Find(RocketboxImportRules.RootBone));
+            ArmBinder.Bind(visual);
             return visual;
         }
     }

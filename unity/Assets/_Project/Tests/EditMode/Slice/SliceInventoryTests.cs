@@ -30,10 +30,9 @@ namespace Steel.Tests.Slice
         public void CarryCapRejectsWholePileWithoutLosingIt()
         {
             AtPile(0); game.Inspect("p0"); game.PickUp("p0");
-            AtPile(1); game.Inspect("p1"); game.PickUp("p1");
-            AtPile(2); game.Inspect("p2");
-            Assert.Throws<InvalidOperationException>(() => game.PickUp("p2"));
-            Assert.AreEqual(30, game.View.CarriedKg); Assert.IsFalse(game.IsCollected("p2"));
+            AtPile(1); game.Inspect("p1");   // 12 kg + 18 kg is more than one hand-carried sack (15 kg)
+            Assert.Throws<InvalidOperationException>(() => game.PickUp("p1"));
+            Assert.AreEqual(12, game.View.CarriedKg); Assert.IsFalse(game.IsCollected("p1"));
         }
         [Test]
         public void LocationsAreValidatedInsideService()

@@ -51,7 +51,7 @@ namespace Steel.PlayTests
             Assert.IsTrue(host.Game.Vehicle.Occupied); StringAssert.Contains("Hentikan", hud.NoticeText.text);
             host.Game.ReportVehicle(0, 30, 0); hud.Act(); yield return null;
             AssertOneContext(); Assert.IsFalse(host.Game.Vehicle.Occupied, hud.NoticeText.text);
-            Assert.AreEqual(50, host.Game.View.CapacityKg);
+            Assert.AreEqual(15, host.Game.View.CapacityKg);
         }
         [UnityTest] public IEnumerator PilePriorityAndBottomRegionsStaySeparate()
         {

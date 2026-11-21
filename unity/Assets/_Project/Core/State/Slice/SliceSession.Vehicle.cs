@@ -8,9 +8,10 @@ namespace Steel.Core.State.Slice
     {
         private readonly Backpack backpack;
         public PickupState Pickup { get; }
-        public Backpack Bag => Pickup.Occupied ? Pickup.Cargo : backpack;
+        public Backpack Bag => Pickup.Occupied ? Pickup.Cargo : Cart.Held ? Cart.Cargo : backpack;
         public void EnterPickup()
         {
+            if (Cart.Held) throw new InvalidOperationException("Lepas gerobak dahulu.");
             if (Pickup.Cargo.CarriedKg + backpack.CarriedKg > Pickup.Rules.CapacityKg)
                 throw new InvalidOperationException("Bak pikap penuh.");
             Pickup.Enter(Position);

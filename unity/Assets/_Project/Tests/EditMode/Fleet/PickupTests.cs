@@ -67,7 +67,7 @@ namespace Steel.Tests.Fleet
             game.ReportVehicle(layout.Factory.X, layout.Factory.Z, 0);
             double cash = game.View.Cash; game.PreviewSale(); game.ConfirmSale();
             Assert.Greater(game.View.Cash, cash); Assert.AreEqual(0, game.Vehicle.CargoKg);
-            game.ExitVehicle(game.Vehicle.X + 2, game.Vehicle.Z); Assert.AreEqual(50, game.View.CapacityKg);
+            game.ExitVehicle(game.Vehicle.X + 2, game.Vehicle.Z); Assert.AreEqual(15, game.View.CapacityKg);
         }
     }
 }

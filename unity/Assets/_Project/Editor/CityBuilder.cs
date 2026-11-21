@@ -26,6 +26,7 @@ namespace Steel.Editor
             var host = new GameObject("Game Services"); host.AddComponent<GameHost>();
             host.AddComponent<SliceInput>(); host.AddComponent<ScreenshotCapture>();
             Transform player = Characters.PlayerBuilder.Create(layout);
+            Vehicles.GerobakBuilder.Create(player);
             Transform pickup = VehicleBuilder.Create();
             var camera = new GameObject("Main Camera", typeof(Camera)); camera.tag = "MainCamera";
             camera.AddComponent<AudioListener>(); camera.GetComponent<Camera>().fieldOfView = 62;
