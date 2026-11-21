@@ -27,7 +27,7 @@ namespace Steel.Editor
             OverheadWires.Create();
             CityBoundsBuilder.Create(layout);
             YardBuilder.Create(layout); PileBuilder.Create(layout);
-            Map.Smelter.Create(); Map.SmelterYard.Create(layout); Map.ContainerDepot.Create(); Map.Townsfolk.Create();
+            Map.Smelter.Create(); Map.SmelterYard.Create(layout); Map.ContainerDepot.Create(); Map.DemolitionSite.Create(); Map.Townsfolk.Create();
             Ground.GroundDecals.Create(layout); Ground.GroundCover.Plant(ground, layout);
             var host = new GameObject("Game Services"); host.AddComponent<GameHost>();
             host.AddComponent<SliceInput>(); host.AddComponent<ScreenshotCapture>();
@@ -50,7 +50,7 @@ namespace Steel.Editor
             EditorSceneManager.SaveScene(scene, "Assets/_Project/Scenes/City.unity");
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene("Assets/_Project/Scenes/City.unity", true) };
             AssetDatabase.SaveAssets();
-            Debug.Log("CITY_GENERATED: 8 piles, lapak, smelter, URP PBR + ACES + bloom + SSAO");
+            Debug.Log("CITY_GENERATED: " + layout.Piles.Length + " piles, lapak, smelter, URP PBR + ACES + bloom + SSAO");
         }
         [MenuItem("Steel/Build Linux Slice")]
         public static void BuildLinux()
