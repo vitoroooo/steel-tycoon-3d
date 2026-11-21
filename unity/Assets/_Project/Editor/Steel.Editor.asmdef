@@ -3,6 +3,7 @@
   "rootNamespace": "Steel.Editor",
   "references": [
     "Steel.Services",
+    "Steel.Characters",
     "Steel.Player",
     "Steel.Vehicles",
     "Steel.World",

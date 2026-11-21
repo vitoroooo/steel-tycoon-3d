@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace Steel.Editor
+namespace Steel.Editor.Characters
 {
-    internal static class WorkerBounds
+    internal static class SkinnedBounds
     {
         internal static Bounds Get(GameObject model)
         {
