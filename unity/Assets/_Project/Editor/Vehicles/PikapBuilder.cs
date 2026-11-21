@@ -19,6 +19,7 @@ namespace Steel.Editor.Vehicles
             var seat = root.AddComponent<RiderSeat>();
             seat.Driver = driver; seat.Enclosed = true; seat.RiderHome = player;
             seat.Rider = player.GetComponent<Steel.Presentation.Player.PlayerMover>().Visual;
+            MotorRig.Suspend(root, driver);
             return root.transform;
         }
     }

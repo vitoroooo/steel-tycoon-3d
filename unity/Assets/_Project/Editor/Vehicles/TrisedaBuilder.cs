@@ -30,6 +30,7 @@ namespace Steel.Editor.Vehicles
             wheels.Steered = new[] { steer };
             wheels.Rolling = new[] { front, root.transform.Find("Wheel_RL"), root.transform.Find("Wheel_RR") };
             Seat(root, steer, driver, player);
+            MotorRig.Suspend(root, driver);
             return root.transform;
         }
 

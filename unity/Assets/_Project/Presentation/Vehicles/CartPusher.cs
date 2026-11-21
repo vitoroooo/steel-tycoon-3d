@@ -13,7 +13,7 @@ namespace Steel.Presentation.Vehicles
         public Transform Player, PlayerVisual, WheelLeft, WheelRight, GripLeft, GripRight;
         /// <summary>Lifting the bar tips the cart forward and takes the resting legs off the ground.</summary>
         public const float LiftDegrees = 2.5f;
-        private const float TurnRate = 9;
+        private const float TurnRate = 9, RattleDegrees = .45f;
         private GameHost host;
         private Collider parkedCollider;
         private ArmReach arms;
@@ -38,8 +38,12 @@ namespace Steel.Presentation.Vehicles
             Vector3 ahead = Quaternion.Euler(0, yaw, 0) * Vector3.forward;
             Vector3 target = OnGround(Player.position + ahead * Reach);
             float travelled = Vector3.Dot(target - transform.position, ahead);
-            transform.SetPositionAndRotation(target, Quaternion.Euler(LiftDegrees, yaw, 0));
             roll = (roll + travelled / WheelRadius * Mathf.Rad2Deg) % 360;
+            // Spoked wheels on rough ground: the bed nods and rocks a little with every turn of the wheel.
+            float moving = Mathf.Clamp01(Mathf.Abs(travelled) / (Time.deltaTime + 1e-5f));
+            float nod = Mathf.Sin(roll * Mathf.Deg2Rad * 3) * RattleDegrees * moving;
+            float rock = Mathf.Sin(roll * Mathf.Deg2Rad * 2 + 1) * RattleDegrees * moving;
+            transform.SetPositionAndRotation(target, Quaternion.Euler(LiftDegrees + nod, yaw, rock));
             WheelLeft.localRotation = WheelRight.localRotation = Quaternion.Euler(roll, 0, 0);
         }
 

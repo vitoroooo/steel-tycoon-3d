@@ -13,6 +13,9 @@ namespace Steel.Presentation.Player
         private SliceInput input;
         private float verticalSpeed;
         private bool wasDriving;
+        /// <summary>Metres per second squared: feet get up to speed and settle, never snap.</summary>
+        private const float Acceleration = 14, Braking = 18;
+        private Vector3 planar;
         private void Start()
         {
             controller = GetComponent<CharacterController>();
@@ -27,6 +30,7 @@ namespace Steel.Presentation.Player
                 var view = host.Game.View;
                 transform.position = new Vector3(view.PlayerX, .3f, view.PlayerZ);
                 controller.enabled = !driving; wasDriving = driving;
+                planar = Vector3.zero;
                 if (driving) return;
                 verticalSpeed = 0;
             }
@@ -37,7 +41,10 @@ namespace Steel.Presentation.Player
             verticalSpeed -= 9.81f * Time.deltaTime;
             var cart = host.Game.Cart;
             float speed = cart.Held ? cart.PushSpeed : host.Layout.MoveSpeed;
-            controller.Move((direction * speed + Vector3.up * verticalSpeed) * Time.deltaTime);
+            Vector3 wanted = direction * speed;
+            float rate = wanted.sqrMagnitude > planar.sqrMagnitude ? Acceleration : Braking;
+            planar = Vector3.MoveTowards(planar, wanted, rate * Time.deltaTime);
+            controller.Move((planar + Vector3.up * verticalSpeed) * Time.deltaTime);
             if (direction.sqrMagnitude > .01f)
                 Visual.rotation = Quaternion.Slerp(Visual.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 12);
             host.Game.SetPosition(transform.position.x, transform.position.z);

@@ -22,7 +22,8 @@ namespace Steel.Presentation.Vehicles
         private SliceInput input;
         private Rigidbody body;
         private BoxCollider box;
-        private float speed;
+        private float speed, steering;
+        private const float SteeringRate = 3.5f;   // full lock takes about a third of a second
 
         private void Start()
         {
@@ -50,11 +51,12 @@ namespace Steel.Presentation.Vehicles
             var v = View; Steer = 0;
             if (!v.Occupied) return;
             if (input.IsBlocked) { speed = 0; Report(body.position, 0); return; }
-            Vector2 axes = Vector2.ClampMagnitude(MoveInput.Move, 1); Steer = axes.x;
+            Vector2 axes = Vector2.ClampMagnitude(MoveInput.Move, 1);
+            Steer = steering = Mathf.MoveTowards(steering, axes.x, SteeringRate * Time.fixedDeltaTime);
             float target = axes.y * (axes.y >= 0 ? v.MaxSpeed : v.ReverseSpeed);
             speed = Mathf.MoveTowards(speed, target,
                 (Mathf.Abs(axes.y) < .01f ? v.Braking : v.Acceleration) * Time.fixedDeltaTime);
-            float turn = axes.x * v.TurnDegrees * Mathf.Clamp(speed / 4, -1, 1) * Time.fixedDeltaTime;
+            float turn = steering * v.TurnDegrees * Mathf.Clamp(speed / 4, -1, 1) * Time.fixedDeltaTime;
             Quaternion rotation = body.rotation * Quaternion.Euler(0, turn, 0);
             if (MotorPhysics.Overlaps(body, box, rotation)) rotation = body.rotation;
             Vector3 delta = rotation * Vector3.forward * speed * Time.fixedDeltaTime;

@@ -36,6 +36,18 @@ namespace Steel.Editor.Vehicles
             return driver;
         }
 
+        /// <summary>Hangs everything built so far on a chassis that rocks on its springs. Call last.</summary>
+        internal static void Suspend(GameObject root, MotorDriver driver)
+        {
+            var chassis = new GameObject("Chassis").transform;
+            chassis.gameObject.layer = IgnoreRaycastLayer;
+            chassis.SetParent(root.transform, false);
+            for (int i = root.transform.childCount - 1; i >= 0; i--)
+                if (root.transform.GetChild(i) != chassis) root.transform.GetChild(i).SetParent(chassis, true);
+            var sway = root.AddComponent<BodySway>();
+            sway.Driver = driver; sway.Chassis = chassis;
+        }
+
         internal static Transform Anchor(string name, Transform parent, Vector3 local)
         {
             var anchor = new GameObject(name).transform;

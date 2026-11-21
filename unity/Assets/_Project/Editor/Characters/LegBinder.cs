@@ -15,6 +15,7 @@ namespace Steel.Editor.Characters
             pose.Head = bones.First(b => b.name == "Bip01 Head");
             pose.LeftLeg = Chain(visual.transform, bones, "L");
             pose.RightLeg = Chain(visual.transform, bones, "R");
+            visual.AddComponent<BodyLean>().Spine = bones.First(b => b.name == "Bip01 Spine");
         }
 
         private static LimbChain Chain(Transform root, Transform[] bones, string side)
