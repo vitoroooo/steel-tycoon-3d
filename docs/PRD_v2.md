@@ -719,10 +719,10 @@ Batas frekuensi: maksimal 2 kejadian negatif per hari nyata per pemain, dan tida
 
 ## Lampiran F. Dunia, cerita, dan karakter
 
-- **Setting:** kota-kota pelabuhan dan industri fiktif di Indonesia. Tiap season membuka kota baru dengan karakter berbeda, misalnya:
+- **Setting:** kota-kota industri fiktif di Indonesia. Tiap season membuka kota baru dengan karakter berbeda, misalnya:
   | Kota | Ciri |
   |---|---|
-  | Sukabaja | Kota pelabuhan, banyak bongkaran kapal, hujan sedang |
+  | Sukabaja | Kota pabrik peleburan besi, banyak bongkaran gedung dan pabrik tua, hujan sedang |
   | Karangbesi | Kota tambang tua, lahan luas, banyak lumpur |
   | Tanjung Rongsok | Kota padat, warga cepat protes, harga reuse tinggi |
   | Cempaka Raya | Kota proyek pemerintah, banyak tender B2G |
