@@ -9,6 +9,9 @@
     {"id": "blue_painted_planks", "metal": false},
     {"id": "weathered_planks", "metal": false},
     {"id": "rusty_painted_metal", "metal": true},
-    {"id": "hessian_230", "metal": false}
+    {"id": "hessian_230", "metal": false},
+    {"id": "blue_metal_plate", "metal": true},
+    {"id": "green_metal_rust", "metal": true},
+    {"id": "metal_plate", "metal": true}
   ]
 }

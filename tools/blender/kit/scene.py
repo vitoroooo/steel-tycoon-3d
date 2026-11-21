@@ -46,3 +46,4 @@ def export(path):
     triangles = sum(len(p.vertices) - 2 for o in bpy.data.objects if o.type == 'MESH'
                     for p in o.data.polygons)
     print('EXPORTED', path, 'triangles:', triangles)
+

@@ -17,6 +17,8 @@ namespace Steel.Editor.Models
             if (prefab == null) throw new InvalidOperationException("Model not built: " + path);
             var model = UnityEngine.Object.Instantiate(prefab);
             model.name = prefab.name;
+            // The FBX root carries the exporter's half turn; without it the nose points down +Z.
+            model.transform.rotation = Quaternion.identity;
             foreach (var renderer in model.GetComponentsInChildren<MeshRenderer>())
                 renderer.sharedMaterials = renderer.sharedMaterials.Select(m => paint(m.name)).ToArray();
             return model;

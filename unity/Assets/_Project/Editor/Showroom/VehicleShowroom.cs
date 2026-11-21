@@ -24,5 +24,22 @@ namespace Steel.Editor.Showroom
             camera.Shoot(new Vector3(0, .75f, .5f), 150, 30, 3.2f, new RectInt(w / 3 * 2, 0, w / 3, h / 2));
             camera.Save(ShowroomStage.SheetPath("gerobak"));
         }
+
+        [MenuItem("Steel/Showroom/Triseda")]
+        public static void Triseda()
+        {
+            ShowroomStage.Create();
+            AuthoredModel.Create("Vehicles/Triseda", TrisedaMaterials.For);
+            var camera = new ShowroomCamera(ShowroomStage.Width, ShowroomStage.Height);
+            int w = ShowroomStage.Width, h = ShowroomStage.Height;
+            Vector3 middle = new Vector3(0, .7f, 0);
+            camera.Shoot(middle, 35, 12, 7, new RectInt(0, 0, 1, 1));   // first frame warms up shaders
+            camera.Shoot(middle, 35, 12, 7, new RectInt(0, h / 2, w / 2, h / 2));
+            camera.Shoot(middle, 215, 16, 7, new RectInt(w / 2, h / 2, w / 2, h / 2));
+            camera.Shoot(middle, 90, 4, 8.2f, new RectInt(0, 0, w / 3, h / 2));
+            camera.Shoot(new Vector3(0, .7f, 1), 60, 10, 3.6f, new RectInt(w / 3, 0, w / 3, h / 2));
+            camera.Shoot(new Vector3(0, .8f, -.8f), 160, 30, 5, new RectInt(w / 3 * 2, 0, w / 3, h / 2));
+            camera.Save(ShowroomStage.SheetPath("triseda"));
+        }
     }
 }
