@@ -32,6 +32,7 @@ namespace Steel.Presentation.Vehicles
             if (MoveInput == null) MoveInput = input;
             body = GetComponent<Rigidbody>(); body.isKinematic = true;
             box = GetComponent<BoxCollider>();
+            if (host.Restored) body.position = new Vector3(View.X, body.position.y, View.Z);
             body.interpolation = RigidbodyInterpolation.Interpolate;
             GetComponent<FallRecovery>().Recovered += ResetMotion; ResetMotion();
         }

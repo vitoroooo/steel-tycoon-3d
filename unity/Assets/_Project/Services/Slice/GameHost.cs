@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 namespace Steel.Services
 {
@@ -7,14 +8,62 @@ namespace Steel.Services
     {
         public IGameService Game { get; private set; }
         public CityLayout Layout { get; private set; }
+        public bool Restored { get; private set; }
+        public string SaveNotice => files?.Notice ?? offlineNotice;
+        private CareerFiles files;
+        private LocalGameService local;
+        private float checkpoint;
+        private long pausedAt, latest;
+        private string offlineNotice;
+        private static long Now => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         /// <summary>Config to boot from; left null the game reads Resources/Config.</summary>
         public static IConfigSource Source { get; set; }
 
         private void Awake()
         {
             var source = Source ?? new ResourceConfigSource();
-            Game = new LocalGameService(source); Layout = new CityLayout(source);
+            Layout = new CityLayout(source);
+            if (Source != null || Application.isBatchMode) local = new LocalGameService(source);
+            else
+            {
+                files = new CareerFiles(Application.persistentDataPath);
+                local = files.Open(source, Now, out double elapsed);
+                latest = files.LastUtc;
+                Restored = files.HasCareer;
+                if (Restored) Report(elapsed);
+            }
+            Game = local;
+            if (Restored) Save();
         }
-        private void Update() => Game.Advance(Time.deltaTime);
+        private void Update()
+        {
+            if (pausedAt != 0) return;
+            Game.Advance(Time.deltaTime);
+            if (files != null && (checkpoint += Time.unscaledDeltaTime) >= 30) Save();
+        }
+        private void Report(double elapsed)
+        {
+            var q = local.Route("cart", 0, false);
+            offlineNotice = "Kembali ke Sukabaja · " + Math.Floor(elapsed / 60) +
+                " menit offline · Kiriman di lapak: " + q.DepotKg.ToString("N0") + " kg.";
+        }
+        private void Save()
+        {
+            latest = Math.Max(latest, Now);
+            files?.Write(local, latest); checkpoint = 0;
+        }
+        private void OnApplicationPause(bool paused)
+        {
+            if (files == null) return;
+            if (paused && pausedAt == 0) { Save(); pausedAt = latest; }
+            else if (!paused && pausedAt != 0)
+            {
+                Report(local.CatchUp(Math.Max(0, Now - pausedAt))); pausedAt = 0; Save();
+            }
+        }
+        private void OnApplicationQuit()
+        {
+            if (pausedAt == 0 && local != null) Save();
+        }
     }
 }

@@ -20,6 +20,7 @@ namespace Steel.Core.Fleet
         }
 
         public bool InReach(WorldPoint player) => player.Distance(Position) <= Rules.GrabRange;
+        internal void Restore(WorldPoint location, bool held) { Position = location; Held = held; }
 
         public void Grab(WorldPoint player)
         {

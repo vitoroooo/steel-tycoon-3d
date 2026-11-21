@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Steel.Core.State.Saving;
 
 namespace Steel.Core.Scrap
 {
@@ -33,5 +34,11 @@ namespace Steel.Core.Scrap
             Revision++;
         }
         public void Clear() { items.Clear(); Revision++; }
+        internal LotSave[] Snapshot() => items.Select(p => p.Snapshot()).ToArray();
+        internal void Load(LotSave[] lots)
+        {
+            Clear();
+            foreach (var p in lots) Add(ScrapPile.Load(p));
+        }
     }
 }

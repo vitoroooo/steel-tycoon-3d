@@ -2,6 +2,7 @@ using System;
 using Steel.Core.Scrap;
 using Steel.Core.State;
 using Steel.Core.State.Slice;
+using Steel.Core.State.Saving;
 
 namespace Steel.Core.Fleet
 {
@@ -23,6 +24,16 @@ namespace Steel.Core.Fleet
         }
 
         public bool InReach(WorldPoint player) => player.Distance(Position) <= Rules.EnterRange;
+
+        internal MotorSave Snapshot() => new MotorSave { id = Rules.Id, owned = Owned, occupied = Occupied,
+            x = Position.X, z = Position.Z, seconds = RemainingTripSeconds, cargo = Cargo.Snapshot() };
+
+        internal void Load(MotorSave dto)
+        {
+            if (dto.occupied && !dto.owned) throw new FormatException("Unowned driver");
+            Owned = dto.owned; Occupied = dto.occupied; Position = new WorldPoint(dto.x, dto.z);
+            RemainingTripSeconds = NumberRules.NonNegative(dto.seconds, "seconds"); Cargo.Load(dto.cargo);
+        }
 
         public void Buy()
         {

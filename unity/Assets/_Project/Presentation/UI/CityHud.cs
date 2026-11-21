@@ -17,6 +17,7 @@ namespace Steel.Presentation.UI
         private GameHost host;
         private SliceInput input;
         private RouteDesk routes;
+        private string lastSaveNotice;
         private readonly CultureInfo culture = CultureInfo.GetCultureInfo("id-ID");
         private string Money(double value) => "Rp " + value.ToString("N0", culture);
         private void Start()
@@ -24,10 +25,14 @@ namespace Steel.Presentation.UI
             host = FindObjectOfType<GameHost>(); input = FindObjectOfType<SliceInput>(); HudLayout.Build(this);
             drivers = FindObjectsOfType<MotorDriver>();
             routes = new RouteDesk(this, host.Game, input);
+            NoticeText.text = lastSaveNotice = host.SaveNotice;
         }
         private void Update()
         {
             var v = host.Game.View; var near = host.Game.Nearby;
+            routes.Tick();
+            if (lastSaveNotice != host.SaveNotice && (lastSaveNotice = host.SaveNotice) != null)
+                NoticeText.text = lastSaveNotice;
             CashText.text = Money(v.Cash);
             LoadText.text = "KASTA " + v.Caste + "   /   Muatan " + v.CarriedKg + " / " + v.CapacityKg + " kg";
             MarketText.text = "IBN  " + Money(v.Ibn) + " / kg\nACUAN PASAR · 10 MENIT\nHari " +

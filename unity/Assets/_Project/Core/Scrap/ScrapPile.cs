@@ -1,5 +1,6 @@
 using System;
 using Steel.Core.State;
+using Steel.Core.State.Saving;
 
 namespace Steel.Core.Scrap
 {
@@ -28,6 +29,18 @@ namespace Steel.Core.Scrap
         }
 
         internal ScrapPile Fresh() => new ScrapPile(GrossKg, hiddenGrade, dirtFraction, ReuseQuality);
+
+        internal LotSave Snapshot() => new LotSave { grade = (int)hiddenGrade, kg = GrossKg,
+            dirt = dirtFraction, quality = ReuseQuality, cost = AcquisitionCost,
+            inspected = KnownGrade.HasValue, sorted = IsSorted };
+
+        internal static ScrapPile Load(LotSave dto)
+        {
+            var p = new ScrapPile(dto.kg, (ScrapGrade)dto.grade, dto.dirt, dto.quality, dto.cost);
+            if (dto.inspected) p.Inspect();
+            if (dto.sorted) p.Sort();
+            return p;
+        }
 
         public ScrapGrade Inspect()
         {

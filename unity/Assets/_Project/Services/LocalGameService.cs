@@ -10,6 +10,7 @@ namespace Steel.Services
         private readonly GameClock clock;
         private readonly AiPriceBook market;
         private readonly ScrapPricing scrap;
+        private readonly double supplyTargetKg;
         public double GameHours => clock.GameHours;
         public AiQuote Prices => market.Current;
 
@@ -20,6 +21,7 @@ namespace Steel.Services
             queueLimit = time.OfflineCapRealSeconds;
             routeConfig = new Core.State.ConfigValues(source.Read("Routes"));
             var economy = new EconomyConfig(source.Read("Economy"));
+            supplyTargetKg = economy.SupplyTargetKg;
             if (time.RealSecondsPerGameHour != economy.RefreshRealSeconds)
                 throw new ArgumentException("Clock tick and price refresh must match.");
             clock = new GameClock(time);

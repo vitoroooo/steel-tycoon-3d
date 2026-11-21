@@ -17,6 +17,7 @@ namespace Steel.Presentation.UI
         private int vehicle, district;
         private bool purchase;
         private RouteView offer;
+        private float nextRefresh;
         private static readonly string[] Ids = { "cart", FleetCatalog.Triseda, FleetCatalog.Pikap };
         private static readonly string[] Labels = { "Gerobak", "Motor bak", "Pikap" };
         private static string Rp(double v) => "Rp" + v.ToString("N0", CultureInfo.GetCultureInfo("id-ID"));
@@ -57,9 +58,15 @@ namespace Steel.Presentation.UI
         {
             try { string result = act(); Refresh(); status.text = result + "\n" + status.text; }
             catch (InvalidOperationException e) { Refresh(); status.text = e.Message + "\n" + status.text; }
+            nextRefresh = Time.unscaledTime + 5;
+        }
+        internal void Tick()
+        {
+            if (Opened && Time.unscaledTime >= nextRefresh) Refresh();
         }
         private void Refresh()
         {
+            nextRefresh = Time.unscaledTime + 1;
             offer = game.Route(Ids[vehicle], district, purchase);
             options[0].text = Labels[vehicle] + "  ›"; options[1].text = offer.Area + "  ›";
             options[2].text = purchase ? "Beli dari NPC  ›" : "Pungut gratis  ›";
