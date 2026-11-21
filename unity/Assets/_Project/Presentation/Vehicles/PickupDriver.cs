@@ -10,6 +10,7 @@ namespace Steel.Presentation.Vehicles
     public sealed class PickupDriver : MonoBehaviour
     {
         private GameHost host;
+        private SliceInput input;
         public IMoveInput MoveInput { get; set; }
         private Rigidbody body;
         private BoxCollider box;
@@ -20,7 +21,8 @@ namespace Steel.Presentation.Vehicles
         private void Start()
         {
             host = FindObjectOfType<GameHost>();
-            if (MoveInput == null) MoveInput = FindObjectOfType<SliceInput>();
+            input = FindObjectOfType<SliceInput>();
+            if (MoveInput == null) MoveInput = input;
             body = GetComponent<Rigidbody>(); body.isKinematic = true;
             box = GetComponent<BoxCollider>();
             body.interpolation = RigidbodyInterpolation.Interpolate;
@@ -37,6 +39,10 @@ namespace Steel.Presentation.Vehicles
         {
             var v = host.Game.Vehicle;
             if (!v.Occupied) return;
+            if (input.IsBlocked)
+            {
+                speed = 0; host.Game.ReportVehicle(body.position.x, body.position.z, 0); return;
+            }
             Vector2 axes = Vector2.ClampMagnitude(MoveInput.Move, 1);
             float target = axes.y * (axes.y >= 0 ? v.MaxSpeed : v.ReverseSpeed);
             speed = Mathf.MoveTowards(speed, target,
