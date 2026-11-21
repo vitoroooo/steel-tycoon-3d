@@ -23,6 +23,7 @@ namespace Steel.Services
             Ibn = Prices.Ibn, GameHours = GameHours, Caste = 1,
             HomeDistance = session.Position.Distance(session.Rules.Home),
             FactoryDistance = session.Position.Distance(session.Rules.Factory),
+            GrantReady = session.GrantReady, GrantCollected = session.GrantCollected, LoadSorted = session.Bag.IsSorted,
             PlayerX = (float)session.Position.X, PlayerZ = (float)session.Position.Z
         };
         public InteractionView Nearby
@@ -42,6 +43,9 @@ namespace Steel.Services
                     return new InteractionView { Id = "home", Title = "Lapak Anda", Detail = "Sortir muatan sesuai grade" };
                 if (View.FactoryDistance <= session.Rules.InteractRange)
                     return new InteractionView { Id = "factory", Title = "Pabrik AI", Detail = "Lihat harga & margin sebelum menjual" };
+                if (session.GrantReady && session.Fleet.Find(FleetCatalog.Triseda).InReach(session.Position))
+                    return new InteractionView { Id = "grant", Title = "Hadiah Pak Darto",
+                        Detail = "Setoran pertama lunas. Ambil modal motor roda tiga." };
                 if (Cart.Held || Cart.Nearby)
                     return new InteractionView { Id = "cart", Title = "Gerobak dorong",
                         Detail = Cart.Held ? "Muatan " + Cart.CargoKg + " / " + Cart.CapacityKg + " kg" : "Dorong untuk membawa sampai 50 kg" };
@@ -65,5 +69,6 @@ namespace Steel.Services
         {
             double amount = session.Confirm(pending, Prices); pending = null; return amount;
         }
+        public double ClaimDealerGrant() => session.ClaimDealerGrant(FleetCatalog.Triseda);
     }
 }
