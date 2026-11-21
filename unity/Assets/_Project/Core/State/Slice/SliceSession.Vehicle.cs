@@ -27,6 +27,7 @@ namespace Steel.Core.State.Slice
         {
             var motor = Fleet.Find(id);
             if (Cart.Held) throw new InvalidOperationException("Lepas gerobak dahulu.");
+            if (Routes.Busy(id)) throw new InvalidOperationException("Armada sedang menjalankan rute.");
             if (Fleet.Driven != null) throw new InvalidOperationException("Turun dari kendaraan dahulu.");
             if (motor.Cargo.CarriedKg + backpack.CarriedKg > motor.Rules.CapacityKg)
                 throw new InvalidOperationException("Bak " + motor.Rules.Label + " penuh.");

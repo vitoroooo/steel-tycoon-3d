@@ -10,7 +10,7 @@ namespace Steel.Presentation.UI
             if (view.GrantCollected || view.GrantReady)
             {
                 var bike = game.VehicleOf(FleetCatalog.Triseda);
-                if (bike.Owned) return "Seret kanan: kamera  ·  E / tombol kanan: interaksi";
+                if (bike.Owned) return "Pak Darto · Parkirkan motor kosong. Buka Armada di lapak untuk memesan rute.";
                 var offset = new Vector2(bike.X - view.PlayerX, bike.Z - view.PlayerZ);
                 return "Pak Darto · Dealer " + offset.magnitude.ToString("N0") + " m: " +
                     (view.GrantReady ? "ambil hadiah setoran pertama." : "beli motor bak roda tiga.");

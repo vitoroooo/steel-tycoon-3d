@@ -8,15 +8,17 @@ namespace Steel.Core.Scrap
         private readonly ScrapGrade hiddenGrade;
         private readonly double dirtFraction;
         public double GrossKg { get; }
+        public double AcquisitionCost { get; }
         public double ReuseQuality { get; }
         public ScrapGrade? KnownGrade { get; private set; }
         public bool IsSorted { get; private set; }
         public double SaleWeightKg => IsSorted ? GrossKg * (1 - dirtFraction) : GrossKg;
 
         public ScrapPile(double grossKg, ScrapGrade hiddenGrade, double dirtFraction = 0,
-            double reuseQuality = 0)
+            double reuseQuality = 0, double acquisitionCost = 0)
         {
             GrossKg = NumberRules.NonNegative(grossKg, nameof(grossKg));
+            AcquisitionCost = NumberRules.NonNegative(acquisitionCost, nameof(acquisitionCost));
             if (!Enum.IsDefined(typeof(ScrapGrade), hiddenGrade))
                 throw new ArgumentOutOfRangeException(nameof(hiddenGrade));
             this.hiddenGrade = hiddenGrade;

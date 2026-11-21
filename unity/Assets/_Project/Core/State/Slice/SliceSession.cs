@@ -50,7 +50,7 @@ namespace Steel.Core.State.Slice
             double revenue = Bag.Items.Sum(p => pricing.Quote(p,
                 p.KnownGrade == ScrapGrade.Reuse ? prices.ScrapReference : prices.BuyFromK1));
             return new SaleOffer(Bag.Items.Sum(p => p.SaleWeightKg), revenue,
-                prices.RefreshedAtRealSeconds, Bag.Revision);
+                prices.RefreshedAtRealSeconds, Bag.Revision, Bag.Items.Sum(p => p.AcquisitionCost));
         }
         public double Confirm(SaleOffer offer, AiQuote prices)
         {

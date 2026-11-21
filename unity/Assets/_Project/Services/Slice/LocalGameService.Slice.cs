@@ -40,7 +40,8 @@ namespace Steel.Services
                         (target.Scrap.KnownGrade.HasValue ? ScrapText.Grade(target.Scrap.KnownGrade.Value) : "Grade belum diperiksa")
                 };
                 if (View.HomeDistance <= session.Rules.InteractRange)
-                    return new InteractionView { Id = "home", Title = "Lapak Anda", Detail = "Sortir muatan sesuai grade" };
+                    return new InteractionView { Id = "home", Title = "Lapak Anda",
+                        Detail = session.Bag.CarriedKg == 0 ? "Pesan rute atau ambil kiriman" : "Sortir muatan sesuai grade" };
                 if (View.FactoryDistance <= session.Rules.InteractRange)
                     return new InteractionView { Id = "factory", Title = "Pabrik AI", Detail = "Lihat harga & margin sebelum menjual" };
                 if (session.GrantReady && session.Fleet.Find(FleetCatalog.Triseda).InReach(session.Position))
