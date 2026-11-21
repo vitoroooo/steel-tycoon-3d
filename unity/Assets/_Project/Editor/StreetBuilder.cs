@@ -24,7 +24,6 @@ namespace Steel.Editor
                 CityGeometry.Box("Marka tengah", new Vector3(0, .07f, z), new Vector3(.12f, .015f, 3), line, false);
             for (int x = -5; x <= 5; x += 2)
                 CityGeometry.Box("Penyeberangan", new Vector3(x, .08f, -4), new Vector3(1, .015f, 3), concrete, false);
-            for (int i = 0; i < 6; i++) BuildingBuilder.Block(-40 + i * 16, 66, 4 + i % 2, "KAWASAN INDUSTRI");
         }
     }
 }

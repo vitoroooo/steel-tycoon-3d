@@ -17,8 +17,10 @@ namespace Steel.Editor
         {
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var layout = new CityLayout(new ResourceConfigSource());
-            CityGeometry.Root = new GameObject("Kawasan Industri / Cakung").transform;
-            CityLighting.Create(); StreetBuilder.Create(); BuildingBuilder.Create();
+            CityGeometry.Root = new GameObject("Sukabaja").transform;
+            CityLighting.Create(); StreetBuilder.Create();
+            Map.RukoStreets.Create();
+            Map.BackAlley.Create(Map.RukoStreets.AlleyX, Map.RukoStreets.AlleySouth, Map.RukoStreets.AlleyNorth, 2.6f);
             FacadeDetails.Street();
             OverheadWires.Create();
             CityBoundsBuilder.Create(layout);
