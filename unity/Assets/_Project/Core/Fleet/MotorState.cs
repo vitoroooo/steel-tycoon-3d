@@ -15,6 +15,7 @@ namespace Steel.Core.Fleet
         public bool Owned { get; private set; }
         public bool Occupied { get; private set; }
         public double Speed { get; private set; }
+        public double? Heading { get; private set; }
         public double RemainingTripSeconds { get; private set; }
 
         public MotorState(MotorRules rules)
@@ -26,12 +27,14 @@ namespace Steel.Core.Fleet
         public bool InReach(WorldPoint player) => player.Distance(Position) <= Rules.EnterRange;
 
         internal MotorSave Snapshot() => new MotorSave { id = Rules.Id, owned = Owned, occupied = Occupied,
-            x = Position.X, z = Position.Z, seconds = RemainingTripSeconds, cargo = Cargo.Snapshot() };
+            x = Position.X, z = Position.Z, seconds = RemainingTripSeconds, cargo = Cargo.Snapshot(),
+            hasYaw = Heading.HasValue, yaw = Heading ?? 0 };
 
         internal void Load(MotorSave dto)
         {
             if (dto.occupied && !dto.owned) throw new FormatException("Unowned driver");
             Owned = dto.owned; Occupied = dto.occupied; Position = new WorldPoint(dto.x, dto.z);
+            Heading = dto.hasYaw ? (double?)dto.yaw : null;
             RemainingTripSeconds = NumberRules.NonNegative(dto.seconds, "seconds"); Cargo.Load(dto.cargo);
         }
 
@@ -59,13 +62,14 @@ namespace Steel.Core.Fleet
             Occupied = false; Speed = 0;
         }
 
-        public void ReportPose(WorldPoint position, double speed)
+        public void ReportPose(WorldPoint position, double speed, double? heading = null)
         {
             if (double.IsNaN(speed) || double.IsInfinity(speed) || speed > Rules.MaxSpeed || speed < -Rules.ReverseSpeed)
                 throw new ArgumentOutOfRangeException(nameof(speed));
             if (!Occupied && speed != 0)
                 throw new InvalidOperationException(Rules.Label + " belum dikemudikan.");
             Position = position; Speed = speed;
+            if (heading.HasValue) Heading = heading;
         }
 
         public void AdvanceTrip(double seconds)

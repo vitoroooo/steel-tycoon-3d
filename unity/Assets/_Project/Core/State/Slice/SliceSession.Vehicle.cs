@@ -42,9 +42,9 @@ namespace Steel.Core.State.Slice
             motor.Exit(point); Position = point;
         }
 
-        public void ReportMotor(string id, WorldPoint point, double speed)
+        public void ReportMotor(string id, WorldPoint point, double speed, double? heading = null)
         {
-            var motor = Fleet.Find(id); motor.ReportPose(point, speed);
+            var motor = Fleet.Find(id); motor.ReportPose(point, speed, heading);
             if (motor.Occupied) Position = point;
         }
     }

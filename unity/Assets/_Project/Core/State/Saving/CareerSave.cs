@@ -28,8 +28,8 @@ namespace Steel.Core.State.Saving
     [Serializable] public sealed class MotorSave
     {
         public string id;
-        public bool owned, occupied;
-        public double x, z, seconds;
+        public bool owned, occupied, hasYaw;
+        public double x, z, seconds, yaw;
         public LotSave[] cargo;
     }
     [Serializable] public sealed class OrderSave

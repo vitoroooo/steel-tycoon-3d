@@ -36,8 +36,10 @@ namespace Steel.Tests.Services
             g.SetPosition(layout.Factory.X, layout.Factory.Z); g.PreviewSale(); g.ConfirmSale();
             var v = g.VehicleOf(FleetCatalog.Triseda); g.SetPosition(v.X, v.Z);
             g.ClaimDealerGrant(); g.BuyVehicle(v.Id); g.EnterVehicle(v.Id);
+            g.ReportVehicle(v.Id, v.X, v.Z, 0, 64);
             double cash = g.View.Cash; Resume(20000);
             Assert.AreEqual(cash, g.View.Cash); Assert.IsTrue(g.VehicleOf(v.Id).Occupied);
+            Assert.AreEqual(64f, g.VehicleOf(v.Id).Heading);
             Assert.IsTrue(g.VehicleOf(v.Id).Owned); Assert.IsFalse(g.IsCollected("p0"));
             Assert.Throws<InvalidOperationException>(() => g.ClaimDealerGrant());
         }
