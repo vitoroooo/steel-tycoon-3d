@@ -27,7 +27,7 @@ E / bottom-right touch button: inspect, then pick up. Return to lapak to sort.
 Walk to Pabrik AI, preview price/margin, then confirm the sale (or cancel).
 All HUD/dialog text is Indonesian. Cash, carried kg, IBN and game clock are live.
 Near the pikap: E / MASUK PIKAP enters; WASD / joystick drives; release to brake.
-E exits when no pile/station takes priority; KELUAR PIKAP always offers exit when stopped.
+E and the single context button share priority: pile/station first, then enter/exit pikap.
 No Android build, save/load, weather or caste progression in this slice.
 
 Menu: Steel > Generate City. Headless: use the Docker prefix above, replace

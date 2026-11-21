@@ -7,7 +7,7 @@ namespace Steel.Presentation.Player
         private static float Clearance(Vector3 focus, Vector3 offset)
         {
             float length = offset.magnitude;
-            if (Physics.SphereCast(focus, .35f, offset.normalized, out var hit, length,
+            if (Physics.SphereCast(focus, 1.1f, offset.normalized, out var hit, length,
                 Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
                 return Mathf.Max(.05f, hit.distance - .2f);
             return length;

@@ -13,7 +13,6 @@ namespace Steel.Presentation.UI
         public Text CashText, LoadText, MarketText, PromptText, ActionText, RouteText, NoticeText, SaleText;
         public GameObject SalePanel;
         public RectTransform SafeRoot;
-        public Button VehicleButton;
         private PickupDriver pickup;
         private GameHost host;
         private SliceInput input;
@@ -63,7 +62,6 @@ namespace Steel.Presentation.UI
                 else { host.Game.PickUp(near.Id); NoticeText.text = "Rongsok dipungut. Sortir di lapak Anda."; }
             });
         }
-        public void ToggleVehicle() { if (!SalePanel.activeSelf) Run(() => pickup.Toggle()); }
         private void ShowOffer()
         {
             var offer = host.Game.PreviewSale(); input.IsBlocked = true; SalePanel.SetActive(true);

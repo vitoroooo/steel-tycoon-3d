@@ -27,12 +27,12 @@ namespace Steel.Presentation.UI
                 new Vector2(315, 125), new Vector2(-177, -88));
             hud.MarketText = UiFactory.Text(right, "", 18, new Vector2(280, 105), Vector2.zero, TextAnchor.MiddleRight);
             hud.ActionText = TouchControls.Build(hud.SafeRoot);
-            hud.VehicleButton = VehicleHud.Build(hud);
             var bottom = UiFactory.Panel("Petunjuk", hud.SafeRoot, new Vector2(.5f, 0),
-                new Vector2(640, 110), new Vector2(0, 100));
+                new Vector2(640, 110), new Vector2(0, 145));
             hud.PromptText = UiFactory.Text(bottom, "", 18, new Vector2(600, 85), Vector2.zero, TextAnchor.MiddleCenter);
-            hud.NoticeText = UiFactory.Text(hud.SafeRoot, "", 18, new Vector2(800, 45), new Vector2(0, -145),
+            hud.NoticeText = UiFactory.Text(hud.SafeRoot, "", 18, new Vector2(800, 45), new Vector2(0, 240),
                 TextAnchor.MiddleCenter);
+            hud.NoticeText.rectTransform.anchorMin = hud.NoticeText.rectTransform.anchorMax = new Vector2(.5f, 0);
             var help = UiFactory.Rect("Navigasi", hud.SafeRoot, new Vector2(.5f, 0), new Vector2(900, 64), new Vector2(0, 35));
             hud.RouteText = UiFactory.Text(help, "", 13, new Vector2(900, 64), Vector2.zero, TextAnchor.MiddleCenter);
             SaleDialog.Build(hud);

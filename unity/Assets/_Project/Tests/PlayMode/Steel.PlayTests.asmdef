@@ -5,7 +5,10 @@
     "Steel.Vehicles",
     "Steel.Input",
     "Steel.Player",
-    "Steel.World"
+    "Steel.World",
+    "Steel.UI",
+    "Unity.ugui",
+    "Unity.InputSystem"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"
