@@ -45,7 +45,8 @@ namespace Steel.Editor
             { clip.loopTime = true; clip.lockRootRotation = true; clip.lockRootHeightY = true; clip.lockRootPositionXZ = true; }
             importer.clipAnimations = clips; importer.SaveAndReimport();
             var root = new GameObject("Pekerja"); root.layer = 2;
-            root.transform.position = new Vector3(layout.Spawn.X, .25f, layout.Spawn.Z);
+            root.AddComponent<Steel.Presentation.World.FallRecovery>();
+            root.transform.position = new Vector3(layout.Spawn.X, layout.SpawnY, layout.Spawn.Z);
             var controller = root.AddComponent<CharacterController>(); controller.height = 1.85f;
             controller.center = Vector3.up * .925f; controller.radius = .3f; controller.stepOffset = .3f;
             var visual = UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(Path));

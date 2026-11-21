@@ -46,5 +46,19 @@ namespace Steel.PlayTests
             Vector3 camera = CameraCollision.Resolve(new Vector3(150, 3, 150), new Vector3(0, 1, -8));
             Assert.Greater(camera.z, 146.8f); Object.Destroy(wall); yield return null;
         }
+        [UnityTest] public IEnumerator FallingPickupRecoversAtItsConfiguredSpawn()
+        {
+            yield return SceneManager.LoadSceneAsync("City"); yield return null;
+            var host = Object.FindObjectOfType<GameHost>(); var driver = Object.FindObjectOfType<PickupDriver>();
+            var v = host.Game.Vehicle; host.Game.SetPosition(v.X, v.Z); driver.Toggle();
+            driver.GetComponent<Rigidbody>().position = new Vector3(150, host.Layout.FallY - 3, 150);
+            float end = Time.fixedTime + .12f;
+            while (Time.fixedTime < end) yield return new WaitForFixedUpdate();
+            Assert.AreEqual(v.X, driver.transform.position.x, .05f);
+            Assert.AreEqual(v.Z, driver.transform.position.z, .05f);
+            Assert.Greater(driver.transform.position.y, host.Layout.FallY);
+            Assert.AreEqual(v.X, host.Game.Vehicle.X, .05f);
+            Assert.AreEqual(0, host.Game.Vehicle.Speed); Assert.IsTrue(host.Game.Vehicle.Occupied);
+        }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Steel.Services;
 using Steel.Presentation.Input;
+using Steel.Presentation.World;
 
 namespace Steel.Presentation.Vehicles
 {
@@ -18,6 +19,14 @@ namespace Steel.Presentation.Vehicles
             if (MoveInput == null) MoveInput = FindObjectOfType<SliceInput>();
             body = GetComponent<Rigidbody>(); body.isKinematic = true;
             body.interpolation = RigidbodyInterpolation.Interpolate;
+            GetComponent<FallRecovery>().Recovered += ResetMotion; ResetMotion();
+        }
+        private void ResetMotion()
+        {
+            speed = 0; Vector3 p = body.position;
+            if (Physics.Raycast(p + Vector3.up * 3, Vector3.down, out var ground, 8, Physics.DefaultRaycastLayers))
+                p.y = ground.point.y + .035f;
+            body.position = p; host.Game.ReportVehicle(p.x, p.z, 0);
         }
         private void FixedUpdate()
         {

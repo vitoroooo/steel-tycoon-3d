@@ -71,6 +71,8 @@ IBN:60-real-day cycle, seeded daily noise, bounded supply effect; quotes cache b
 Local service uses neutral supply until city simulation exists; Core accepts actual supply.
 AI buy/sell names are from the AI's perspective. Config uses the Phase0 fixed coefficients.
 City.json configures start cash13m, carry cap50kg, interaction3.5m, stations and controls.
+It also configures invisible city boundaries, spawnY and respawnBelowY (-15).
+FallRecovery returns characters or rigidbodies to spawn without changing cash/inventory.
 Vehicle.json: 1000kg, 3600-real-second city trip, PRD price Rp85m; physical arcade speed
 12m/s (reverse4m/s) is a prototype scale choice, not a speed specified in the PRD.
 The demo provides a loaner, not ownership/purchase or a cash grant. Entering transfers

@@ -12,11 +12,20 @@ namespace Steel.Services
         public float LookSensitivity { get; }
         public float CameraDistance { get; }
         public float CameraHeight { get; }
+        public float SpawnY { get; }
+        public float FallY { get; }
+        public float BoundaryHalfWidth { get; }
+        public float BoundaryMinZ { get; }
+        public float BoundaryMaxZ { get; }
         public PileLocation[] Piles { get; }
         public CityLayout(IConfigSource source)
         {
             var text = source.Read("City"); var v = new ConfigValues(text);
             var rules = new SliceRules(text);
+            var safety = new WorldSafety(text);
+            SpawnY = (float)safety.SpawnY; FallY = (float)safety.FallY;
+            BoundaryHalfWidth = (float)safety.HalfWidth;
+            BoundaryMinZ = (float)safety.MinZ; BoundaryMaxZ = (float)safety.MaxZ;
             Home = new SliceLocation(rules.Home); Factory = new SliceLocation(rules.Factory);
             Spawn = new SliceLocation(rules.Spawn);
             MoveSpeed = (float)v.Positive("moveSpeed"); LookSensitivity = (float)v.Positive("lookSensitivity");
