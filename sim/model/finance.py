@@ -10,12 +10,15 @@ def close_day(p, day, c):
         p.earn(-c['rent'] / c['rent_days'])
     else:
         wages = w['eaf_count'] * w['eaf'] + w['operator'] + w['driver']
-    p.earn(-wages * c['game_days'])
+    duty = min(1, getattr(p, 'workload', 1)) if c['variable_staff'] else 1
+    p.earn(-wages * c['game_days'] * duty)
+    p.earn(-p.assets * c['maintenance'])
+    p.earn(-p.turnover * c['sales_maintenance'][p.caste - 1])
     if (day + 1) % c['tax_days'] == 0:
         p.earn(-max(0, p.quarter) * c['tax'][p.caste - 1])
         p.quarter = 0
     if p.cash < 0:
-        p.earn(p.cash * ((1 + c['debt_rate']) ** c['game_days'] - 1))
+        p.earn(p.cash * ((1 + c['debt_rate']) ** c['debt_periods'] - 1))
         if -p.cash > p.assets * c['seizure_ratio'] and p.assets:
             seized = min(p.assets, -p.cash)
             p.assets -= seized

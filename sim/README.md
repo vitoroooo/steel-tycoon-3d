@@ -10,14 +10,16 @@ python main.py
 
 Hasil deterministik seed 73: `output/report.md`, `summary.json`, serta
 `{baseline,fixed,stress}_{daily,weekly}.csv`. Semua output dibuat ulang.
-**Usulan `fixed` belum lolos semua kriteria Lampiran I.** Jangan gunakan
-nama berkas sebagai klaim bahwa ekonomi sudah tervalidasi.
+`fixed` dikalibrasi untuk target revisi Putaran 2, bukan K3 H45–55.
+Kelulusan satu seed bukan validasi rilis; lihat uji 10 seed di ECONOMY_SPEC.
 
 ## Struktur dan konfigurasi
 
 - `config/baseline_*.json`: populasi, harga/IBN, produksi, progresi, keuangan.
 - `config/fixed.json`: override rekursif usulan, bukan mengganti PRD diam-diam.
 - `config/stress.json`: override populasi awal 60% K1 / 20% K2 / 20% K3.
+- `config/baseline_policy.json`: target revisi, plafon NPC dan kebijakan biaya.
+- `tools/sweep.py`, `tools/robustness.py`: eksperimen JSONL; grid di `calibration.json`.
 - `agents/`: state, izin, pembelian paket, fixture populasi.
 - `market/`: urutan pembeli menurut harga bersih, persediaan dan kas terbatas.
 - `model/`: scheduler, produksi, formula, pajak, utang dan sitaan agregat.
@@ -46,7 +48,7 @@ Python di bawah 100 baris. `main.py` dapat dijalankan dari direktori mana pun.
 6. Agen beli armada berurutan, renovasi saat cukup kas plus cadangan kerja,
    izin dibayar terpisah sebelum paket. Izin subhari efektif hari berikutnya.
    Paket K2 sudah memuat sewa lahan; K3 memuat lahan industri dan jembatan.
-7. Pekerja dibayar 6 hari game/hari nyata, satu shift; belum ada Mandor.
+7. Pekerja dibayar 6 hari game/hari nyata; fixed memakai shift sesuai utilisasi.
    Susut bandar 3%, EAF 10%. Transport trailer Rp6 juta termasuk sewa,
    diprorata kapasitas20t. Biaya jarak seller linear selisih distrik.
 8. AI bandar menjual ke smelter pada 110% acuan, maksimal60t/distrik/hari:
@@ -64,19 +66,24 @@ Python di bawah 100 baris. `main.py` dapat dijalankan dari direktori mana pun.
 - Pasokan adalah **transaksi input K2/K3 menurut penjual langsung**, bukan
   asal geologis material. Pengumpulan K1 dari NPC tidak masuk denominator.
   Satu kg bisa tercatat di dua tingkat; hasil ini bukan pangsa asal kota.
-- Hari tanpa permintaan adalah N/A, tidak diberi nilai 0% untuk meluluskan AI;
-  kriteria AI ketat tidak lolos jika ada satu hari N/A.
+- Hari tanpa transaksi input adalah N/A, bukan 0%; tidak ada kebutuhan AI.
+  AI diuji setiap hari berinput H1–60; seluruh periode N/A tidak bisa lolos.
 - Laba median per kasta = median agen-hari setelah OpEx, pajak dan bunga,
   sebelum belanja modal. Hari menganggur tetap masuk (penting untuk bandar).
 - Tunggu15t = interval pengiriman yang selesai, resolusi1hari; bandar yang
   tidak pernah mencapai batch tersensor dan tidak masuk median ini.
-- Tonggak = umur sejak bergabung, median yang mencapai plus pembilang/penyebut
-  kohor aktif awal. Churn tidak dianggap sukses; median bukan seluruh kohor.
+- Tonggak = umur sejak bergabung dari kohor awal yang masih aktif di H90.
+  Belum mencapai = +∞; median menjadi null jika mayoritas belum mencapai.
+  Pendatang dan churn tidak masuk denominator; pembilang/penyebut dilaporkan.
 - `weekly.csv`: pertumbuhan kas positif dan perubahan IBN terpisah. Minggu
-  pertama membandingkan akhirH1→H7 (6interval); berikutnya 7interval.
+  pertama membandingkan pembukaanH1→akhirH7; berikutnya 7interval.
   Hari85–90 tetap ada di daily tetapi belum menjadi minggu penuh.
 - Stress 20%K3 memberi modal/izin awal untuk isolasi rantai pasok; **bukan**
   bukti bahwa progresi alamiah mencapai20%K3. Analisis piramida mengasumsikan
   produktivitas per peran sama; bukan otomatis prediksi persentase tonase.
 
-Lihat `../docs/ECONOMY_SPEC.md` untuk angka dan masalah yang masih terbuka.
+Fixed: stok tak terjual dibawa ke hari berikutnya; plafon pembelian NPC terpisah
+untuk setiap kasta/kecamatan/hari, dibagi rata ke penjual aktif. Batas stok 60t
+adalah abstraksi gudang/order harian, bukan kapasitas kendaraan per perjalanan.
+Preferensi peran membatasi ambisi, bukan grant atau kuota hasil H90.
+Lihat `../docs/ECONOMY_SPEC.md` untuk angka, risiko dan perubahan harga paket.

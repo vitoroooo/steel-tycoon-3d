@@ -10,9 +10,11 @@ from model.finance import close_day
 
 def run(c):
     rng = random.Random(c['seed'])
+    goals = random.Random(c['seed'])
     players, daily, profits, waits = [], [], [], []
     supply = 0
     roles = initial_roles(c)
+    opening_money = 0
     for day in range(c['days']):
         count = c['agents'] if day == 0 else round(c['agents'] * c['arrival_rate'])
         for _ in range(count):
@@ -29,6 +31,9 @@ def run(c):
             if day == 0:
                 seed_role(p, roles[_], c)
             players.append(p)
+            p.goal = goals.choices((1, 2, 3), c['role_goals'][kind])[0]
+        if day == 0:
+            opening_money = sum(p.cash for p in players)
         live = []
         for p in players:
             age = day - p.born
@@ -59,4 +64,5 @@ def run(c):
                           **flows, money=sum(max(0, p.cash) for p in players),
                           debt=sum(max(0, -p.cash) for p in players)))
         supply = flows['ingot']
-    return dict(players=players, daily=daily, profits=profits, waits=waits)
+    return dict(players=players, daily=daily, profits=profits, waits=waits,
+                config=c, opening_money=opening_money)

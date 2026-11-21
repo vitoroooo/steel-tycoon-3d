@@ -13,6 +13,7 @@ def main():
     for name, summary in summaries.items():
         print(f'{name}: {summary["checks"]}')
         print(f'  milestones: {summary["milestones"]}')
+        print(f'  day90 shares: {summary["mix"]}; casual K2: {summary["casual"]}')
     print('Generated sim/output/report.md and daily/weekly CSVs')
 
 

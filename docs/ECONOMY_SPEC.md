@@ -1,98 +1,92 @@
-# Spesifikasi ekonomi Fase 0 — Steel Tycoon 3D
+# Spesifikasi ekonomi Fase 0 — Putaran 2
 
-## Status keputusan
+## Status dan perubahan target PRD
+**Seed73 lolos empat pemeriksaan; BELUM robust untuk rilis: hanya1/10 seed lolos seluruhnya.**
+Sumber: PRD§4/5/6.7/7/8.2/9.1/11.1 dan Lampiran A/B/I; PRD asli tidak diubah.
+Keputusan baru menggantikan median aktif K3 H45–55 dan sasaran20%K3:
+- H90: sekitar20%K2 dan5%K3, sisanyaK1. Toleransi eksplisit15–25% dan3–7%.
+- Aktif K2 H10–14; santai sekitarH45 (toleransiH40–50); tidak ada deadline K3.
+- Pertumbuhan uang <5%/minggu setelah minggu2; pasokan AI <50% tiap hari berinput H1–60.
+- Median laba positif di setiap kasta; bunga2% per hari NYATA, bukan hari game.
+Batas penerimaan ada di `config/baseline_policy.json`, tidak diubah oleh sweep.
 
-**BELUM LOLOS Lampiran I.** Parameter usulan di bawah adalah hasil eksperimen,
-bukan angka rilis final tervalidasi. Tidak ditemukan set parameter yang memenuhi
-semua syarat dalam iterasi ini; kegagalan dipertahankan di laporan, bukan ditutupi
-dengan grant besar, menghapus pemain miskin dari median, atau menyebut IBN sebagai
-inflasi uang. `sim/main.py` menjalankan baseline, usulan dan stress20%K3.
-Sumber persyaratan: PRD§4/5/6.7/7/8.2/9.1/11.1 dan Lampiran A/B/I.
+## Denominator dan akuntansi
+Populasi H90 = semua agen yang masih aktif, termasuk pendatang; bukan1000 akun awal.
+Seed73:184 pemain aktif, K1/K2/K3=137/39/8 (74,46%/21,20%/4,35%).
+Tonggak = umur hari sejak bergabung, kohor lahirH1 yang tetap aktif sampaiH90.
+Aktif berarti tipe `aktif`, bukan semua tipe yang online. Denominator11 survivor dari200
+akun aktif awal; santai11 survivor dari300. Masing-masing11/11 mencapaiK2 (H11/H44).
+Pendatang dan churn dikeluarkan; survivor belum mencapai bernilai+∞, tidak dibuang.
+Median null bila tidak teridentifikasi. Ini median survivor, BUKAN median seluruh akun.
+Uang = jumlah kas positif semua identitas termasuk kas churn yang dibekukan; utang terpisah.
+Tidak ada tambahan kas beku untuk memperbesar denominator. Minggu1 pembukaanH1→H7,
+berikutnya7hari; pemeriksaan H21,28,…,84. H85–90 bukan minggu lengkap.
+Laba = median agen-hari per kasta termasuk menganggur, sesudah OpEx/pajak/bunga,
+sebelum capex; kehilangan likuiditas karena pembelian paket bukan biaya laba sekaligus.
+Pasokan AI = input K2/K3 menurut penjual langsung, bukan asal geologis; kg bisa dihitung
+di dua tahap. Pungut K1 tidak masuk denominator. Hari tanpa input N/A, bukan0%; tidak ada
+ketergantungan AI hari itu. Semua-N/A atau kurang60hari observasi tidak bisa lolos.
 
-## Angka usulan yang diterapkan (rupiah, kg, hari nyata kecuali disebut)
-
-| Parameter | Awal | Usulan |
+## Parameter akhir (override fixed.json; Rp, kg, hari nyata)
+| Parameter | PRD/baseline | Fixed |
 |---|---:|---:|
-| Beli NPC / acuan | 60% | 72% |
-| Beli Pabrik AI dari K1 | 70% | 70% |
-| Beli bandar dasar / respons stok | 85,5% / 3% | 82% / 3% |
-| Beli Pabrik AI dari bandar | 90% | 115% |
-| Beli smelter pemain | 100% | 120% |
-| AI bandar → smelter | 110% | 125% |
-| Kuota pengepul AI / distrik / hari | 40.000 | 10.000 |
-| Kapasitas permintaan bandar / hari | 40.000 | 100.000 |
-| Trailer20t, sewa+BBM | 6 juta | 3 juta |
-| Fraksi barang gratis / kecepatan relatif | 30% / 50% | 90% / 100% |
-| Gerbang kas K2 / K3 (izin dibayar terpisah) | 250 juta / 3 miliar | 500 juta / 3,6 miliar |
-| Bunga per hari game | 2% | 0,2% |
-| Barang gelap: pengali laba / risiko dasar | 3–5 / 10% | 3,541475 / 2% |
+| NPC jual / AI beli K1, fraksi acuan | 0,60 / 0,70 | 0,72 / 0,70 |
+| Bandar / AI beli K2 / smelter / AI industrial | 0,855 / 0,90 / 1 / 1,10 | 0,70 / 1 / 1 / 1,06 |
+| Respons stok / biaya jarak per distrik | 0,03 / 0,008 | 0,03 / 0,002 |
+| EAF input per hari game (6/hari nyata) | 30t | 10t |
+| Kapasitas bandar / hari nyata | 40t | 100t |
+| Sumber K1 / kecamatan / hari | praktis tak dibatasi | 500t |
+| NPC beli K1/K2/K3 per kecamatan H1–14 | praktis tak dibatasi | 500t / 100t / 120t |
+| NPC beli K1/K2/K3 per kecamatan H15+ | praktis tak dibatasi | 8t / 40t / 60t |
+| AI suplai K2 / K3 per kecamatan / hari | 40t / 60t | 10t / 60t |
+| Maintenance nilai buku aset / hari | 0 | 0,3% |
+| Biaya layanan omzet K1/K2/K3 | 0 | 1% / 8% / 12% |
+| Sewa bandar per5hari | 20juta | 25juta |
+| Staf | penuh | proporsional utilisasi, maksimum1shift |
+| Gerbang kas K2 / K3 | 250juta / 3miliar | 190juta / 250juta |
+| Paket K2 / K3; izin K2 / K3 | 210juta / 2,95miliar;15/750juta | 100/150juta;15/50juta |
+| Reputasi K2/K3; cor+hanggar | 30/70;680juta | 42/70;120juta |
+| Fraksi pungut gratis H1–14 / H15+; kecepatan | 30%;50% | 90% / 30%;100% |
+| Trailer20t termasukBBM | 6juta | 3juta |
+| Bunga per hari nyata | 1,02^6−1 =12,616% | 2% |
+Tetap: transaksi pemain2%, pajak laba5/10/15% tiap15hari, susut3%/10%, EAF OpEx2000/kg.
+Reputasi per sesi setoran1 (awal0,5). Ambisi aktif100%K3; sedang30%K1/70%K2;
+santai100%K2. Ini preferensi maksimum, bukan promosi timer atau pemaksaan kuota H90.
+Paket murah adalah perubahan besar/asumsi mikro-EAF/sewa, bukan harga penuh pabrik PRD;
+tidak ada utang tersembunyi. Persetujuan desain dan playtest tetap diperlukan.
+Pembelian NPC berbagi plafon kasta/kecamatan/hari, alokasi sama per penjual aktif.
+Persediaan tak terjual dan basis biaya disimpan, bukan dimusnahkan atau dibayar dua kali.
+Sumber, input AI, output NPC dan hadiah tutorial per akun semuanya terbatas kapasitas.
+Modal13juta/akun,20 pendatang/hari, retensi dan asumsi agregasi lain lihat README.
 
-Usulan sengaja mengubah beberapa angka besar, bukan mengklaim ini perubahan kecil:
-barang gratis cepat dan floor AI115% adalah subsidi kuat. Belum layak produksi.
-Tetap: pajak laba5/10/15% tiap15hari, transaksi2%, IBN basis10.000,
-siklus±15%/60hari, acak±3%, efek pasokan±5%, acuan55%, susut3%/10%,
-OpEx EAF2.000/kg, gaji Lampiran B, paket210juta dan2,95miliar, AMDAL750juta.
-Modal/tutorial dan kapasitas dasar yang tidak ada di PRD dijelaskan di README.
-
-## Bukti numerik sebelum / sesudah (seed73)
-
-| Metrik | Baseline | Usulan |
+## Sebelum / sesudah — seed73, evaluator revisi yang sama
+Baseline dijalankan ulang dengan mesin sekarang, bukan salinan hasil commit Putaran1.
+| Metrik | Baseline | Fixed |
 |---|---:|---:|
-| Arbitrase pikap NPC→AI sesudah BBM, Rp/kg | +400 | -260 |
-| Median aktif: triseda | H1 | H1 |
-| Median aktif: pikap (yang mencapai) | H13 (21/200) | H5 (46/200) |
-| Median aktif: K2 (yang mencapai) | H28 (12/200) | H14 (20/200) |
-| Median aktif: cor+hanggar | Tidak tercapai | H17 (16/200) |
-| Median aktif: K3 / B2G | Tidak tercapai | Tidak tercapai |
-| Median laba K1 / hari | 2,360 juta | 33,689 juta |
-| Median laba K2 / hari | -16,425 juta | +7,972 juta |
-| Median laba K3, season alami | Tidak teramati | Tidak teramati |
-| Pangsa AI maksimum H1–60, jika ada permintaan | 35,19% | 0% |
-| Minggu terburuk: pertumbuhan uang | 287,81% | 746,97% |
-| Utang tanpa pembayaran selama7hari | 2,2972× | 1,0875× |
-| Utang tanpa pembayaran selama30hari | 35,3208× | 1,4328× |
+| K2 / K3 H90 | 27,72% / 0% | 21,20% / 4,35% |
+| Median survivor aktif / santai K2 | H28 / H64 | H11 / H44 |
+| Median laba K1 / K2 / K3, juta/hari | 2,360 / −16,425 / N/A | 0,691 / 0,548 / 7,126 |
+| Maksimum pasokan AI H1–60 | 35,19% | 7,06% |
+| Maksimum pertumbuhan uang setelahH14 | 90,92% | 3,83% |
+| Arbitrase pikap NPC→AI, Rp/kg setelahBBM | +400 | −260 |
+| Utang tanpa pembayaran H7 / H30 | 2,2972× / 35,3208× | 1,1487× / 1,8114× |
+Rasio lama20:8:1 tetap hanya0,592%K3 jika produktivitas sama; bukan bukti tonase AI.
+EV barang gelap tetap uji analitis: pengali3,541475 dan risiko dasar2% memberi1,3×
+laba legal padaheat15, negatif padaheat50; hasil bergantung urutan penambahanheat.
 
-Angka tabel harus dibaca bersama denominator dan asumsi `sim/output/report.md`.
-Median tonggak teramati tidak memenuhi makna median seluruh kohor yang churn.
-
-## Lima masalah PRD
-
-1. **Arbitrase positif, bukan uang tak terbatas per waktu.** 5500×(0,70−0,60)
-   −150=400/kg sebelum pajak laba/gaji. Jalur benar-benar dipakai agen K1 saat
-   tidak ada bandar (semua pemain mulaiK1). Satu pikap maksimal24trip/hari:
-   laba spread9,6juta/hari, sebelum gaji1,2juta dan pajak. Akumulasi tak terbatas
-   hanya jika waktu tak terbatas; kapasitas, antrean dan modal membatasi laju.
-   Usulan −260/kg menghapus loop beli-jual itu, bukan keuntungan pungut gratis.
-2. **Piramida 20:8:1 berarti160K1+8K2+1K3**, jadi K3 hanya1/169=0,592%.
-   Untuk200smelter dibutuhkan33.600peran pemasok, sementara tersisa800pemain:
-   kekurangan97,62%peran jika produktivitas sama, bukan bukti tonase97,62%AI.
-   Stress terpisah60/20/20% memberi AI maksimum63,63%, benar melewati50%;
-   laba K3 median62,672juta/hari. Season alami belum mencapai keadaan itu:
-   kesimpulan sebab hanya terverifikasi di fixture20%K3, bukan di season alami.
-3. **EV perlu definisi nilai muatan dan urutan heat.** Model memakai laba legal
-   L=4700−3300=1400, omzet gelapR=3300+mL; EV=(1−p)(R−3300)
-   −p(3300+3R). Padaheat0, EV awal3/4/5× adalah0,857/1,457/2,057×L.
-   Jika +15heat diterapkan sebelum razia pertama: −0,75/−0,45/−0,15×L.
-   Usulan risiko2%+heat/200 dan m3,541475 memberi1,3×L padaheat15,
-   −2,829×L padaheat50; heat0masih3,070×L. Pilih urutan heat sebelum rilis.
-4. **Utang2%/hari game adalah12,616%/hari nyata**, bukan2%/hari nyata.
-   Santai hanya mendapat8jam antrean vs24jam aktif, tetapi bunga tetap6kali.
-   Stress utang tabel mengasumsikan tidak dibayar, bukan prediksi semua santai
-   bangkrut. Turun0,2% memberi1,206%/hari nyata; lebih aman namun masih perlu
-   masa tenggang, batas bunga, dan uji shock kas dalam playtest.
-5. **Target progresi gagal.** Usulan memindahkan K2 teramatiH28→H14, tetapi
-   hanya20/200aktif awal yang mencapai; tidak seorang pun mencapaiK3 di90hari.
-   Klaim median aktifK3H45–55 belum dapat dibuat. RetensiD1=35% sendiri
-   membuat median kohor awal tidak bisa mencapai tonggak lanjut tanpa reaktivasi.
-
-## Keputusan lanjutan yang wajib sebelum angka final
-
-- Tentukan apakah20%K3 target populasi serentak atau kohor; PRD§17 malah10%H60.
-- Definisikan median pemain aktif sebagai survivor/engaged, bukan semua akun.
-- Tentukan sistem treasury/escrow dan batas faucet: menaikkan margin mempercepat
-  progresi tetapi memperburuk pertumbuhan kas. Jangan tambahkan kas beku besar
-  hanya untuk mempercantik denominator inflasi5%.
-- Uji lapak satelit, staf sesuai shift, reuse dan kontrak sebelum menyimpulkan
-  target mustahil; model sekarang sengaja membatasi cakupan, bukan bukti mustahil.
-- Butuh kalibrasi lanjutan untuk K3H45–55, median laba semua kasta, dan inflasi.
-  Status ini berarti permintaan set parameter yang lolos **belum selesai**.
+## Robustness: sepuluh seed tetap dan tiga perubahan kecil
+Daftar tetap: **73,74,75,76,77,78,79,80,81,82**; masing-masing1000agen/90hari.
+Reproduksi: `python sim/tools/sweep.py`; `python sim/tools/robustness.py`.
+Grid dan seed di calibration.json; pengukuran mentah di output/{sweep,robustness}.jsonl.
+| Varian | Profit | AI | Inflasi | Progresi gabungan | Semua |
+|---|---:|---:|---:|---:|---:|
+| Kandidat dipertahankan | 2/10 | 10/10 | 10/10 | 1/10 | 1/10 |
+| Biaya omzet K2/K3 6%/10% | 6/10 | 10/10 | 7/10 | 3/10 | 2/10 |
+| Ambisi sedang60%K2 | 3/10 | 10/10 | 10/10 | 3/10 | 3/10 |
+| Kedua perubahan sekaligus | 8/10 | 10/10 | 5/10 | 5/10 | 1/10 |
+Tidak ada tweak mencapai≥8/10 tanpa merusak kriteria lain; kandidat lama dipertahankan.
+AI/inflasi lolos10/10; laba dan komposisi belum robust. Seed74: laba K2−0,383juta,
+K3−0,716juta dan K3H90=1,87% (<3%). Seed81 tidak pernah menghasilkanK3 (laba N/A).
+Seluruh seed mencapai median aktifH11 dan santaiH44–47; kegagalan progresi ada di mix.
+Bukti ini menunjukkan sensitivitas populasi/likuiditas, bukan diagnosis kausal tuntas.
+Jangan menyebut konfigurasi ini lolos8/10 atau siap produksi; perlu desain/calibrasi lanjutan.

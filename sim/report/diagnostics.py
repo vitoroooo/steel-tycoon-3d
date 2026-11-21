@@ -15,7 +15,7 @@ def diagnostics(c):
     legal = cb['sale'] - cb['cost']
     ev = {f'{m:.4f}x_heat{h}': contraband_ev(m, h, cb) / legal
           for m in cb['multipliers'] for h in (0, 15, 50, 65)}
-    debt = {str(days): (1 + c['debt_rate']) ** (days * c['game_days'])
+    debt = {str(days): (1 + c['debt_rate']) ** (days * c['debt_periods'])
             for days in (1, 7, 30)}
     return dict(arbitrage_per_kg=spread, pyramid_k3_share=share,
                 target_shortage=shortage, contraband_ev_legal_ratio=ev,

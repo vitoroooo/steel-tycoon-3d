@@ -1,4 +1,5 @@
 """Cash-constrained price discovery and inventory transfers."""
+from market.budget import allowance
 
 
 def bid(buyer, ref, c):
@@ -11,12 +12,13 @@ def bid(buyer, ref, c):
 def settle(seller, quantity, price, cost, c, player=False):
     revenue = quantity * price * (1 - c['transaction_tax'] if player else 1)
     seller.cash += revenue
+    seller.turnover += quantity * price
     profit = revenue - cost
     seller.profit += profit
     seller.quarter += profit
 
 
-def sell(seller, quantity, cost, buyers, ref, c, flows):
+def sell(seller, quantity, cost, buyers, ref, c, flows, caps=None):
     remaining = quantity
     floor = ref * c['prices']['ai1' if seller.caste == 1 else 'ai2']
     offers = []
@@ -43,10 +45,17 @@ def sell(seller, quantity, cost, buyers, ref, c, flows):
             break
     if remaining:
         if seller.caste == 1 or remaining >= c['ai_batch']:
-            settle(seller, remaining, floor, cost * remaining / quantity, c)
-        else:
-            return remaining, cost * remaining / quantity
-    return 0, 0
+            amount = remaining if caps is None else allowance(
+                caps, seller.caste, seller.district, min(remaining, seller.npc_remaining))
+            if seller.caste == 2 and amount < c['ai_batch']:
+                if caps is not None:
+                    caps[seller.caste][seller.district] += amount
+                amount = 0
+            settle(seller, amount, floor, cost * amount / quantity, c)
+            remaining -= amount
+            if caps is not None:
+                seller.npc_remaining -= amount
+    return remaining, cost * remaining / quantity if quantity else 0
 
 
 def ai_supply(bandars, ref, c, flows):

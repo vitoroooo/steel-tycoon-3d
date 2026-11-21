@@ -2,7 +2,7 @@
 
 
 def eligible(p, c):
-    if p.caste >= 3:
+    if p.caste >= p.goal:
         return False
     i = p.caste - 1
     return (p.cash >= c['upgrade']['cash'][i]

@@ -24,6 +24,8 @@ class Player:
     quarter: float = 0
     wait_since: int = 0
     milestones: dict = field(default_factory=dict)
+    goal: int = 3
+    turnover: float = 0
 
     def mark(self, name, day):
         self.milestones.setdefault(name, day - self.born + 1)

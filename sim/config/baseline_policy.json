@@ -1,0 +1,15 @@
+{
+  "debt_periods": 6,
+  "maintenance": 0,
+  "sales_maintenance": [0, 0, 0],
+  "variable_staff": false,
+  "free_late": {"aktif": 0.3, "sedang": 0.3, "santai": 0.3},
+  "source_cap": 1000000000,
+  "faucet_change_day": 14,
+  "npc_caps_early": [1000000000, 1000000000, 1000000000],
+  "npc_caps_late": [1000000000, 1000000000, 1000000000],
+  "role_goals": {"aktif": [0, 0, 1], "sedang": [0, 0, 1], "santai": [0, 0, 1]},
+  "targets": {"k2_share": [0.15, 0.25], "k3_share": [0.03, 0.07],
+    "active_k2": [10, 14], "casual_k2": [40, 50], "inflation": 0.05,
+    "inflation_after": 14, "ai_limit": 0.5, "ai_until": 60}
+}
