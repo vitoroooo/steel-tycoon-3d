@@ -9,12 +9,13 @@ namespace Steel.Editor.Showroom
         private readonly Camera camera;
         private readonly Texture2D sheet;
 
-        internal ShowroomCamera(int width, int height)
+        /// <param name="sky">Draw the skybox behind the subject instead of the neutral studio grey.</param>
+        internal ShowroomCamera(int width, int height, bool sky = false)
         {
             camera = new GameObject("Showroom Camera").AddComponent<Camera>();
             camera.fieldOfView = 30;
             camera.nearClipPlane = .05f;
-            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.clearFlags = sky ? CameraClearFlags.Skybox : CameraClearFlags.SolidColor;
             camera.backgroundColor = new Color(.42f, .44f, .46f);
             camera.gameObject.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing = true;
             sheet = new Texture2D(width, height, TextureFormat.RGB24, false);

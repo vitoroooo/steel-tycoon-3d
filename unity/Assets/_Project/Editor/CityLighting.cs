@@ -42,20 +42,7 @@ namespace Steel.Editor
             pipelineSettings.FindProperty("m_SoftShadowsSupported").boolValue = true;
             pipelineSettings.ApplyModifiedPropertiesWithoutUndo();
             GraphicsSettings.renderPipelineAsset = pipeline; QualitySettings.renderPipeline = pipeline;
-            var sun = new GameObject("Sore / Matahari").AddComponent<Light>();
-            sun.type = LightType.Directional; sun.color = new Color(1, .84f, .66f);
-            sun.intensity = 1.7f; sun.shadows = LightShadows.Soft; sun.shadowStrength = .85f;
-            sun.transform.rotation = Quaternion.Euler(38, -35, 0); RenderSettings.sun = sun;
-            var sky = AssetDatabase.LoadAssetAtPath<Material>(path + "Langit.mat");
-            if (!sky) { sky = new Material(Shader.Find("Skybox/Panoramic")); AssetDatabase.CreateAsset(sky, path + "Langit.mat"); }
-            sky.SetTexture("_MainTex", AssetDatabase.LoadAssetAtPath<Texture>("Assets/ThirdParty/PolyHaven/sky.hdr"));
-            sky.SetFloat("_Exposure", .5f); sky.SetFloat("_Rotation", 125);
-            RenderSettings.skybox = sky; RenderSettings.ambientMode = AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(.34f, .44f, .58f);
-            RenderSettings.ambientEquatorColor = new Color(.36f, .38f, .42f);
-            RenderSettings.ambientGroundColor = new Color(.12f, .12f, .12f);
-            RenderSettings.fog = true; RenderSettings.fogColor = new Color(.65f, .66f, .66f);
-            RenderSettings.fogMode = FogMode.Exponential; RenderSettings.fogDensity = .004f;
+            Atmosphere.SkyDome.Create();
             var volume = new GameObject("Atmosfer / ACES").AddComponent<Volume>(); volume.isGlobal = true;
             var profile = AssetDatabase.LoadAssetAtPath<VolumeProfile>(path + "CityVolume.asset");
             if (!profile)
@@ -70,7 +57,7 @@ namespace Steel.Editor
             volume.sharedProfile = profile;
             if (profile.TryGet<ColorAdjustments>(out var adjustments)) adjustments.postExposure.Override(-.2f);
             EditorUtility.SetDirty(profile);
-            EditorUtility.SetDirty(renderer); EditorUtility.SetDirty(pipeline); EditorUtility.SetDirty(sky);
+            EditorUtility.SetDirty(renderer); EditorUtility.SetDirty(pipeline);
         }
     }
 }

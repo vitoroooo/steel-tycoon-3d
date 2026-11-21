@@ -15,6 +15,13 @@
     {"id": "metal_plate", "metal": true},
     {"id": "beige_wall_001", "metal": false},
     {"id": "worn_tile_floor", "metal": false},
-    {"id": "clay_roof_tiles_02", "metal": false}
+    {"id": "clay_roof_tiles_02", "metal": false},
+    {"id": "container_side", "metal": true, "tintable": true},
+    {"id": "concrete_debris", "metal": false},
+    {"id": "broken_brick_wall", "metal": false},
+    {"id": "cracked_concrete_wall", "metal": false},
+    {"id": "leafy_grass", "metal": false},
+    {"id": "gravel_floor_02", "metal": false},
+    {"id": "grass_path_2", "metal": false}
   ]
 }

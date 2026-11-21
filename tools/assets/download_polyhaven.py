@@ -2,13 +2,14 @@
 
 Each surface gets color, OpenGL normal and roughness maps plus a derived URP mask
 (metallic in R, smoothness in A). Surfaces already on disk are skipped, so adding one
-line to the JSON list and re-running fetches only the new surface.
+line to the JSON list and re-running fetches only the new surface. "tintable": true also
+derives tint.jpg, a near-white greyscale of the colour map for materials that paint it.
 """
 import hashlib
 import json
 import urllib.request
 from pathlib import Path
-from PIL import Image
+from PIL import Image, ImageStat
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1] / 'unity/Assets/ThirdParty/PolyHaven'
@@ -40,6 +41,13 @@ def pack_mask(folder, metal):
     Image.merge('RGBA', (metallic, zero, zero, smooth)).save(folder / 'mask.png')
 
 
+def derive_tint(folder):
+    """Keeps the wear and dirt of the colour map but drops its hue, so a material tint sets the paint."""
+    grey = Image.open(folder / 'color.jpg').convert('L')
+    mean = ImageStat.Stat(grey).mean[0]
+    grey.point(lambda value: min(255, int(value * 215 / mean))).convert('RGB').save(folder / 'tint.jpg', quality=92)
+
+
 def download(texture):
     files = json.loads(fetch('https://api.polyhaven.com/files/' + texture['id']))
     folder = ROOT / texture['id']
@@ -56,10 +64,12 @@ def main():
     records = json.loads(RECORDS.read_text())
     wanted = json.loads((HERE / 'polyhaven_textures.json').read_text())['textures']
     for texture in wanted:
-        if (ROOT / texture['id'] / 'mask.png').exists():
-            continue
-        records += download(texture)
-        print('Downloaded', texture['id'])
+        folder = ROOT / texture['id']
+        if not (folder / 'mask.png').exists():
+            records += download(texture)
+            print('Downloaded', texture['id'])
+        if texture.get('tintable') and not (folder / 'tint.jpg').exists():
+            derive_tint(folder)
     RECORDS.write_text(json.dumps(records, separators=(',', ':')) + '\n')
 
 

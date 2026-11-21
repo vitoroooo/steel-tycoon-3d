@@ -18,13 +18,16 @@ namespace Steel.Editor
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             var layout = new CityLayout(new ResourceConfigSource());
             CityGeometry.Root = new GameObject("Sukabaja").transform;
-            CityLighting.Create(); StreetBuilder.Create();
+            CityLighting.Create();
+            var ground = Ground.GroundBuilder.Create(layout); Ground.GroundDecals.Create(layout);
+            StreetBuilder.Create();
             Map.RukoStreets.Create(); Map.KampungLane.Create(); Map.Greenery.Create(); Map.Fences.Create();
             Map.BackAlley.Create(Map.RukoStreets.AlleyX, Map.RukoStreets.AlleySouth, Map.RukoStreets.AlleyNorth, 2.6f);
             FacadeDetails.Street();
             OverheadWires.Create();
             CityBoundsBuilder.Create(layout);
             YardBuilder.Create(layout); PileBuilder.Create(layout);
+            Ground.GroundCover.Plant(ground, layout);
             var host = new GameObject("Game Services"); host.AddComponent<GameHost>();
             host.AddComponent<SliceInput>(); host.AddComponent<ScreenshotCapture>();
             Transform player = Characters.PlayerBuilder.Create(layout);
