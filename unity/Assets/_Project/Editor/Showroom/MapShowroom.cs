@@ -19,7 +19,7 @@ namespace Steel.Editor.Showroom
             int tw = w / 4, th = h / 2;
             camera.Shoot(new Vector3(-13, 3, 38), 140, 4, 24, new RectInt(w / 2, th, tw, th));         // Pasar Lama row
             camera.Shoot(new Vector3(-23.3f, 2.2f, 44), 180, 5, 26, new RectInt(w / 2 + tw, th, tw, th));   // back alley
-            camera.Shoot(new Vector3(-36, 3, 40), 210, 4, 30, new RectInt(w / 2, 0, tw, th));         // market lane
+            camera.Shoot(new Vector3(-38.6f, 2.5f, 30), 180, 5, 36, new RectInt(w / 2, 0, tw, th));    // market lane and kampung
             camera.Shoot(new Vector3(36, 3, -6), 150, 5, 34, new RectInt(w / 2 + tw, 0, tw, th));     // workshops
             camera.Save(ShowroomStage.SheetPath("peta"));
         }

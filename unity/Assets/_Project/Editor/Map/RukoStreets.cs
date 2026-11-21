@@ -10,6 +10,9 @@ namespace Steel.Editor.Map
         internal const float AlleySouth = 22, AlleyNorth = 57;
         private const float PasarEastX = AlleyX + (AlleyWidth + RukoRow.Depth) / 2;
         private const float PasarWestX = AlleyX - (AlleyWidth + RukoRow.Depth) / 2;
+        /// <summary>The market lane: its western kerb, where the kampung begins, and its length.</summary>
+        internal const float LaneWidth = 6, LaneSouth = -7, LaneNorth = 60;
+        internal const float LaneWest = PasarWestX - RukoRow.FrontReach - LaneWidth;
 
         internal static void Create()
         {
@@ -28,7 +31,7 @@ namespace Steel.Editor.Map
         /// <summary>The concrete lane the western row opens onto; it meets the cross road at its south end.</summary>
         private static void MarketLane()
         {
-            float east = PasarWestX - RukoRow.FrontReach, width = 6, south = -7, north = 60;
+            float width = LaneWidth, east = LaneWest + width, south = LaneSouth, north = LaneNorth;
             var concrete = CityMaterials.Surface("concrete_floor_02", new Vector2(2, (north - south) / 3),
                 "Gang Pasar beton", new Color(.7f, .7f, .68f));
             CityGeometry.Box("Gang Pasar", new Vector3(east - width / 2, -.1f, (south + north) / 2),

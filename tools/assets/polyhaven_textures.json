@@ -14,6 +14,7 @@
     {"id": "green_metal_rust", "metal": true},
     {"id": "metal_plate", "metal": true},
     {"id": "beige_wall_001", "metal": false},
-    {"id": "worn_tile_floor", "metal": false}
+    {"id": "worn_tile_floor", "metal": false},
+    {"id": "clay_roof_tiles_02", "metal": false}
   ]
 }
