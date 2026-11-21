@@ -11,5 +11,5 @@ No attribution is required; credit retained here for provenance.
 Downloaded at1K: diffuse, OpenGL normal and roughness; HDRI1K Radiance.
 downloads.json records exact URLs, SHA256 and download sizes.
 mask.png maps are derived URP metallic/smoothness packs (roughness inverted).
-Regenerate downloads/maps with unity/Tools/download_assets.py (Python + Pillow).
+Regenerate downloads/maps with tools/assets/download_polyhaven.py (Python + Pillow).
 Verified source download total11,760,313bytes; derived texture directory about16MB.

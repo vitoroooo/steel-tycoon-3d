@@ -1,5 +1,4 @@
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using Steel.Editor.Characters;
 using Steel.Presentation.Characters;
@@ -9,18 +8,14 @@ namespace Steel.Editor.Showroom
     /// <summary>Review sheet for one character: front, side, back, face and a walking pose.</summary>
     public static class CharacterShowroom
     {
-        private const int Width = 1920, Height = 1080;
+        private const int Width = ShowroomStage.Width, Height = ShowroomStage.Height;
 
         [MenuItem("Steel/Showroom/Player")]
         public static void Player() => Render(CharacterCatalog.Player, "player");
 
         private static void Render(CharacterSpec spec, string name)
         {
-            EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            CityGeometry.Root = new GameObject("Showroom").transform;
-            CityLighting.Create();
-            CityGeometry.Box("Floor", Vector3.down * .05f, new Vector3(30, .1f, 30),
-                CityMaterials.Surface("concrete_floor_02", new Vector2(8, 8)));
+            ShowroomStage.Create();
             GameObject character = CharacterRig.Create(spec, CharacterAnimator.Controller());
             foreach (var skin in character.GetComponentsInChildren<SkinnedMeshRenderer>())
                 skin.forceMatrixRecalculationPerRender = true; // edit mode keeps the first pose otherwise
@@ -38,7 +33,7 @@ namespace Steel.Editor.Showroom
             camera.Shoot(body, 60, 8, 4.3f, new RectInt(tile * 3, 0, tile, Height));
             Pose(character, CharacterAnimator.RunSpeed, .25f);
             camera.Shoot(body, 75, 8, 4.3f, new RectInt(tile * 4, 0, tile, Height / 2));
-            camera.Save("../docs/design/sheets/" + name + ".png");
+            camera.Save(ShowroomStage.SheetPath(name));
         }
 
         /// <summary>Advances the real animator, so the sheet shows what the game will play.</summary>

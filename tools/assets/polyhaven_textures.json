@@ -1,0 +1,14 @@
+{
+  "comment": "Poly Haven CC0 surfaces used by the game. metal: true gives the URP mask a metallic channel.",
+  "textures": [
+    {"id": "asphalt_02", "metal": false},
+    {"id": "concrete_floor_02", "metal": false},
+    {"id": "rusty_metal_04", "metal": true},
+    {"id": "corrugated_iron", "metal": true},
+    {"id": "brown_mud_02", "metal": false},
+    {"id": "blue_painted_planks", "metal": false},
+    {"id": "weathered_planks", "metal": false},
+    {"id": "rusty_painted_metal", "metal": true},
+    {"id": "hessian_230", "metal": false}
+  ]
+}
