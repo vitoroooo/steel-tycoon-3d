@@ -19,6 +19,7 @@ namespace Steel.Editor
             var layout = new CityLayout(new ResourceConfigSource());
             CityGeometry.Root = new GameObject("Kawasan Industri / Cakung").transform;
             CityLighting.Create(); StreetBuilder.Create(); BuildingBuilder.Create();
+            CityBoundsBuilder.Create(layout);
             YardBuilder.Create(layout); PileBuilder.Create(layout);
             var host = new GameObject("Game Services"); host.AddComponent<GameHost>();
             host.AddComponent<SliceInput>(); host.AddComponent<ScreenshotCapture>();

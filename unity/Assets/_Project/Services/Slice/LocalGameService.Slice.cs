@@ -7,9 +7,12 @@ namespace Steel.Services
     public sealed partial class LocalGameService
     {
         private SliceSession session;
+        private WorldSafety safety;
+        public bool NeedsRespawn(double y) => safety.NeedsRespawn(y);
         private SaleOffer pending;
         private void CreateSession(IConfigSource source)
         {
+            safety = new WorldSafety(source.Read("City"));
             session = new SliceSession(new SliceRules(source.Read("City")),
                 new SliceWorld(source.Read("Piles")), scrap);
         }

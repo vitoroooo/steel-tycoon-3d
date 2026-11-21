@@ -15,6 +15,7 @@ namespace Steel.Editor
         internal static Transform Create(CityLayout layout)
         {
             var root = new GameObject("Pekerja"); root.layer = 2;
+            root.AddComponent<Steel.Presentation.World.FallRecovery>();
             root.transform.position = new Vector3(layout.Spawn.X, .25f, layout.Spawn.Z);
             var controller = root.AddComponent<CharacterController>(); controller.height = 1.8f;
             controller.center = Vector3.up * .9f; controller.radius = .3f; controller.stepOffset = .3f;

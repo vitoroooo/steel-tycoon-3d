@@ -3,6 +3,7 @@ namespace Steel.Services
     public partial interface IGameService
     {
         GameView View { get; }
+        bool NeedsRespawn(double y);
         InteractionView Nearby { get; }
         void SetPosition(float x, float z);
         void Inspect(string id);

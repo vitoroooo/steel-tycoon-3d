@@ -1,5 +1,10 @@
 {
   "startCash": 13000000,
+  "spawnY": 0.3,
+  "respawnBelowY": -15,
+  "boundaryHalfWidth": 54,
+  "boundaryMinZ": -54,
+  "boundaryMaxZ": 64,
   "carryCapKg": 50,
   "interactRange": 3.5,
   "homeX": -16,
