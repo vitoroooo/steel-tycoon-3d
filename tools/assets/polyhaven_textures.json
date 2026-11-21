@@ -12,6 +12,8 @@
     {"id": "hessian_230", "metal": false},
     {"id": "blue_metal_plate", "metal": true},
     {"id": "green_metal_rust", "metal": true},
-    {"id": "metal_plate", "metal": true}
+    {"id": "metal_plate", "metal": true},
+    {"id": "beige_wall_001", "metal": false},
+    {"id": "worn_tile_floor", "metal": false}
   ]
 }
