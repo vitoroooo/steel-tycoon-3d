@@ -43,8 +43,13 @@ Harga AI diperiksa lagi saat konfirmasi; penawaran kedaluwarsa harus diperbarui.
 City.json/Piles.json adalah data bersama untuk Core dan generator scene.
 Editor membangun geometri detail, PBR CC0, HDRI, URP, ACES, bloom dan SSAO.
 Scenes/City.unity, Generated/* serta ProjectSettings adalah keluaran generator (boleh >100 baris).
-Input/Player/UI/World sudah aktif; Vehicles tetap placeholder untuk handoff berikutnya.
-Belum ada save/load, cuaca, simulasi supply kota, kendaraan atau progresi kasta.
+Input/Player/UI/World/Vehicles aktif; Core/Fleet menyimpan kapasitas pikap dan waktu trip.
+Vehicle.json: 1 ton, 60 menit nyata/trip; pikap pinjaman demo, bukan pembelian gratis.
+Masuk memindahkan tas ke bak; keluar meninggalkan muatan di bak. DTO VehicleView via IGameService.
+Fisika kinematik di Presentation/Vehicles; kapasitas, validasi masuk/keluar dan timer di Core.
+glTFast mengimpor model CC0 Poly Haven/Quaternius; FBX worker memakai animasi idle/walk.
+Generator menambah atap pelana, kanopi, shutter, pagar dan kabel; HUD mengikuti safe area.
+Belum ada save/load, cuaca, simulasi supply kota, pembelian armada atau progresi kasta.
 
 ## Build & tes (headless, Docker game-ci)
 - Tes: `unity-editor -batchmode -runTests -testPlatform EditMode`

@@ -2,21 +2,22 @@ using System;
 using System.Linq;
 using Steel.Core.Economy;
 using Steel.Core.Scrap;
+using Steel.Core.Fleet;
 
 namespace Steel.Core.State.Slice
 {
-    public sealed class SliceSession
+    public sealed partial class SliceSession
     {
         public SliceRules Rules { get; }
         public SliceWorld World { get; }
-        public Backpack Bag { get; }
         public WorldPoint Position { get; set; }
         public double Cash { get; private set; }
         private readonly ScrapPricing pricing;
-        public SliceSession(SliceRules rules, SliceWorld world, ScrapPricing pricing)
+        public SliceSession(SliceRules rules, SliceWorld world, ScrapPricing pricing, PickupRules pickupRules)
         {
             Rules = rules; World = world; this.pricing = pricing;
-            Bag = new Backpack(rules.CarryCapKg); Cash = rules.StartCash; Position = rules.Spawn;
+            backpack = new Backpack(rules.CarryCapKg); Pickup = new PickupState(pickupRules);
+            Cash = rules.StartCash; Position = rules.Spawn;
         }
         private void RequireNear(WorldPoint point)
         {

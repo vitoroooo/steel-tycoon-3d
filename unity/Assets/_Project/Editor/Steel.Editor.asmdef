@@ -4,6 +4,7 @@
   "references": [
     "Steel.Services",
     "Steel.Player",
+    "Steel.Vehicles",
     "Steel.World",
     "Steel.Input",
     "Steel.UI",

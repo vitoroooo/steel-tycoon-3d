@@ -7,6 +7,7 @@ namespace Steel.Presentation.Player
     public sealed class OrbitCamera : MonoBehaviour
     {
         public Transform Target;
+        public Transform VehicleTarget;
         private SliceInput input;
         private GameHost host;
         private float yaw, pitch;
@@ -20,12 +21,11 @@ namespace Steel.Presentation.Player
             Vector2 delta = input.Look * host.Layout.LookSensitivity;
             yaw += delta.x; pitch = Mathf.Clamp(pitch - delta.y, 8, 55);
             var rotation = Quaternion.Euler(pitch, yaw, 0);
-            Vector3 focus = Target.position + Vector3.up * 1.5f;
+            bool driving = host.Game.Vehicle.Occupied;
+            Vector3 focus = (driving ? VehicleTarget : Target).position + Vector3.up * (driving ? 1.7f : 1.35f);
             Vector3 offset = rotation * Vector3.back * host.Layout.CameraDistance;
-            float distance = offset.magnitude;
-            if (Physics.SphereCast(focus, .2f, offset.normalized, out var hit, distance,
-                Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) distance = Mathf.Max(.6f, hit.distance - .15f);
-            transform.position = focus + offset.normalized * distance;
+            if (driving) offset *= 1.35f;
+            transform.position = CameraCollision.Resolve(focus, offset);
             transform.LookAt(focus);
         }
     }

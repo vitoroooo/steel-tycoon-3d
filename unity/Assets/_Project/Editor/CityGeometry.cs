@@ -21,6 +21,7 @@ namespace Steel.Editor
             var go = new GameObject(text); go.transform.SetParent(Root, false); go.transform.position = point;
             var mesh = go.AddComponent<TextMesh>(); mesh.text = text; mesh.fontSize = 96; mesh.characterSize = size * .22f;
             mesh.anchor = TextAnchor.MiddleCenter; mesh.alignment = TextAlignment.Center; mesh.color = color;
+            go.AddComponent<Steel.Presentation.World.SignVisibility>();
         }
     }
 }
