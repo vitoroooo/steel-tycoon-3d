@@ -52,18 +52,5 @@ namespace Steel.Editor
             AssetDatabase.SaveAssets();
             Debug.Log("CITY_GENERATED: " + layout.Piles.Length + " piles, lapak, smelter, URP PBR + ACES + bloom + SSAO");
         }
-        [MenuItem("Steel/Build Linux Slice")]
-        public static void BuildLinux()
-        {
-            var result = BuildPipeline.BuildPlayer(new BuildPlayerOptions
-            {
-                scenes = new[] { "Assets/_Project/Scenes/City.unity" },
-                locationPathName = "Build/Linux/SteelTycoon.x86_64", target = BuildTarget.StandaloneLinux64,
-                options = BuildOptions.None
-            });
-            if (result.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
-                throw new System.Exception("Linux build failed: " + result.summary.result);
-            Debug.Log("LINUX_BUILD_SUCCEEDED: " + result.summary.totalSize + " bytes");
-        }
     }
 }
