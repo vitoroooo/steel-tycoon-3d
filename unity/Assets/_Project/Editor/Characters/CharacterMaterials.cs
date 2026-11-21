@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace Steel.Editor.Characters
 {
-    /// <summary>Builds URP materials for the three Rocketbox material slots: body, head and hair.</summary>
+    /// <summary>Builds URP materials for the Rocketbox slots: body, head, hair, and a worker's helmet and tools.</summary>
     internal static class CharacterMaterials
     {
         internal static Material For(CharacterSpec spec, string sourceName)
         {
-            if (sourceName.EndsWith("_opacity")) return Hair(spec);
-            return Opaque(spec, sourceName.EndsWith("_head") ? "head" : "body");
+            string part = sourceName.Substring(sourceName.LastIndexOf('_') + 1);   // "m017_head" → "head"
+            return part == "opacity" ? Hair(spec) : Opaque(spec, part);
         }
 
         private static Material Opaque(CharacterSpec spec, string part)

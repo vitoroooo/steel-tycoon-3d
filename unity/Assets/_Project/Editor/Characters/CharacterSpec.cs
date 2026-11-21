@@ -18,10 +18,4 @@ namespace Steel.Editor.Characters
         internal string TexturePath(string part, string map, string extension) =>
             RocketboxImportRules.Root + Folder + "/Textures/" + TexturePrefix + "_" + part + "_" + map + extension;
     }
-
-    internal static class CharacterCatalog
-    {
-        /// <summary>The player: a young pengepul in a worn T-shirt and jeans.</summary>
-        internal static readonly CharacterSpec Player = new CharacterSpec("Male_Adult_09", "m017", 1.7f);
-    }
 }

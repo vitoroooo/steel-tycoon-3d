@@ -27,7 +27,7 @@ namespace Steel.Editor
             OverheadWires.Create();
             CityBoundsBuilder.Create(layout);
             YardBuilder.Create(layout); PileBuilder.Create(layout);
-            Map.Smelter.Create(); Map.SmelterYard.Create(layout); Map.ContainerDepot.Create();
+            Map.Smelter.Create(); Map.SmelterYard.Create(layout); Map.ContainerDepot.Create(); Map.Townsfolk.Create();
             Ground.GroundDecals.Create(layout); Ground.GroundCover.Plant(ground, layout);
             var host = new GameObject("Game Services"); host.AddComponent<GameHost>();
             host.AddComponent<SliceInput>(); host.AddComponent<ScreenshotCapture>();
