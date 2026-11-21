@@ -1,0 +1,35 @@
+{
+  "tax": [
+    0.05,
+    0.1,
+    0.15
+  ],
+  "tax_days": 15,
+  "debt_rate": 0.02,
+  "seizure_ratio": 0.5,
+  "workers": {
+    "kuli": 150000,
+    "driver": 200000,
+    "operator": 300000,
+    "eaf": 600000,
+    "crew": 5,
+    "eaf_count": 3
+  },
+  "rent": 20000000,
+  "rent_days": 5,
+  "contraband": {
+    "multipliers": [
+      3,
+      4,
+      5
+    ],
+    "base_risk": 0.1,
+    "heat_risk": 0.005,
+    "heat_add": 15,
+    "heat_decay": 5,
+    "fine": 3,
+    "cost": 3300,
+    "sale": 4700,
+    "target": 1.3
+  }
+}

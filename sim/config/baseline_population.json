@@ -1,0 +1,50 @@
+{
+  "seed": 73,
+  "initial_mix": [1, 0, 0],
+  "initial_tier_cash": [13000000, 500000000, 1000000000],
+  "agents": 1000,
+  "days": 90,
+  "arrival_rate": 0.02,
+  "types": {
+    "aktif": [
+      0.2,
+      5
+    ],
+    "sedang": [
+      0.5,
+      3
+    ],
+    "santai": [
+      0.3,
+      1
+    ]
+  },
+  "retention": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      0.35
+    ],
+    [
+      7,
+      0.12
+    ],
+    [
+      30,
+      0.05
+    ],
+    [
+      90,
+      0.05
+    ]
+  ],
+  "districts": 8,
+  "game_days": 6,
+  "real_hours": 24,
+  "offline_hours": 8,
+  "start_cash": 1000000,
+  "tutorial": 12000000
+}

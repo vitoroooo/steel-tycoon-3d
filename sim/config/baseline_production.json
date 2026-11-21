@@ -1,0 +1,38 @@
+{
+  "vehicles": [
+    {
+      "name": "gerobak",
+      "capacity": 50,
+      "hours": 0.5,
+      "cost": 0,
+      "trip_cost": 0
+    },
+    {
+      "name": "triseda",
+      "capacity": 300,
+      "hours": 0.75,
+      "cost": 12000000,
+      "trip_cost": 40000
+    },
+    {
+      "name": "pikap",
+      "capacity": 1000,
+      "hours": 1,
+      "cost": 85000000,
+      "trip_cost": 150000
+    }
+  ],
+  "free_fraction": 0.3,
+  "free_speed": 0.5,
+  "queue_efficiency": 1,
+  "yard_capacity": 60000,
+  "batch": 15000,
+  "ai_batch": 5000,
+  "bandar_daily": 40000,
+  "melt_daily": 30000,
+  "melt_loss": 0.1,
+  "dirt": 0.03,
+  "melt_opex": 2000,
+  "trailer_trip": 6000000,
+  "trailer_capacity": 20000
+}

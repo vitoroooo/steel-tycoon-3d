@@ -1,0 +1,30 @@
+{
+  "prices": {
+    "npc": 0.72,
+    "ai1": 0.7,
+    "bandar": 0.82,
+    "stock_response": 0.03,
+    "ai2": 1.15,
+    "smelter": 1.2,
+    "ai_industrial": 1.25
+  },
+  "debt_rate": 0.002,
+  "upgrade": {
+    "cash": [
+      500000000,
+      3600000000
+    ]
+  },
+  "free_fraction": 0.9,
+  "free_speed": 1,
+  "queue_efficiency": 1,
+  "bandar_daily": 100000,
+  "ai_daily_district": 10000,
+  "trailer_trip": 3000000,
+  "contraband": {
+    "multipliers": [
+      3.54147465437788
+    ],
+    "base_risk": 0.02
+  }
+}
