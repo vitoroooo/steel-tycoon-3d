@@ -5,7 +5,7 @@ using Steel.Core.Time;
 
 namespace Steel.Services
 {
-    public sealed class LocalGameService : IGameService
+    public sealed partial class LocalGameService : IGameService
     {
         private readonly GameClock clock;
         private readonly AiPriceBook market;
@@ -23,6 +23,7 @@ namespace Steel.Services
             clock = new GameClock(time);
             market = new AiPriceBook(economy);
             scrap = new ScrapPricing(new ScrapConfig(source.Read("Scrap")));
+            CreateSession(source);
             market.Refresh(0, economy.SupplyTargetKg);
             clock.HourTick += hour => market.RefreshBucket(hour, economy.SupplyTargetKg);
         }

@@ -31,10 +31,20 @@ Sumber kebutuhan: PRD §17.1, angka dari docs/ECONOMY_SPEC.md (hasil Fase 0).
 | `Presentation/Vehicles` | Steel.Vehicles | Kendaraan yang bisa dikemudikan |
 | `Presentation/Input` | Steel.Input | Touch joystick mobile dan keyboard |
 | `Tests/EditMode` | Steel.Tests | Unit test Core (NUnit) |
+| `Tests/PlayMode` | Steel.PlayTests | Smoke test scene City dan siklus transaksi |
+| `Editor` | Steel.Editor | Generator City deterministik + build Linux |
 
 ## Aturan dependensi
 `Presentation → Services → Core`. Core tidak boleh referensi Unity atau layer lain.
-Handoff skeleton hanya membuat folder/asmdef presentasi; belum ada gameplay atau aset HD.
+Slice: City memakai CharacterController, orbit camera, Input System, joystick dan HUD Indonesia.
+Core/State/Slice menyimpan posisi interaksi, world piles, inventori dan kas.
+Services memberi DTO untuk presentasi; inspeksi/pungut/sortir/konfirmasi jual lewat IGameService.
+Harga AI diperiksa lagi saat konfirmasi; penawaran kedaluwarsa harus diperbarui.
+City.json/Piles.json adalah data bersama untuk Core dan generator scene.
+Editor membangun geometri detail, PBR CC0, HDRI, URP, ACES, bloom dan SSAO.
+Scenes/City.unity, Generated/* serta ProjectSettings adalah keluaran generator (boleh >100 baris).
+Input/Player/UI/World sudah aktif; Vehicles tetap placeholder untuk handoff berikutnya.
+Belum ada save/load, cuaca, simulasi supply kota, kendaraan atau progresi kasta.
 
 ## Build & tes (headless, Docker game-ci)
 - Tes: `unity-editor -batchmode -runTests -testPlatform EditMode`

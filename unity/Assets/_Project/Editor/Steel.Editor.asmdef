@@ -1,0 +1,16 @@
+{
+  "name": "Steel.Editor",
+  "rootNamespace": "Steel.Editor",
+  "references": [
+    "Steel.Services",
+    "Steel.Player",
+    "Steel.World",
+    "Steel.Input",
+    "Steel.UI",
+    "Unity.RenderPipelines.Core.Runtime",
+    "Unity.RenderPipelines.Universal.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

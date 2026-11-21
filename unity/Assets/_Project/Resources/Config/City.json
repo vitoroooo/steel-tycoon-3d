@@ -1,0 +1,15 @@
+{
+  "startCash": 13000000,
+  "carryCapKg": 50,
+  "interactRange": 3.5,
+  "homeX": -16,
+  "homeZ": 1,
+  "factoryX": 16,
+  "factoryZ": 17,
+  "spawnX": -16,
+  "spawnZ": 6,
+  "moveSpeed": 5.5,
+  "lookSensitivity": 0.1,
+  "cameraDistance": 7,
+  "cameraHeight": 3.2
+}

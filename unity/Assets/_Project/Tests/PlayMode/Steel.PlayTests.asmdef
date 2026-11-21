@@ -1,0 +1,12 @@
+{
+  "name": "Steel.PlayTests",
+  "references": [
+    "Steel.Services",
+    "Steel.Player",
+    "Steel.World"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

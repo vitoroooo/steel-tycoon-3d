@@ -1,6 +1,7 @@
-# Steel Tycoon 3D — Fase 1 skeleton
+# Steel Tycoon 3D — first playable slice
 
-Unity **2022.3.62f1**, Test Framework 1.1.33, URP 14.0.11.
+Unity **2022.3.62f1**, Test Framework 1.1.33, Input System 1.7.0.
+URP manifest14.0.11 resolves to14.0.12 in this editor (packages-lock.json).
 See ../docs/ARCHITECTURE.md and ../docs/ECONOMY_SPEC.md.
 
 ## Headless EditMode tests (from repository root)
@@ -17,16 +18,40 @@ docker run --rm --network host \
 Do not add -quit: the test runner exits after completion. Results and logs are ignored.
 Never modify unity-lic or touch the unity-box container.
 Generated project/cache files may be root-owned after Docker writes them.
-ProjectSettings are Unity-generated defaults, not hand-authored balancing data.
+ProjectSettings, Scenes/City.unity and Generated/* are generator outputs, not authored code.
+
+## Generate, play, build
+Open Assets/_Project/Scenes/City.unity and press Play.
+WASD / on-screen joystick walks; hold mouse-right / drag upper-right screen to orbit.
+E / bottom-right touch button: inspect, then pick up. Return to lapak to sort.
+Walk to Pabrik AI, preview price/margin, then confirm the sale (or cancel).
+All HUD/dialog text is Indonesian. Cash, carried kg, IBN and game clock are live.
+No vehicles, Android build, save/load, weather or caste progression in this slice.
+
+Menu: Steel > Generate City. Headless: use the Docker prefix above, replace
+the test arguments (after -projectPath /repo/unity) with:
+```sh
+-executeMethod Steel.Editor.CityBuilder.Generate -quit -logFile /repo/unity/Logs/generate-city.log
+-runTests -testPlatform PlayMode -testResults /repo/unity/test-results-play.xml
+-executeMethod Steel.Editor.CityBuilder.BuildLinux -quit -logFile /repo/unity/Logs/build-linux.log
+```
+These are three separate invocations. Generation replaces City deterministically.
+If the image lacks /root/.cache, mount a writable cache there (not the license directory).
+Linux build: unity/Build/Linux/SteelTycoon.x86_64 (generated, ignored).
+Run with DISPLAY=:0 and optional -screenshot /home/ubuntu/shots/slice-city.png.
+The screenshot argument captures the actual player after four seconds.
+See Assets/ThirdParty/PolyHaven/LICENSES.md for CC0 sources and checksum provenance.
+Downloads are1K diffuse/normal/roughness + HDRI, 11.76MB (<150MB).
 
 ## Boundaries
 - Steel.Core: pure C#, no engine references, deterministic elapsed-time APIs.
 - Services: resource loading and local composition behind IGameService/IConfigSource.
-- Presentation → Services → Core; UI/World/Player/Vehicles/Input are asmdef placeholders.
+- Presentation → Services → Core; no presentation assembly references Steel.Core.
+- UI/World/Player/Input are active. Vehicles remains an asmdef placeholder.
 - Fleet/World/Equipment/Progression folders are reserved, not implemented.
-- Third-person open-world HD 3D with walking/driving and mobile joystick is the direction.
-  URP is installed; render-pipeline assets, HD art, scenes and gameplay come later.
-- No visual surface is implemented or visually verified in this skeleton.
+- Editor scripts generate the detailed block, textured PBR, HDRI, shadows, ACES, bloom and SSAO.
+- CharacterController movement and orbit collision are presentation; interaction range,
+  capacity, inspection, sorting, cash and confirmed sales live in Core/Services.
 
 ## Data and semantics
 JSON is in Assets/_Project/Resources/Config. Core parses supplied text without Unity.
@@ -39,11 +64,15 @@ IBN:60-real-day cycle, seeded daily noise, bounded supply effect; quotes cache b
 600-second bucket. Input is city ingot kg for the supply window (same as simulator).
 Local service uses neutral supply until city simulation exists; Core accepts actual supply.
 AI buy/sell names are from the AI's perspective. Config uses the Phase0 fixed coefficients.
-Quotes are per kg, not purchase authorization: money, inventory and NPC caps are future work.
+City.json configures start cash13m, carry cap50kg, interaction3.5m, stations and controls.
+Piles.json configures eight finite world piles; no replenishment/faucet or NPC stock purchases.
+Factory prices apply K1 AI buy spread and grade factors; reuse uses its reference multiplier.
+Free collection costs Rp0; margin equals proceeds. NPC sales have no player transaction tax.
+Preview does not pay; confirmation rechecks location, inventory revision and quote bucket.
 Margin includes supplied loss, transaction tax and operating cost, not future income tax.
-Scrap starts uninspected and sells at mixed valuation until inspected AND sorted.
+Scrap starts uninspected. Factory sales require inspected, collected and sorted inventory.
 Inspection is free and reveals grade; Sort is the successful sorting outcome, not a minigame.
 Sorting applies §6.1 multipliers and removes dirt weight once; reuse quality interpolates
-160–250%. Quote uses reference price (before buyer spread), not a completed sale.
+160–250%. Legacy Quote uses reference price before buyer spread, not a completed sale.
 Weather/rust (§6.4), vehicles (§5.1), persistence and other MVP criteria are intentionally
 outside this handoff. No Phase0 all-seed balance claim is made.
