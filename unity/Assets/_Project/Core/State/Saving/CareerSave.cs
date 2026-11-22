@@ -22,7 +22,7 @@ namespace Steel.Core.State.Saving
         public Steel.Core.Crew.CrewSave crew;
         public LotSave[] covered;
         public int story;
-        public bool motorRoute, readForecast, sheltered, streetTip;
+        public bool motorRoute, readForecast, sheltered, streetTip, guideRead;
     }
     [Serializable] public sealed class LotSave
     {

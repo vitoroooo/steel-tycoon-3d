@@ -4,8 +4,6 @@ namespace Steel.Presentation.UI
 {
     public sealed partial class CityHud
     {
-        private YardDesk book;
-
         private string ActionLabel(InteractionView near, GameView v)
         {
             if (near == null) return "CARI RONGSOK";

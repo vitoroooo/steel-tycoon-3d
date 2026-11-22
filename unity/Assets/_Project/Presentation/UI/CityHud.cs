@@ -29,7 +29,7 @@ namespace Steel.Presentation.UI
             drivers = FindObjectsOfType<MotorDriver>();
             board = new MarketBoard(this, host.Game, input);
             sorting = new SortingDesk(this, host.Game, input);
-            book = new YardDesk(this, host.Game, input); letter = new DartoLetter(this, host.Game, input);
+            new YardDesk(this, host.Game, input); letter = new DartoLetter(this, host.Game, input);
             routes = new RouteDesk(this, host.Game, input, board.Open);
             NoticeText.text = lastSaveNotice = host.SaveNotice;
         }
@@ -51,7 +51,7 @@ namespace Steel.Presentation.UI
             ActionText.text = action;
             ActionPad.blocksRaycasts = near != null; ActionPad.alpha = near != null ? 1 : 0;
             VehicleHud.Refresh(this, host.Game.Vehicle);
-            PromptText.text = near == null ? GuideBook.Idle(book.GuideSeen) :
+            PromptText.text = near == null ? GuideBook.Idle(host.Game.GuideRead) :
                 near.Title + "\n" + near.Detail;
         }
         private void Run(Action action)

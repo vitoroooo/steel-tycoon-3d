@@ -14,9 +14,9 @@ namespace Steel.Presentation.UI
             double before = host.Game.View.CarriedKg;
             host.Game.PickUp(id);
             if (!host.Game.IsCollected(id))
-                return "Dipungut " + (host.Game.View.CarriedKg - before) + " kg, muatan penuh. Sisanya menunggu di gang.";
+                return "Terangkut " + (host.Game.View.CarriedKg - before) + " kg, penuh. Sisanya ditinggal dulu.";
             return host.Game.Income.StreetSites > 0 ? "Rongsok dipungut. Sortir di lapak Anda." :
-                "Tumpukan terakhir di gang dipungut. Sortir di lapak, lalu baca pesan Pak Darto.";
+                "Itu tumpukan terakhir di gang. Sortir di lapak, lalu baca pesan Pak Darto.";
         }
     }
 }

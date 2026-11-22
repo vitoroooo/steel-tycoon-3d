@@ -12,26 +12,34 @@ namespace Steel.Tests
 
         [Test] public void MoneyTopicNamesRefillAndTheFreeCartRoundWithLiveFigures()
         {
-            Assert.AreEqual("1/5  ·  Dari mana uang?", GuideBook.Heading(0));
+            Assert.AreEqual("1/5  ·  Duit dari mana?", GuideBook.Heading(0));
             string page = GuideBook.Page(0, g);
-            StringAssert.Contains("satu tumpukan tiap 5 menit", page);
-            StringAssert.Contains("BUKA ARMADA lalu PESAN RUTE", page);
-            StringAssert.Contains("20 kg gratis dalam 30 menit", page);
+            StringAssert.Contains("tiap 5 menit warga buang rongsok lagi", page);
+            StringAssert.Contains("BUKA ARMADA, lalu PESAN RUTE", page);
+            StringAssert.Contains("30 menit lagi dia pulang bawa 20 kg", page);
         }
 
         [Test] public void LoadAndFleetTopicsQuoteCartAndMotorFigures()
         {
-            StringAssert.Contains("gerobak memuat 50 kg", GuideBook.Page(1, g));
-            StringAssert.Contains("dipungut sebagian", GuideBook.Page(1, g));
+            StringAssert.Contains("Dorong gerobak, muat 50 kg", GuideBook.Page(1, g));
+            StringAssert.Contains("Ambil semuatnya dulu", GuideBook.Page(1, g));
             StringAssert.Contains("Rp12.000.000", GuideBook.Page(3, g));
-            StringAssert.Contains("120 kg tiap 45 menit", GuideBook.Page(3, g));
+            StringAssert.Contains("sekali jalan 45 menit, pulang bawa 120 kg", GuideBook.Page(3, g));
         }
 
         [Test] public void IdlePromptPointsToTheGuideOnlyUntilItHasBeenOpened()
         {
-            StringAssert.EndsWith("\nPanduan: Buku usaha › PANDUAN", GuideBook.Idle(false));
+            StringAssert.EndsWith("\nBingung? Buku usaha › PANDUAN", GuideBook.Idle(false));
             Assert.AreEqual("Geser kiri untuk bergerak · Usap kanan untuk melihat", GuideBook.Idle(true));
             foreach (string line in GuideBook.Idle(false).Split('\n')) Assert.LessOrEqual(line.Length, 44, line);
+        }
+
+        [Test] public void OpeningTheNotesIsRememberedAcrossResume()
+        {
+            Assert.IsFalse(g.GuideRead);
+            g.ReadGuide();
+            var resumed = LocalGameService.Resume(new ResourceConfigSource(), g.Save(5000), 5000, out _);
+            Assert.IsTrue(resumed.GuideRead);
         }
 
         [Test] public void EveryTopicFitsTheFourLinesOfTheBookPage()

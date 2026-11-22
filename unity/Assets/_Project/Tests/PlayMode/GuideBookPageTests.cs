@@ -28,8 +28,8 @@ namespace Steel.PlayTests
             Tap(root.Find("Usaha")); Assert.IsTrue(book.gameObject.activeSelf);
             book.Find("PANDUAN").GetComponent<Button>().onClick.Invoke();
             bool Shown(string part) => book.GetComponentsInChildren<Text>().Any(t => t.text.Contains(part));
-            Assert.IsTrue(Shown("/   Panduan pemula")); Assert.IsTrue(Shown("1/5  ·  Dari mana uang?"));
-            Assert.IsTrue(Shown("satu tumpukan tiap 5 menit"));
+            Assert.IsTrue(Shown("/   Catatan Pak Darto")); Assert.IsTrue(Shown("1/5  ·  Duit dari mana?"));
+            Assert.IsTrue(Shown("tiap 5 menit warga buang rongsok lagi"));
             var next = book.GetComponentsInChildren<Button>()
                 .Single(b => b.GetComponentInChildren<Text>().text == "TOPIK BERIKUTNYA");
             for (int topic = 1; topic < GuideBook.Topics.Length; topic++)

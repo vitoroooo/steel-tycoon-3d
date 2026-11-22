@@ -18,7 +18,7 @@ namespace Steel.Presentation.UI
         private int page, grade, district;
         private static readonly string[] Pages = {"Izin & lahan","Alat sortir","Papan setoran","Cuaca",
             "Lahan & angkutan","Pabrik baja","Lini produksi","Tender pemerintah","Lapak satelit",
-            "Perawatan alat","Keuangan","Regu & warga","Pasar jaringan","Uji performa HP","Panduan pemula"};
+            "Perawatan alat","Keuangan","Regu & warga","Pasar jaringan","Uji performa HP","Catatan Pak Darto"};
         private bool forms;
         private static string Rp(double n) => "Rp" + n.ToString("N0", CultureInfo.GetCultureInfo("id-ID"));
         internal YardDesk(CityHud hud, IGameService game, SliceInput input)
