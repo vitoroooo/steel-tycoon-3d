@@ -13,6 +13,11 @@ namespace Steel.PlayTests.Support
             return found ? point.y - ground.point.y : float.PositiveInfinity;
         }
 
+        /// <summary>Names the surface under a point, for failure messages.</summary>
+        internal static string Under(Vector3 point) =>
+            Physics.Raycast(point + Vector3.up, Vector3.down, out RaycastHit ground, 5, Physics.DefaultRaycastLayers,
+                QueryTriggerInteraction.Ignore) ? ground.collider.name : "nothing";
+
         /// <summary>Names whatever stands within three metres ahead of a vehicle, for failure messages.</summary>
         internal static string Ahead(Transform vehicle) =>
             Physics.SphereCast(vehicle.position + Vector3.up * .9f, .5f, vehicle.forward, out RaycastHit hit, 3,

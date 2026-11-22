@@ -34,11 +34,11 @@ namespace Steel.Presentation.UI
                 new Vector2(420, 49), new Vector2(0, 89));
             bottom.GetComponent<Image>().raycastTarget = false;
             hud.PromptText = UiFactory.Text(bottom, "", 17, new Vector2(404, 47), Vector2.zero, TextAnchor.MiddleCenter);
-            hud.NoticeText = UiFactory.Text(hud.SafeRoot, "", 17, new Vector2(680, 48), new Vector2(0, 149),
-                TextAnchor.MiddleCenter);
+            hud.NoticeText = UiFactory.Edged(UiFactory.Text(hud.SafeRoot, "", 17, new Vector2(680, 48), new Vector2(0, 149),
+                TextAnchor.MiddleCenter));
             hud.NoticeText.rectTransform.anchorMin = hud.NoticeText.rectTransform.anchorMax = new Vector2(.5f, 0);
             var help = UiFactory.Rect("Navigasi", hud.SafeRoot, new Vector2(.5f, 0), new Vector2(590, 48), new Vector2(0, 33));
-            hud.RouteText = UiFactory.Text(help, "", 15, new Vector2(590, 48), Vector2.zero, TextAnchor.MiddleCenter);
+            hud.RouteText = UiFactory.Edged(UiFactory.Text(help, "", 15, new Vector2(590, 48), Vector2.zero, TextAnchor.MiddleCenter));
             SaleDialog.Build(hud);
         }
     }

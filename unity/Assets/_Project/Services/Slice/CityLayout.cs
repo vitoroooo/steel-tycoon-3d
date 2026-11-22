@@ -41,6 +41,7 @@ namespace Steel.Services
         public float X { get; }
         public float Z { get; }
         internal SliceLocation(WorldPoint point) { X = (float)point.X; Z = (float)point.Z; }
+        internal SliceLocation(float x, float z) { X = x; Z = z; }
     }
     public readonly struct PileLocation
     {

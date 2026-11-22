@@ -48,6 +48,13 @@ namespace Steel.Core.Scrap
             return part;
         }
 
+        /// <summary>This scrap bought from someone: looked at, and carrying what was paid for it.</summary>
+        internal ScrapPile Bought(double kg, double paid)
+        {
+            var mine = new ScrapPile(kg, hiddenGrade, dirtFraction, ReuseQuality, paid) { RainHours = RainHours };
+            mine.Inspect(); return mine;
+        }
+
         internal LotSave Snapshot() => new LotSave { grade = (int)hiddenGrade, kg = GrossKg,
             dirt = dirtFraction, quality = ReuseQuality, cost = AcquisitionCost,
             inspected = KnownGrade.HasValue, sorted = IsSorted, rainHours = RainHours };

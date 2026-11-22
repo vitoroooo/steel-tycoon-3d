@@ -1,0 +1,28 @@
+{
+  "restockHours": 2,
+  "concede": 0.4,
+  "insult": 0.6,
+  "spread": 0.08,
+  "step": 50,
+  "reach": 6,
+
+  "houseMinKg": 6, "houseMaxKg": 24,
+  "houseAsk": 0.5, "houseFloor": 0.32,
+  "houseClaim": 0.3, "houseDirt": 0.2, "housePatience": 3,
+  "houseCommon": 3, "houseRare": 1, "houseCommonShare": 0.65,
+
+  "workshopMinKg": 30, "workshopMaxKg": 110,
+  "workshopAsk": 0.68, "workshopFloor": 0.5,
+  "workshopClaim": 0.15, "workshopDirt": 0.1, "workshopPatience": 3,
+  "workshopCommon": 2, "workshopRare": 0, "workshopCommonShare": 0.6,
+
+  "projectMinKg": 180, "projectMaxKg": 700,
+  "projectAsk": 0.74, "projectFloor": 0.56,
+  "projectClaim": 0.12, "projectDirt": 0.14, "projectPatience": 2,
+  "projectCommon": 0, "projectRare": 1, "projectCommonShare": 0.55,
+
+  "marketMinKg": 25, "marketMaxKg": 90,
+  "marketAsk": 0.78, "marketFloor": 0.62,
+  "marketClaim": 0.08, "marketDirt": 0.05, "marketPatience": 4,
+  "marketCommon": 1, "marketRare": 0, "marketCommonShare": 0.5
+}

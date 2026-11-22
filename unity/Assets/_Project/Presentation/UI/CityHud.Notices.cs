@@ -2,6 +2,10 @@ namespace Steel.Presentation.UI
 {
     public sealed partial class CityHud
     {
+        private DoorDeal doors;
+        /// <summary>The dealing screen is only built the first time the player stops at a door.</summary>
+        private void OpenDoor() => (doors ??= new DoorDeal(this, host.Game, input)).Open(host.Game.NearSeller.Id);
+
         private void ToggleCart()
         {
             if (host.Game.Cart.Held) host.Game.ReleaseCart(); else host.Game.GrabCart();

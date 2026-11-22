@@ -52,7 +52,7 @@ namespace Steel.Services
         { clock.Advance(realSeconds); FinishTime(realSeconds); }
         private void FinishTime(double elapsed)
         {
-            session.Fleet.AdvanceTrip(elapsed); session.Routes.Advance(elapsed); session.World.Advance(GameHours);
+            session.Fleet.AdvanceTrip(elapsed); session.Routes.Advance(elapsed); session.World.Advance(GameHours); session.Street.Advance(GameHours);
             FinanceTime();
             session.PayShipment(GameHours); session.FinishHeat(GameHours);
         }

@@ -17,6 +17,7 @@ namespace Steel.Services
             session = new SliceSession(new SliceRules(source.Read("City")),
                 new SliceWorld(source.Read("Piles")), scrap, FleetCatalog.Create(source),
                 new Core.Fleet.CartRules(source.Read("Gerobak")));
+            CreateStreet(source);
         }
         public GameView View => new GameView
         {
@@ -47,6 +48,9 @@ namespace Steel.Services
                     return new InteractionView { Id = "factory", Title = "Pabrik AI", Detail = "Lihat harga & margin sebelum menjual" };
                 var buyer = NearbyBuyer();
                 if (buyer != null) return buyer;
+                var door = NearSeller;
+                if (door != null) return new InteractionView { Id = "seller", Title = door.Title + " · " + door.Place,
+                    Detail = "Jual rongsok kira-kira " + door.StockKg.ToString("0.#") + " kg" };
                 if (session.GrantReady && session.Fleet.Find(FleetCatalog.Triseda).InReach(session.Position))
                     return new InteractionView { Id = "grant", Title = "Hadiah Pak Darto",
                         Detail = "Setoran pertama lunas. Ambil modal motor roda tiga." };

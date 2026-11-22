@@ -71,6 +71,7 @@ namespace Steel.Presentation.UI
                 else if (near.Id == "cart") ToggleCart();
                 else if (near.Id == "grant")
                     NoticeText.text = "Hadiah Pak Darto: " + Money(host.Game.ClaimDealerGrant()) + ". Pilih BELI TRISEDA.";
+                else if (near.Id == "seller") OpenDoor();
                 else if (near.Id == "home" && host.Game.View.CarriedKg == 0) routes.Open();
                 else if (near.Id == "buyer" || near.Id == "home" && host.Game.View.LoadSorted) board.Open();
                 else if (near.Id == "home") sorting.Open(null);

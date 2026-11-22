@@ -15,7 +15,7 @@ namespace Steel.Core.State.Slice
             motors = Fleet.All.Select(m => m.Snapshot()).ToArray(),
             sites = World.Piles.Select(w => new SiteSave { id = w.Id, collected = w.Collected, emptied = w.EmptiedOrder,
                 kg = w.Collected ? 0 : w.Scrap.GrossKg, inspected = w.Scrap.KnownGrade.HasValue, rainHours = w.Scrap.RainHours }).ToArray(),
-            routes = Routes.Snapshot(), quota = Enumerable.Range(0, districts).Select(Routes.Reserved).ToArray()
+            sellers = Street?.Snapshot(), routes = Routes.Snapshot(), quota = Enumerable.Range(0, districts).Select(Routes.Reserved).ToArray()
         };
 
         public void Load(CareerSave s, int districts, long day)
@@ -42,6 +42,7 @@ namespace Steel.Core.State.Slice
                 if (site.inspected) w.Scrap.Inspect();
             }
             Routes.Load(s.routes, s.quota, day);
+            Street?.Load(s.sellers);
         }
     }
 }

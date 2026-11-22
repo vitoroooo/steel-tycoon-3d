@@ -10,6 +10,7 @@ namespace Steel.Core.State.Saving
         public bool firstSale, grant, cartHeld;
         public LotSave[] bag, cart;
         public SiteSave[] sites;
+        public SellerSave[] sellers;
         public MotorSave[] motors;
         public OrderSave[] routes;
         public double[] quota;
@@ -23,6 +24,14 @@ namespace Steel.Core.State.Saving
         public LotSave[] covered;
         public int story;
         public bool motorRoute, readForecast, sheltered, streetTip, guideRead;
+    }
+    [Serializable] public sealed class SellerSave
+    {
+        public string id;
+        public long round;
+        public double kg, claimed, ask;
+        public int patience;
+        public bool weighed, agreed, inspected;
     }
     [Serializable] public sealed class LotSave
     {
