@@ -15,6 +15,7 @@ namespace Steel.Tests.Haul
         {
             src = new OverrideConfigSource(new ResourceConfigSource(), "City", "startCash", 2000000000);
             src = new OverrideConfigSource(src, "Business", "minimumReputation", 1);
+            src = TestConfig.Calm(src);
             city = new CityLayout(src); g = new LocalGameService(src);
             var p = city.Piles[0]; g.SetPosition(p.Position.X, p.Position.Z);
             g.Classify(p.Id, 0, false); g.PickUp(p.Id);

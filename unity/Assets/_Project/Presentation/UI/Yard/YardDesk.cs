@@ -18,7 +18,7 @@ namespace Steel.Presentation.UI
         private int page, grade, district;
         private static readonly string[] Pages = {"Izin & lahan","Alat sortir","Papan setoran","Cuaca",
             "Lahan & angkutan","Pabrik baja","Lini produksi","Tender pemerintah","Lapak satelit",
-            "Perawatan alat","Keuangan","Regu & warga","Pasar jaringan","Kontrak langsung","Asosiasi","Season & grup","Uji performa HP","Catatan Pak Darto"};
+            "Perawatan alat","Keuangan","Regu & warga","Kejadian","Pasar jaringan","Kontrak langsung","Asosiasi","Season & grup","Uji performa HP","Catatan Pak Darto"};
         private bool forms;
         private static string Rp(double n) => "Rp" + n.ToString("N0", CultureInfo.GetCultureInfo("id-ID"));
         internal YardDesk(CityHud hud, IGameService game, SliceInput input)
@@ -73,11 +73,12 @@ namespace Steel.Presentation.UI
             else if (page == 9) DrawMaintenance();
             else if (page == 10) DrawFinance();
             else if (page == 11) DrawCrew();
-            else if (page == 12) DrawNetwork();
-            else if (page == 13) DrawContracts();
-            else if (page == 14) DrawGuild();
-            else if (page == 15) DrawSeason();
-            else if (page == 16) DrawDevice();
+            else if (page == 12) DrawEvents();
+            else if (page == 13) DrawNetwork();
+            else if (page == 14) DrawContracts();
+            else if (page == 15) DrawGuild();
+            else if (page == 16) DrawSeason();
+            else if (page == 17) DrawDevice();
             else DrawGuide();
         }
     }

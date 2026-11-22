@@ -13,6 +13,7 @@ namespace Steel.Tests.Yard
         {
             src = new OverrideConfigSource(new ResourceConfigSource(),"City","startCash",900000000);
             src = new OverrideConfigSource(src,"Business","minimumReputation",1);
+            src = TestConfig.Calm(src);
             city = new CityLayout(src); g = new LocalGameService(src);
             g.SetPosition(city.Home.X,city.Home.Z);
         }

@@ -24,7 +24,8 @@ namespace Steel.Core.State.Slice
         public ContrabandOffer? Contraband(double hour, double perKg)
         {
             long day = SpkRules.Day(hour);
-            return Yard.bandar && Risk.offerDay != day ? ContrabandOffer.On(day, perKg, RiskTerms) : null;
+            // a raid is a major bad event, so the offers that lead to one start after the newcomer's protection (appendix E)
+            return Yard.bandar && Risk.offerDay != day && hour >= Rule("newcomerHours") ? ContrabandOffer.On(day, perKg, RiskTerms) : null;
         }
 
         /// <summary>Takes the load: heat rises, and either it sells through quietly or a raid seizes it. True when raided.</summary>
@@ -34,6 +35,7 @@ namespace Steel.Core.State.Slice
             bool raided = Risk.Roll(RiskTerms.RaidChance(Risk.heat, Risk.Protected(hour)));
             Risk.heat += RiskTerms.Get("heatPerLoad");
             if (!raided) { CreditProceeds(offer.Gain, offer.Gain); Risk.note = offer.Name + " lolos. Sorotan naik."; return false; }
+            RecordCrewEvent(hour);
             double twice = Risk.exposed ? RiskTerms.Get("exposedFactor") : 1;
             ChargeOperatingExpense(offer.Fine * twice);
             Yard.reputation = (int)CrewSave.Meter(Yard.reputation - RiskTerms.Get("raidReputation") * twice);

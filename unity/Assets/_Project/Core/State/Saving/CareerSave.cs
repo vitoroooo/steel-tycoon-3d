@@ -14,6 +14,7 @@ namespace Steel.Core.State.Saving
         public Steel.Core.Trade.Haul.TruckLoad[] loads;
         public Steel.Core.Trade.Spk.SpkSave spk;
         public Steel.Core.Risk.RiskSave risk;
+        public Steel.Core.Events.EventSave events;
         public MotorSave[] motors;
         public OrderSave[] routes;
         public double[] quota;

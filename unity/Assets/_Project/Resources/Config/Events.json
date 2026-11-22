@@ -1,0 +1,21 @@
+{
+  "dirtyChance": 0.12,
+  "dirtMin": 0.08,
+  "dirtMax": 0.25,
+  "dirtyAnswerHours": 6,
+  "honestHours": 72,
+  "strikeChance": 0.1,
+  "strikeSupply": 0.5,
+  "spikeRise": 0.08,
+  "spikeWindowHours": 144,
+  "inspectChance": 0.05,
+  "openShredderFactor": 2,
+  "inspectFine": 100000000,
+  "flashChance": 0.2,
+  "flashHours": 24,
+  "flashMinKg": 5000,
+  "flashMaxKg": 15000,
+  "flashPremium": 1.08,
+  "flashReputation": 2,
+  "flashFailReputation": 5
+}

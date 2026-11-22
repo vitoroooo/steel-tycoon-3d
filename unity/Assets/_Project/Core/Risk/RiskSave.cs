@@ -47,13 +47,6 @@ namespace Steel.Core.Risk
         }
 
         /// <summary>The next number in this career's own sequence, so a reload cannot roll again.</summary>
-        internal bool Roll(double chance)
-        {
-            if (chance <= 0) return false;
-            sequence = sequence == int.MaxValue ? 1 : sequence + 1;
-            uint hash = unchecked((uint)sequence * 747796405u + 2891336453u);
-            hash = unchecked(((hash >> (int)((hash >> 28) + 4)) ^ hash) * 277803737u);
-            return ((hash >> 22) ^ hash) / 4294967296d < chance;
-        }
+        internal bool Roll(double chance) => State.Dice.Roll(ref sequence, chance);
     }
 }

@@ -19,6 +19,7 @@ namespace Steel.Services
                 new Core.Fleet.CartRules(source.Read("Gerobak")));
             CreateStreet(source); CreateHaul(source); session.OpenSpk(new Steel.Core.Trade.Spk.SpkRules(source.Read("Spk")));
             session.OpenRisk(new Steel.Core.Risk.RiskRules(source.Read("Risk")));
+            session.OpenEvents(new Steel.Core.Events.EventRules(source.Read("Events")));
         }
         public GameView View => new GameView
         {

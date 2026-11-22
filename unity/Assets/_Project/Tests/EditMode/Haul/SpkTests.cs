@@ -19,6 +19,7 @@ namespace Steel.Tests.Haul
             foreach (string slot in new[] { "slot0", "slot1", "slot2" })   // any order may be taken, and one truck load fills the small one
                 src = new OverrideConfigSource(src, "Spk", slot + "Reputation", 0);
             src = new OverrideConfigSource(new OverrideConfigSource(src, "Spk", "slot0MinTonnes", 5), "Spk", "slot0MaxTonnes", 5);
+            src = TestConfig.Calm(src);
             city = new CityLayout(src); g = new LocalGameService(src);
             var p = city.Piles[0]; g.SetPosition(p.Position.X, p.Position.Z);
             g.Classify(p.Id, 0, false); g.PickUp(p.Id);
