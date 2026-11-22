@@ -10,6 +10,7 @@ namespace Steel.Editor
         internal static GameObject Place(string name, Vector3 position, float height, float yaw = 0,
             Transform parent = null, string part = null)
         {
+            if (part == null && Map.LightProps.Has(name)) return Map.LightProps.Place(name, position, height, yaw, parent);
             string path = name == "Pickup" ? "Assets/ThirdParty/Quaternius/Pickup.glb" :
                 "Assets/ThirdParty/PolyHavenModels/" + name + "/" + name + ".gltf";
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);

@@ -51,6 +51,7 @@ namespace Steel.Editor.Plan.Town
         internal static void Roof(Strip strip, Lot lot, Tone tone, Tone end, Vector3 centre, float width, float depth, float rise, float hip)
         {
             float w = width / 2, d = depth / 2, eave = centre.y, ridge = centre.y + rise;
+            hip = Mathf.Min(hip, w);   // a roof deeper than it is wide comes to a point instead of crossing over
             Vector3 left = lot.Point(centre.x - w + hip, ridge, centre.z), right = lot.Point(centre.x + w - hip, ridge, centre.z);
             foreach (int side in new[] { -1, 1 })
             {

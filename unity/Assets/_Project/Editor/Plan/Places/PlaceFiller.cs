@@ -22,9 +22,10 @@ namespace Steel.Editor.Plan.Places
                 Carpet.Lay(kit, grid, place);
                 foreach (Lot board in LotPacker.Pack(grid, place, BoardSize, .2f, 1))
                     Props.Board(kit, board, StyleBook.Title(plan.places[place]));
+                int built = 0;
                 foreach (Lot lot in LotPacker.Pack(grid, place, style.Sizes, style.Gap))
                 {
-                    style.Build(kit, lot); lots++;
+                    (built++ == 0 && style.Landmark != null ? style.Landmark : style.Build)(kit, lot); lots++;
                 }
                 extras += Scatter(grid, kit, place, style);
             }
