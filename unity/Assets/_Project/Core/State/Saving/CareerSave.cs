@@ -15,6 +15,7 @@ namespace Steel.Core.State.Saving
         public double[] quota;
         public bool magnet, xrf;
         public YardSave yard;
+        public MillSave mill;
         public LotSave[] covered;
         public int story;
         public bool motorRoute, readForecast, sheltered;

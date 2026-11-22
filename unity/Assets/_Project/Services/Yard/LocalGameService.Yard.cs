@@ -32,7 +32,7 @@ namespace Steel.Services
         public YardView YardInfo(int grade)
         {
             var y = session.Yard;
-            return new YardView { Rep = y.reputation, Caste = y.bandar ? 2 : 1, Cash = session.Cash,
+            return new YardView { Rep = y.reputation, Caste = session.Caste, Cash = session.Cash,
                 PermitFiled = y.applied, PermitHours = Math.Max(0,y.permitHour - GameHours),
                 Leased = y.leaseUntil > GameHours, LeaseHours = Math.Max(0,y.leaseUntil - GameHours),
                 Stock = y.stock[grade], Bid = y.bids[grade], Floor = CounterRate(grade),

@@ -19,6 +19,7 @@ namespace Steel.Services
             if (source == null) throw new ArgumentNullException(nameof(source));
             var time = new TimeConfig(source.Read("Time"));
             business = new Core.State.ConfigValues(source.Read("Business"));
+            millRules = new Core.State.ConfigValues(source.Read("Mill"));
             queueLimit = time.OfflineCapRealSeconds;
             routeConfig = new Core.State.ConfigValues(source.Read("Routes"));
             var economy = new EconomyConfig(source.Read("Economy"));
@@ -41,7 +42,10 @@ namespace Steel.Services
         public void Advance(double realSeconds)
         { clock.Advance(realSeconds); FinishTime(realSeconds); }
         private void FinishTime(double elapsed)
-        { session.Fleet.AdvanceTrip(elapsed); session.Routes.Advance(elapsed); session.PayShipment(GameHours); }
+        {
+            session.Fleet.AdvanceTrip(elapsed); session.Routes.Advance(elapsed);
+            session.PayShipment(GameHours); session.FinishHeat(GameHours);
+        }
         public double CatchUp(double elapsedRealSeconds)
         {
             double applied = clock.CatchUp(elapsedRealSeconds);
