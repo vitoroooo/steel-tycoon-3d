@@ -18,6 +18,7 @@ namespace Steel.Presentation.UI
         private RouteDesk routes;
         private MarketBoard board;
         private SortingDesk sorting;
+        private DartoLetter letter;
         internal void RefreshNow() => nextReadout = 0;
         private string lastSaveNotice;
         private readonly CultureInfo culture = CultureInfo.GetCultureInfo("id-ID");
@@ -28,7 +29,7 @@ namespace Steel.Presentation.UI
             drivers = FindObjectsOfType<MotorDriver>();
             board = new MarketBoard(this, host.Game, input);
             sorting = new SortingDesk(this, host.Game, input);
-            new YardDesk(this, host.Game, input); new DartoLetter(this, host.Game, input);
+            new YardDesk(this, host.Game, input); letter = new DartoLetter(this, host.Game, input);
             routes = new RouteDesk(this, host.Game, input, board.Open);
             NoticeText.text = lastSaveNotice = host.SaveNotice;
         }
@@ -45,7 +46,7 @@ namespace Steel.Presentation.UI
             MarketText.text = "IBN  " + Money(v.Ibn) + "/kg\n" + (host.Game.RainHere ? "Hujan · " : "") + "Hari " +
                 (1 + Math.Floor(v.GameHours / 24)) + "   " + ((int)v.GameHours % 24).ToString("00") + ":" +
                 ((int)(v.GameHours % 1 * 60)).ToString("00");
-            RouteText.text = DartoDirections.Hint(host.Game, v, host.Layout);
+            RouteText.text = DartoDirections.Hint(host.Game, v, host.Layout); letter.Refresh();
             string action = ActionLabel(near, v);
             ActionText.text = action;
             ActionPad.blocksRaycasts = near != null; ActionPad.alpha = near != null ? 1 : 0;
@@ -75,13 +76,8 @@ namespace Steel.Presentation.UI
                 else if (near.Id == "home") sorting.Open(null);
                 else if (near.Id == "factory") ShowOffer();
                 else if (!near.Inspected) sorting.Open(near.Id);
-                else { host.Game.PickUp(near.Id); NoticeText.text = "Rongsok dipungut. Sortir di lapak Anda."; }
+                else { host.Game.PickUp(near.Id); NoticeText.text = PickedUp(); }
             });
-        }
-        private void ToggleCart()
-        {
-            if (host.Game.Cart.Held) host.Game.ReleaseCart(); else host.Game.GrabCart();
-            NoticeText.text = host.Game.Cart.Held ? "Gerobak didorong. Muatan sampai 50 kg." : "Gerobak diparkir.";
         }
         private void ShowOffer()
         {

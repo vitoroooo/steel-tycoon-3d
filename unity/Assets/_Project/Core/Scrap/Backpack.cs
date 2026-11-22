@@ -24,7 +24,9 @@ namespace Steel.Core.Scrap
             if (items.Contains(pile)) throw new InvalidOperationException("Tumpukan sudah dibawa.");
             if (!pile.KnownGrade.HasValue) throw new InvalidOperationException("Periksa grade terlebih dahulu.");
             if (CarriedKg + pile.GrossKg > CapacityKg)
-                throw new InvalidOperationException("Muatan penuh. Sortir dan jual dahulu.");
+                throw new InvalidOperationException(pile.GrossKg > CapacityKg
+                    ? "Terlalu berat: " + pile.GrossKg + " kg, daya angkut " + CapacityKg + " kg. Pakai gerobak atau kendaraan."
+                    : "Muatan penuh. Sortir dan jual dahulu.");
             items.Add(pile); CarriedKg += pile.GrossKg; Revision++;
         }
         public void Sort()

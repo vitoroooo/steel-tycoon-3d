@@ -22,7 +22,7 @@ namespace Steel.Core.State.Saving
         public Steel.Core.Crew.CrewSave crew;
         public LotSave[] covered;
         public int story;
-        public bool motorRoute, readForecast, sheltered;
+        public bool motorRoute, readForecast, sheltered, streetTip;
     }
     [Serializable] public sealed class LotSave
     {
@@ -36,6 +36,7 @@ namespace Steel.Core.State.Saving
         public string id;
         public bool inspected, collected;
         public int rainHours;
+        public long emptied;
     }
     [Serializable] public sealed class MotorSave
     {

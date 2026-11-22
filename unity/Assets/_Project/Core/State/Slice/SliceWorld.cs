@@ -1,19 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Steel.Core.Scrap;
 
 namespace Steel.Core.State.Slice
 {
+    /// <summary>Street scrap sites. Residents refill one emptied site every RestockHours game hours.</summary>
     public sealed class SliceWorld
     {
         private readonly List<WorldPile> piles = new List<WorldPile>();
         public IReadOnlyList<WorldPile> Piles => piles.AsReadOnly();
-        private readonly int supplyHours;
+        public int RestockHours { get; }
+        private long emptied;
         public SliceWorld(string json)
         {
             var v = new ConfigValues(json);
-            supplyHours = v.Integer("supplyHours");
-            if (supplyHours == 0) throw new ArgumentOutOfRangeException("supplyHours");
+            RestockHours = v.Integer("restockHours");
+            if (RestockHours == 0) throw new ArgumentOutOfRangeException("restockHours");
             int count = v.Integer("count");
             if (count < 0) throw new ArgumentOutOfRangeException("count");
             for (int i = 0; i < count; i++)
@@ -24,10 +27,26 @@ namespace Steel.Core.State.Slice
                         v.Optional(id + "dirt", 0), v.Optional(id + "quality", 0))));
             }
         }
+
+        public int Available => piles.Count(p => !p.Collected);
+
+        /// <summary>Game hours from the given clock reading until the next site is refilled.</summary>
+        public double HoursToRestock(double gameHours) => RestockHours - gameHours % RestockHours;
+
+        internal void Empty(WorldPile pile) => pile.Empty(++emptied);
+
+        /// <summary>Restores a saved site; sites emptied before the queue existed keep their listed order.</summary>
+        internal void Restore(WorldPile pile, bool collected, long order)
+        {
+            if (order < 0) throw new FormatException("Urutan tumpukan tidak valid.");
+            if (collected) pile.Empty(order); else pile.Restock();
+            emptied = Math.Max(emptied, order);
+        }
+
         public void OnHour(long hour)
         {
-            if (hour > 0 && hour % supplyHours == 0)
-                foreach (var pile in piles) pile.Restock();
+            if (hour <= 0 || hour % RestockHours != 0) return;
+            piles.Where(p => p.Collected).OrderBy(p => p.EmptiedOrder).FirstOrDefault()?.Restock();
         }
 
         public WorldPile Find(string id) => piles.Find(p => p.Id == id) ??

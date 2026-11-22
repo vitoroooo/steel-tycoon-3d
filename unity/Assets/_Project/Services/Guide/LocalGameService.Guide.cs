@@ -41,11 +41,14 @@ namespace Steel.Services
             }
         }
         private void SaveGuide(CareerSave s)
-        { s.story = Story; s.motorRoute = MotorRoute; s.readForecast = ReadWeather; s.sheltered = StoredUnderRoof; }
+        {
+            s.story = Story; s.motorRoute = MotorRoute; s.readForecast = ReadWeather;
+            s.sheltered = StoredUnderRoof; s.streetTip = StreetTipRead;
+        }
         private void LoadGuide(CareerSave s)
         {
             Story = s.firstSale ? 2 : Math.Max(0,Math.Min(2,s.story)); MotorRoute = s.motorRoute;
-            ReadWeather = s.readForecast; StoredUnderRoof = s.sheltered;
+            ReadWeather = s.readForecast; StoredUnderRoof = s.sheltered; StreetTipRead = s.streetTip;
         }
     }
 }

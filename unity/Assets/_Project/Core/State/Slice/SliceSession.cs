@@ -40,7 +40,7 @@ namespace Steel.Core.State.Slice
         public void Inspect(string id) => Available(id).Scrap.Inspect();
         public void PickUp(string id)
         {
-            var pile = Available(id); Bag.Add(pile.Scrap); pile.Collected = true;
+            var pile = Available(id); Bag.Add(pile.Scrap); World.Empty(pile);
         }
         public void SortAtHome() { RequireNear(Rules.Home); Bag.Sort(); }
         public SaleOffer Preview(AiQuote prices)

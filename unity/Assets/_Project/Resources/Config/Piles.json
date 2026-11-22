@@ -1,5 +1,5 @@
 {
-  "supplyHours": 24,
+  "restockHours": 1,
   "count": 10,
   "p0x": -15,
   "p0z": 8,

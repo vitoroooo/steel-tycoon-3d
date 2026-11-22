@@ -20,14 +20,19 @@ namespace Steel.Presentation.UI
             envelope.gameObject.AddComponent<OpenLedger>().Open = () =>
             {
                 if (input.IsBlocked) return;
-                game.ReadStory(); Refresh();
+                if (game.Story < 2) game.ReadStory(); else game.ReadStreetTip();
+                Refresh();
             };
             Refresh();
         }
-        private void Refresh()
+        /// <summary>Called with the HUD readout so the letter returns the moment the street runs out of scrap.</summary>
+        internal void Refresh()
         {
-            envelope.gameObject.SetActive(game.Story < 2);
-            story.text = game.Story == 0 ? "Pak Darto  ·  1/2\nGerobak ini buat kamu. Ada Rp500 ribu untuk memulai lapak.  ›" :
+            var income = game.Story < 2 || game.StreetTipRead ? null : game.Income;
+            bool bare = income != null && income.StreetSites == 0;
+            envelope.gameObject.SetActive(game.Story < 2 || bare);
+            if (bare) story.text = IncomeHint.Letter(income);
+            else story.text = game.Story == 0 ? "Pak Darto  ·  1/2\nGerobak ini buat kamu. Ada Rp500 ribu untuk memulai lapak.  ›" :
                 "Pak Darto  ·  2/2\nCari pelat bekas di gang. Periksa, pungut, lalu bawa pulang untuk disortir.  ›";
         }
     }
