@@ -48,6 +48,22 @@ namespace Steel.PlayTests.Boot
             Assert.AreEqual(MenuStage.Menu, BootStage.Screen.Flow.Stage);
         }
 
+        [UnityTest] public IEnumerator EveryCaptionStaysOnOneLine()
+        {
+            foreach (var career in new[] { Saved, CareerSummary.Empty, CareerSummary.Unreadable })
+            {
+                yield return BootStage.OpenMenu(career, Profiles());
+                var boot = BootStage.Screen;
+                for (int step = 0; step < 3; step++, boot.Menu.Graphics.onClick.Invoke())
+                {
+                    Canvas.ForceUpdateCanvases();
+                    foreach (var caption in boot.GetComponentsInChildren<Text>(true))
+                        if (caption.GetComponentInParent<Button>() && caption.gameObject.activeInHierarchy)
+                            Assert.AreEqual(1, caption.cachedTextGenerator.lineCount, caption.text);
+                }
+            }
+        }
+
         [UnityTest] public IEnumerator MenuWithoutProfilesOrSavedCareerShowsOnlyPlay()
         {
             yield return BootStage.OpenMenu(CareerSummary.Empty, null);
