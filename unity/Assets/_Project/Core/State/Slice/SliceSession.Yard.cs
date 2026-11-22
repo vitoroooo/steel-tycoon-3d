@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Steel.Core.Equipment;
 
 namespace Steel.Core.State.Slice
 {
@@ -47,6 +48,8 @@ namespace Steel.Core.State.Slice
             if (!Yard.bandar || hour >= Yard.leaseUntil || Yard.bids[grade] < floorRate) return;
             double price = Yard.bids[grade] * kg;
             if (Cash < price || Yard.stock.Sum() + kg > capacity) return;
+            if (kg > Maintenance.ScaleCapacity || UseMachine(false, hour, Maintenance.ScaleHours,
+                kg / Maintenance.ScaleCapacity) != WorkResult.Completed) return;
             Pay(price); Yard.stock[grade] += kg;
             if (grade == 0) Yard.exposed.Add(new Saving.SteelBatch { kg = kg });
         }
@@ -58,9 +61,15 @@ namespace Steel.Core.State.Slice
             if (Yard.payout > 0) throw new InvalidOperationException("Trailer sebelumnya masih bongkar muat.");
             double net = Yard.InvoiceWeight(grade,kg,false)*price - freight;
             if (net <= 0) throw new InvalidOperationException("Nilai kiriman tidak menutup ongkos.");
-            AdmitTrailer(hour,soil); Yard.stock[grade] -= kg; Yard.InvoiceWeight(grade,kg,true);
+            if (kg > Maintenance.TrailerCapacity) throw new InvalidOperationException("Muatan melebihi kapasitas trailer.");
+            if (Yard.Machine(true, hour).condition <= 0)
+                throw new InvalidOperationException("Perbaiki loader di halaman Perawatan alat.");
+            double duration = kg / Maintenance.LoaderRate * (soil != 0 && !Yard.paved ? 1.3 : 1);
+            AdmitTrailer(hour, soil);
+            WorkLoader(hour, duration, kg / Maintenance.TrailerCapacity);
+            Yard.stock[grade] -= kg; Yard.InvoiceWeight(grade,kg,true);
             Yard.payout = net; Yard.dispatchedKg = kg;
-            Yard.unloadHour = hour + kg/10000 * (soil != 0 && !Yard.paved ? 1.3 : 1);
+            Yard.unloadHour = hour + duration;
             return net;
         }
     }
