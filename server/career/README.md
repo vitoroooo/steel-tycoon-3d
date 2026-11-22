@@ -45,6 +45,7 @@ Semua permintaan `POST` dengan `Authorization: Bearer <token>`. Bentuk pesannya 
 |---|---|
 | `Host/Accounts` | token akun dari basis data pasar |
 | `Host/Careers` | karier per akun, jamnya, penyimpanannya (tabel `careers`), dan dompet bersama pasar (`Wallet.cs`) |
+| `Host/City` | kota bersama: siapa yang ada di kota (`TownSquare`), papan harga lapak (`TownYards`), periksa posisi (`MoveGuard`) |
 | `Host/Http` | alamat HTTP |
 | `Host/Generate` | menulis `RemoteGameService` milik game dari `IGameService` |
 | `Host/Unity` | pengganti kecil `UnityEngine` (JSON, Resources, Vector2) supaya kode game terkompilasi di server |
@@ -74,11 +75,31 @@ Kas dan stok HMS 1 akun pasar (`traders.cash`, `traders.stock`) adalah kas karie
 - Tutup season di pasar mengosongkan `careers` dan `wallets`; karier baru dibuka pada panggilan berikutnya.
 - Di game, halaman pasar, kontrak, asosiasi, dan season tersambung sendiri dengan akun **Main online** (`GameHost.Market`).
 
+## Kota bersama
+
+Tiap jawaban server juga membawa `others` (pemain lain) dan `yards` (papan harga lapak pemain lain).
+
+- **Pemain lain.** Paling banyak 12 pemain terdekat yang masih mengirim dalam 15 detik terakhir; game menampilkan
+  mereka berjalan dengan namanya (`Presentation/World/Town/Ghost.cs`).
+- **Papan harga (PRD 5.2).** Lapak bandar yang aktif dan punya harga beli tampil di kavling 2 sampai 6 kota pemain lain.
+  Pemain berdiri di pos kavling dengan muatan tersortir dan menyetor (`SellToPlayerYard`): server memeriksa posisi,
+  harga, sisa kapasitas, dan kas pembeli, lalu dalam satu transaksi memindahkan kas ke penjual dan besi ke lapak
+  pembeli (`CareerBook.Turn.cs`), juga saat pembeli sedang tidak bermain.
+- **Posisi.** `MoveGuard` menolak posisi yang tidak mungkin dicapai: pejalan dibatasi laju jalan, kendaraan yang
+  dikemudikan dibatasi laju puncaknya (keduanya dengan kelonggaran 30% dan 10 m), kendaraan parkir tidak berpindah.
+  Aksi yang bergantung pada posisi palsu lalu ditolak aturan game di server, dan HP menerima karier versi server.
+  Argumen `roam` mematikan pemeriksaan ini; hanya untuk tes yang memindahkan pemain seketika.
+
 ## Belum ada
+
+- Kavling 1 selalu lapak pemain itu sendiri, jadi lapak yang sama tampil di kavling berbeda bagi pemain berbeda, dan
+  pemain lain yang berdiri di lapaknya sendiri tampak berdiri di kavling 1 Anda. Kota hanya punya 6 kavling lapak.
+- Semua karier dimuat ke memori saat server menyala dan batch dijalankan satu per satu; cukup untuk uji kecil,
+  belum untuk ribuan pemain.
 
 - Lot yang dibeli tidak diperiksa terhadap kapasitas lapak, dan pemain Kasta 1 bisa menyimpan HMS 1 dari pasar.
 - Nilai usaha saat tutup season hanya menghitung kas dan HMS 1, belum truk, alat, dan pabrik.
 - Stok kejar ketinggalan pemain yang masuk di tengah season tidak terbawa ke karier.
 - Season baru ditutup saat ada yang membuka pasar, bukan oleh jam server karier.
-- Posisi pemain dan truk dipercaya dari HP; kecepatan gerak belum diperiksa.
+- Pemeriksaan posisi hanya soal jarak dan laju; menembus tembok atau bangunan tidak diperiksa.
 - Saat server tidak terjangkau, pemain masih bisa bermain di salinan HP; hasilnya baru sah setelah server menjawab.

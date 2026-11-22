@@ -17,7 +17,9 @@ namespace Steel.Career.Careers
         {
             if (open.TryGetValue(account, out Career held)) return held;
             CareerRecord saved = store.Read(db, account);
-            return open[account] = saved == null ? new Career(rules, now) : new Career(rules, saved);
+            Career career = saved == null ? new Career(rules, now) : new Career(rules, saved);
+            if (!Roaming) career.Guard();
+            return open[account] = career;
         }
 
         /// <summary>One career's turn: the market's changes come in, the work runs, what it sold to other players is

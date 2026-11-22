@@ -1,10 +1,18 @@
 using Steel.Core.Trade.Town;
+using Steel.Services;
+using Steel.Services.Remote;
 
 namespace Steel.Career.Careers
 {
     /// <summary>What the shared city needs of a career: where its player is, and its yard's buying board.</summary>
     public sealed partial class Career
     {
+        /// <summary>The check on reported positions; null lets a phone say anything, as the tests that teleport need.</summary>
+        public City.MoveGuard Moves { get; private set; }
+        public void Guard() => Moves = new City.MoveGuard(new CityLayout(rules), game.ClockSeconds);
+        private RemoteResult Run(RemoteCall call) => Moves?.Refuses(game, call) is string why
+            ? new RemoteResult { ok = false, error = why } : RemoteRunner.Run(game, call);
+
         public float X => game.PresenceX;
         public float Z => game.PresenceZ;
         public string Vehicle => game.PresenceVehicle;

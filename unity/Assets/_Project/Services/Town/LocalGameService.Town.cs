@@ -54,10 +54,9 @@ namespace Steel.Services
             foreach (PlayerYardView yard in PlayerYards)
                 if (session.Position.Distance(new WorldPoint(yard.X, yard.Z)) <= session.Haul.DeskReach)
                     return new InteractionView { Id = "playeryard", Title = "Lapak " + yard.Owner + " (pemain)",
-                        Detail = yard.Offer > 0 ? "Muatan Anda dibeli Rp" + yard.Offer.ToString("N0", Id) : yard.Why };
+                        Detail = yard.Offer > 0 ? "Muatan Anda dibeli " + StreetText.Rupiah(yard.Offer) : yard.Why };
             return null;
         }
-        private static readonly System.Globalization.CultureInfo Id = System.Globalization.CultureInfo.GetCultureInfo("id-ID");
 
         public double SellToPlayerYard(int plot) => session.DeliverTo(plot, PlotPost(plot));
 

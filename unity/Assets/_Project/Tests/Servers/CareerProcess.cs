@@ -19,11 +19,12 @@ namespace Steel.TestServers
         /// <summary>A second account, which only trades on the market.</summary>
         public string Neighbour() => market.IssueToken(false);
 
-        public void Start()
+        /// <summary>A guarded server checks reported positions as the public one does; the others let a test teleport.</summary>
+        public void Start(bool guarded = false)
         {
             market.Start();
             string folder = Path.Combine(market.Root, "server/career/bin"), resources =
-                "\"" + market.Database + "\" \"" + Path.Combine(market.Root, "unity/Assets/_Project/Resources") + "\" 0";
+                "\"" + market.Database + "\" \"" + Path.Combine(market.Root, "unity/Assets/_Project/Resources") + "\" 0" + (guarded ? "" : " roam");
             string alone = Path.Combine(folder, "selfhost/Steel.Career"), library = Path.Combine(folder, "Debug/net8.0/Steel.Career.dll");
             if (!File.Exists(alone) && !File.Exists(library))
                 Assert.Ignore("Uji server karier memerlukan server/career yang sudah dibangun (lihat server/career/README.md).");

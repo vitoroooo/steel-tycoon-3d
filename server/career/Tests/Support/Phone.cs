@@ -46,6 +46,20 @@ namespace Steel.Career.Tests.Support
 
         public void Go(SliceLocation place) => Do("SetPosition", place.X, place.Z);
 
+        /// <summary>Walks there at the rules' pace and tells the server every two seconds, as the game does.</summary>
+        public void Walk(SliceLocation to)
+        {
+            for (GameView me = Game.View; ; me = Game.View)
+            {
+                double dx = to.X - me.PlayerX, dz = to.Z - me.PlayerZ, left = System.Math.Sqrt(dx * dx + dz * dz);
+                if (left < 0.01) return;
+                double step = System.Math.Min(left, Map.MoveSpeed * 2);
+                Play(step / Map.MoveSpeed);
+                Do("SetPosition", (float)(me.PlayerX + dx / left * step), (float)(me.PlayerZ + dz / left * step));
+                Send();
+            }
+        }
+
         public RemoteReply Send(string digest = null)
         {
             var batch = new RemoteBatch { seq = Seq + 1, calls = waiting.ToArray(), digest = digest ?? Game.Digest(),

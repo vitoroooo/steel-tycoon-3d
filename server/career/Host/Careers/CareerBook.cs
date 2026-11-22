@@ -24,6 +24,8 @@ namespace Steel.Career.Careers
         /// <summary>The shared city: every answer also tells a phone who else is in it and which yards are buying.</summary>
         public City.TownSquare Square { get; } = new City.TownSquare();
         public City.TownYards Yards { get; } = new City.TownYards();
+        /// <summary>True believes every position a phone reports. Only for tests that put a player somewhere at once.</summary>
+        public bool Roaming { get; set; }
 
         public CareerBook(IConfigSource rules, CareerStore store, Func<long> nowMs)
         {

@@ -20,12 +20,13 @@ namespace Steel.Career.Tests.Support
         public readonly IConfigSource Rules = new ResourceConfigSource();
         public long NowMs = 1_800_000_000_000;
 
-        public Town()
+        /// <summary>A guarded town checks reported positions as the public server does; the others let a test teleport.</summary>
+        public Town(bool guarded = false)
         {
             UnityEngine.Resources.Root = Resources;
             Market("trader", "Pembuka");
             Accounts = new AccountBook(Database);
-            Careers = new CareerBook(Rules, new CareerStore(Accounts), () => NowMs);
+            Careers = new CareerBook(Rules, new CareerStore(Accounts), () => NowMs) { Roaming = !guarded };
         }
 
         public void Pass(double seconds) => NowMs += (long)Math.Round(seconds * 1000);

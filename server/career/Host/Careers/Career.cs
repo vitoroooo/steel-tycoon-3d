@@ -37,6 +37,7 @@ namespace Steel.Career.Careers
         public RemoteReply Open(long nowMs)
         {
             ComeBack(nowMs);
+            Moves?.Rest(game.ClockSeconds);
             return Answer(new RemoteResult[0], null, nowMs);
         }
 
@@ -50,7 +51,7 @@ namespace Steel.Career.Careers
             RemoteResult[] results = calls.Select(call =>
             {
                 drifted |= RunTo(call?.at ?? double.NaN, nowMs);
-                return RemoteRunner.Run(game, call);
+                return Run(call);
             }).ToArray();
             drifted |= RunTo(batch.at, nowMs);
             // a phone whose clock is not the server's gets the server's career back, at the server's time
@@ -73,7 +74,7 @@ namespace Steel.Career.Careers
         private void ComeBack(long nowMs)
         {
             double away = clock.AwayFor(nowMs);
-            if (away > CareerClock.AwaySeconds) { game.CatchUp(away); clock.Anchor(game.ClockSeconds, nowMs); }
+            if (away > CareerClock.AwaySeconds) { game.CatchUp(away); clock.Anchor(game.ClockSeconds, nowMs); Moves?.Rest(game.ClockSeconds); }
             clock.Seen(nowMs);
         }
 
