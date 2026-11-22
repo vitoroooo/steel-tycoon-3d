@@ -25,7 +25,7 @@ namespace Steel.Editor.Buildings
 
         internal static Material Opaque(string name, string colour, Vector2 tiling, float smooth)
         {
-            var mat = CityMaterials.Plain(name, Color.white, 0, smooth);
+            var mat = CityMaterials.Textured(name, Color.white, smooth);
             mat.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>(Folder + colour + ".png"));
             mat.SetTextureScale("_BaseMap", tiling);
             EditorUtility.SetDirty(mat);

@@ -42,7 +42,7 @@ namespace Steel.Editor.Ground
 
         private static Material Material(string name, string texture, Color tint, float smoothness)
         {
-            var material = CityMaterials.Plain(name, tint, 0, smoothness);
+            var material = CityMaterials.Textured(name, tint, smoothness);
             material.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_Project/Textures/Ground/" + texture + ".png"));
             Transparency.Apply(material);
             EditorUtility.SetDirty(material);

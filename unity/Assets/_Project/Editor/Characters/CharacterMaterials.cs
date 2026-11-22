@@ -14,7 +14,7 @@ namespace Steel.Editor.Characters
 
         private static Material Opaque(CharacterSpec spec, string part)
         {
-            var material = CityMaterials.Plain(spec.Folder + " " + part, Color.white, 0, .22f);
+            var material = CityMaterials.Textured(spec.Folder + " " + part, Color.white, .22f);
             material.SetTexture("_BaseMap", Load(spec.TexturePath(part, "color", ".jpg")));
             material.SetTexture("_BumpMap", Load(spec.TexturePath(part, "normal", ".png")));
             material.EnableKeyword("_NORMALMAP");
@@ -24,7 +24,7 @@ namespace Steel.Editor.Characters
 
         private static Material Hair(CharacterSpec spec)
         {
-            var material = CityMaterials.Plain(spec.Folder + " hair", Color.white, 0, .15f);
+            var material = CityMaterials.Textured(spec.Folder + " hair", Color.white, .15f);
             material.SetTexture("_BaseMap", Load(spec.TexturePath("opacity", "color", ".png")));
             material.SetFloat("_AlphaClip", 1);
             material.SetFloat("_Cutoff", .4f);
