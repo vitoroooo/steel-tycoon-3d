@@ -14,7 +14,7 @@ namespace Steel.Core.State.Slice
         public void RestoreCrew(CrewSave saved) => Crew = CrewSave.Restore(saved);
         private double Rule(string key) => crewRules.Get(key);
         public double CrewQueueLimit(double standard) =>
-            standard * (Yard.bandar && Crew.senior ? Rule("seniorCapFactor") : 1);
+            standard * (Yard.bandar && Crew.senior ? Rule("seniorCapFactor") : 1) + LegacyQueueSeconds;
 
         private void RequireCrewDesk()
         {

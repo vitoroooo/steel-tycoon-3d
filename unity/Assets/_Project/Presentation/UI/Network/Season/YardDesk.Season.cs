@@ -39,6 +39,7 @@ namespace Steel.Presentation.UI
                     Key(1,"Kota sebelumnya",() => seasonPast = (seasonPast + 1) % group.history.Length);
             }
             if (group.choose) Key(0,"Pilih bekal",() => { forms = true; legacyPicks.Clear(); networkMessage = ""; });
+            else if (group.picks.Length > 0) DrawLegacyUse(group);
             Key(2,"Muat ulang",() => NetworkRun(network.Refresh));
         }
 

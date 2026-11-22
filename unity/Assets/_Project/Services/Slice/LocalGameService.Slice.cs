@@ -20,6 +20,7 @@ namespace Steel.Services
             CreateStreet(source); CreateHaul(source); session.OpenSpk(new Steel.Core.Trade.Spk.SpkRules(source.Read("Spk")));
             session.OpenRisk(new Steel.Core.Risk.RiskRules(source.Read("Risk")));
             session.OpenEvents(new Steel.Core.Events.EventRules(source.Read("Events")));
+            session.OpenLegacies(new Steel.Core.Season.LegacyRules(source.Read("Legacy"), hourSeconds));
         }
         public GameView View => new GameView
         {
