@@ -19,6 +19,9 @@ namespace Steel.Core.Risk
         public double turnover, lastMonth;
         public long month;
         public int[] guards = new int[RiskRules.Cells];
+        /// <summary>Posts whose guards were knocked out in the last fight; they are back on their feet at this game hour.</summary>
+        public bool[] fainted = new bool[RiskRules.Cells];
+        public double faintUntil;
         /// <summary>When nobody answers in time: hold the gate instead of paying.</summary>
         public bool defend;
         /// <summary>A paid protector halves raids until this hour; once exposed, the next penalty doubles.</summary>
@@ -27,13 +30,16 @@ namespace Steel.Core.Risk
         public int sequence;
         public string note;
 
-        public int GuardCount => guards.Count(kind => kind > 0);
+        /// <summary>The grid as it can fight right now: without the guards still out cold.</summary>
+        public int[] OnDuty(double hour) => guards.Select((kind, cell) => hour < faintUntil && fainted[cell] ? 0 : kind).ToArray();
         public bool Protected(double hour) => hour < protectorUntil;
 
         internal static RiskSave Restore(RiskSave saved)
         {
             if (saved == null || saved.guards == null || saved.guards.Length == 0) return new RiskSave();
-            if (saved.guards.Length != RiskRules.Cells || saved.guards.Any(kind => kind < 0 || kind > RiskRules.Kinds) ||
+            if (saved.fainted == null || saved.fainted.Length == 0) saved.fainted = new bool[RiskRules.Cells];
+            if (saved.guards.Length != RiskRules.Cells || saved.fainted.Length != RiskRules.Cells ||
+                saved.guards.Where((kind, cell) => kind < 0 || kind > RiskRules.Kinds || kind > 0 && cell >= RiskRules.Posts).Any() ||
                 !(saved.heat >= 0) || !(saved.demandDue >= 0) || !(saved.turnover >= 0) || !(saved.lastMonth >= 0) ||
                 saved.thugs < 0 || saved.sequence < 0 || saved.demand && saved.thugs == 0)
                 throw new FormatException("Data keamanan rusak.");

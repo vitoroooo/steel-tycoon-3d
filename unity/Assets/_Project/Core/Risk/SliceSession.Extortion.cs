@@ -1,10 +1,11 @@
 using System;
+using System.Linq;
 using Steel.Core.Risk;
 using Steel.Core.Trade.Spk;
 
 namespace Steel.Core.State.Slice
 {
-    /// <summary>A gang at the yard's gate (PRD 6.3): pay 2% of the month's sales, talk it down to 1%, or hold the gate with guards.</summary>
+    /// <summary>A gang at the yard's gate (PRD 6.3): pay 2% of the month's sales or talk it down to 1%. Holding the gate is in GateFight.</summary>
     public sealed partial class SliceSession
     {
         /// <summary>Once every game hour: cools the heat, closes the month, lets a gang arrive, and answers one nobody answered.</summary>
@@ -27,7 +28,7 @@ namespace Steel.Core.State.Slice
             {
                 Risk.rolledDay = day;
                 if (hour < Risk.quietUntil || !EventAvailable(hour) ||
-                    !Risk.Roll(RiskTerms.ExtortChance(Cash, Risk.GuardCount))) return;
+                    !Risk.Roll(RiskTerms.ExtortChance(Cash, Risk.OnDuty(hour).Count(kind => kind > 0)))) return;
                 RecordCrewEvent(hour);
                 Risk.demand = true; Risk.haggled = false; Risk.thugs = RiskTerms.Thugs(Cash);
                 Risk.demandDue = Math.Max(RiskTerms.Get("minDemand"), Math.Max(Risk.turnover, Risk.lastMonth) * RiskTerms.Get("payShare"));
@@ -61,29 +62,11 @@ namespace Steel.Core.State.Slice
             return true;
         }
 
-        public BattleResult DefendGate(double hour) { RequireGang(); return Fight(hour); }
-
-        private BattleResult Fight(double hour)
-        {
-            BattleResult result = GateBattle.Fight(Risk.guards, Risk.thugs, RiskTerms);
-            Risk.demand = false;
-            if (result.Held)
-            {
-                Risk.quietUntil = hour + RiskTerms.Get("winQuietHours");
-                Risk.note = "Gerbang bertahan. " + Risk.thugs + " preman mundur.";
-                return result;
-            }
-            double loss = Risk.demandDue * RiskTerms.Get("lossFactor");
-            ChargeOperatingExpense(loss);
-            Risk.quietUntil = hour + RiskTerms.Get("monthHours");
-            Risk.note = "Gerbang jebol, " + result.Breached + " preman lolos. Rugi " + loss.ToString("N0") + ".";
-            return result;
-        }
-
         private void Settle(double share, double hour, string how)
         {
             double due = Risk.demandDue * share / RiskTerms.Get("payShare");
             ChargeOperatingExpense(due);
+            DismissEscort();
             Risk.demand = false; Risk.quietUntil = hour + RiskTerms.Get("monthHours");
             Risk.note = how + ": " + due.ToString("N0") + ". Tenang satu bulan game.";
         }

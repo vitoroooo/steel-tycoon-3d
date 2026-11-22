@@ -26,6 +26,7 @@ namespace Steel.Services
                     Demand = risk.demand, Haggled = risk.haggled, AutoDefend = risk.defend, Thugs = risk.demand ? risk.thugs : 0,
                     DemandDue = risk.demandDue, DemandHoursLeft = Math.Max(0, risk.demandUntil - GameHours),
                     Guards = (int[])risk.guards.Clone(),
+                    Fainted = risk.fainted.Select(fell => fell && GameHours < risk.faintUntil).ToArray(),
                     GuardCost = Enumerable.Range(0, RiskRules.Kinds + 1).Select(kind => kind == 0 ? 0 : rules.GuardCost(kind)).ToArray()
                 };
             }

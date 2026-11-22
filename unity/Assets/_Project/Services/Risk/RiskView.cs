@@ -14,8 +14,11 @@ namespace Steel.Services
         public bool Demand, Haggled, AutoDefend;
         public int Thugs;
         public double DemandDue, DemandHoursLeft;
-        /// <summary>The 5x4 gate grid, lane by lane: 0 empty, 1 shield, 2 baton, 3 calmer; and what hiring each kind costs.</summary>
+        /// <summary>The 5x4 gate grid row by row from the street (guards stand on the first two): 0 empty, then guard, baton, dog,
+        /// CCTV, negotiator, escort; and what hiring each kind costs.</summary>
         public int[] Guards;
+        /// <summary>Posts whose guard is out cold after the last fight.</summary>
+        public bool[] Fainted;
         public double[] GuardCost;
     }
 

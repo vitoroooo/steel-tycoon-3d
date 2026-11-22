@@ -40,6 +40,17 @@ namespace Steel.Tests.Risk
             Game.Position = Post;
         }
 
+        protected static readonly (string, double)[] Certain = { ("extortChance", 1), ("extortCap", 1), ("deterMost", 1e-9) };
+
+        /// <summary>A gang turns up at a yard with this much sold this month.</summary>
+        protected void Arrive(double turnover = 500000000)
+        {
+            Open(Rules(Certain));
+            Game.CreditProceeds(turnover, 0);
+            Game.AdvanceRisk(25);
+            Assert.IsTrue(Game.Risk.demand, "The gang comes on the day's roll");
+        }
+
         protected ContrabandOffer Offer(double hour)
         {
             ContrabandOffer? offer = Game.Contraband(hour, PerKg);

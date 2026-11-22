@@ -48,11 +48,13 @@ namespace Steel.PlayTests.Risk
             Assert.IsTrue(hud.SafeRoot.Find("Pos keamanan").gameObject.activeSelf);
             double cash = g.View.Cash;
             Key("Pos keamanan", "Pos 4").onClick.Invoke();
-            Assert.AreEqual(0, g.Risk.Guards[4], "Guards cannot be hired with the gang already there");
+            Assert.AreEqual(6, g.Risk.Guards[4], "With the gang there an empty post hires the escort team");
+            cash -= risk.GuardCost[6]; Assert.AreEqual(cash, g.View.Cash, 1e-6);
             Key("Pos keamanan", "Jawab 0").onClick.Invoke();
-            Assert.IsFalse(g.Risk.Demand); Assert.AreEqual(cash - risk.DemandDue, g.View.Cash, 1e-6);
+            cash -= risk.DemandDue;
+            Assert.IsFalse(g.Risk.Demand); Assert.AreEqual(cash, g.View.Cash, 1e-6); Assert.AreEqual(0, g.Risk.Guards[4]);
             Key("Pos keamanan", "Pos 4").onClick.Invoke();
-            Assert.AreEqual(1, g.Risk.Guards[4]); Assert.AreEqual(cash - risk.DemandDue - risk.GuardCost[1], g.View.Cash, 1e-6);
+            Assert.AreEqual(1, g.Risk.Guards[4]); Assert.AreEqual(cash - risk.GuardCost[1], g.View.Cash, 1e-6);
             yield return new WaitForSeconds(1.2f);
             Assert.IsFalse(trouble.Thugs.Any(thug => thug.activeSelf), "Paid, they leave");
             Assert.AreEqual(1, trouble.Guards.Count(guard => guard.activeSelf));

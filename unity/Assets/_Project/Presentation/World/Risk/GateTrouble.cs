@@ -19,7 +19,7 @@ namespace Steel.Presentation.World.Risk
             wait = Pause;
             RiskView risk = host.Game.Risk;
             int posted = 0;
-            foreach (int kind in risk.Guards) if (kind > 0) posted++;
+            for (int cell = 0; cell < risk.Guards.Length; cell++) if (risk.Guards[cell] > 0 && !risk.Fainted[cell]) posted++;
             Show(risk.Thugs, risk.Open ? posted : 0);
         }
 
