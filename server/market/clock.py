@@ -21,7 +21,8 @@ def advance(db, trader, now):
                         (trader["id"], season)).fetchone()
     capped = min(elapsed, TIME["offlineCapRealSeconds"] + (RULES["legacyQueueHours"] * tick if longer else 0))
     hours = capped // tick
-    if hours:
+    # an account whose career runs on the career server collects through that career, not through this free route
+    if hours and not db.execute("SELECT 1 FROM wallets WHERE trader=?", (trader["id"],)).fetchone():
         # Move past discarded time as well, so repeated reads cannot farm the cap.
         db.execute("UPDATE traders SET accrued_at=?, stock=stock+? WHERE id=?",
                    (now - capped % tick, hours * RULES["collectionKgPerGameHour"], trader["id"]))

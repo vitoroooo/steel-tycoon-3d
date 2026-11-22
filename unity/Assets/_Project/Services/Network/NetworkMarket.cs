@@ -14,14 +14,6 @@ namespace Steel.Services
         public bool HasPending => pending != null;
         public string Host => endpoint.Authority;
 
-        public NetworkMarket(string origin) { endpoint = MarketEndpoint.ForHost(origin); }
-
-        public NetworkMarket(int port = 8765)
-        {
-            if (port < 1 || port > 65535) throw new ArgumentOutOfRangeException(nameof(port));
-            endpoint = new UriBuilder("http", "127.0.0.1", port, "v1/").Uri;
-        }
-
         public void Disconnect() { token = null; Board = null; pending = null; }
 
         public async Task<string> Connect(string access)

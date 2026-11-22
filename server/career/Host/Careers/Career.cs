@@ -13,6 +13,11 @@ namespace Steel.Career.Careers
         public long Seq { get; private set; }
         public RemoteReply LastReply { get; private set; }
         public long SeenMs => clock.SeenMs;
+        public double Cash => game.WalletCash;
+        public double StockKg => game.WalletStockKg;
+        public int Caste => game.WalletCaste;
+        /// <summary>What the market did to this account's purse while the career was not looking.</summary>
+        public void Settle(double cash, double kg) => game.SettleMarket(cash, kg);
 
         public Career(IConfigSource rules, long nowMs)
         {

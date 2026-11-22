@@ -12,6 +12,8 @@ namespace Steel.Services
         public string SaveNotice => remote?.Notice ?? files?.Notice ?? offlineNotice;
         /// <summary>True when the career is the server's and this phone only shows it (PRD 12).</summary>
         public bool Online => remote != null;
+        /// <summary>Online, the market between players is the same account as the career: one purse.</summary>
+        public NetworkMarket Market { get; private set; }
         private Remote.RemoteGameService remote;
         private CareerFiles files;
         private LocalGameService local;
@@ -28,7 +30,7 @@ namespace Steel.Services
             Layout = new CityLayout(source);
             bool fresh = CareerLaunch.TakeFresh(), replaced = false;
             Remote.OnlineCareer online = CareerLaunch.TakeOnline();
-            if (online != null) { Game = remote = online.Play(source); return; }
+            if (online != null) { Game = remote = online.Play(source); Market = online.Client.Market(); return; }
             if (!CareerLaunch.UsesDisk) local = new LocalGameService(source);
             else
             {

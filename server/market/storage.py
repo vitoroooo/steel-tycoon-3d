@@ -27,7 +27,8 @@ def transaction(path):
 def initialize(path):
     with closing(sqlite3.connect(path)) as db:
         db.execute("PRAGMA journal_mode=WAL")
-        db.executescript((HERE / "schema.sql").read_text())
+        for part in sorted((HERE / "schema").glob("*.sql")):
+            db.executescript(part.read_text())
         now = int(time.time())
         db.execute("INSERT OR IGNORE INTO city VALUES(1,?,?)", (now, now))
         db.commit()

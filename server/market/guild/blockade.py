@@ -21,6 +21,8 @@ def promote(db, trader, command, quote):
     """Buys the caste package of PRD A.4 from the market account."""
     fields(command)
     caste = standing(db, trader)[0]
+    require(not db.execute("SELECT 1 FROM wallets WHERE trader=?", (trader,)).fetchone(), 409,
+            "Kasta mengikuti karier: buka lapak bandar atau pabrik di kota.")
     require(caste < 3, 409, "Anda sudah Kasta 3.")
     pay(db, trader, RULES["promoteCost"][caste - 1], "Kas akun pasar kurang untuk paket naik kasta.")
     db.execute("INSERT OR REPLACE INTO standing VALUES(?,?,?)", (trader, caste + 1, quote["gameHour"]))

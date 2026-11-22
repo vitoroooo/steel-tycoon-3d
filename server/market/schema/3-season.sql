@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS season_state (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    number INTEGER NOT NULL
+);
+CREATE TABLE IF NOT EXISTS legacies (
+    trader INTEGER NOT NULL REFERENCES traders,
+    season INTEGER NOT NULL,
+    city TEXT NOT NULL,
+    value INTEGER NOT NULL,
+    rank INTEGER NOT NULL,
+    points INTEGER NOT NULL,
+    PRIMARY KEY (trader, season)
+);
+CREATE TABLE IF NOT EXISTS groups (
+    trader INTEGER PRIMARY KEY REFERENCES traders,
+    points INTEGER NOT NULL DEFAULT 0,
+    picks TEXT NOT NULL DEFAULT '',
+    picked INTEGER NOT NULL DEFAULT 0
+);

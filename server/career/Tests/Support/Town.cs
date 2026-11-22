@@ -51,6 +51,16 @@ namespace Steel.Career.Tests.Support
             return output;
         }
 
+        /// <summary>Reads or changes the shared database directly, as the market service does.</summary>
+        public long Sql(string statement)
+        {
+            using Microsoft.Data.Sqlite.SqliteConnection db = Accounts.Open();
+            using Microsoft.Data.Sqlite.SqliteCommand run = db.CreateCommand();
+            run.CommandText = statement;
+            object answer = run.ExecuteScalar();
+            return answer is long number ? number : 0;
+        }
+
         public void Dispose()
         {
             Microsoft.Data.Sqlite.SqliteConnection.ClearAllPools();

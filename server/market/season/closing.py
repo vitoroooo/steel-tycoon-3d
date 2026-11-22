@@ -23,6 +23,9 @@ def close(db, number, reference):
         db.execute("UPDATE groups SET points=points+? WHERE trader=?", (points, row["id"]))
     db.execute("UPDATE traders SET cash=?, stock=?, accrued_at=(SELECT last_time FROM city)",
                (RULES["initialCash"], RULES["initialStockKg"]))
+    # careers kept by the career server start over as well; it opens a new one at the owner's next call
+    db.execute("DELETE FROM careers")
+    db.execute("DELETE FROM wallets")
     db.execute("DELETE FROM standing")
     db.execute("DELETE FROM blockades")
 

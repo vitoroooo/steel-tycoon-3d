@@ -11,9 +11,19 @@ namespace Steel.Career.Careers
         private readonly AccountBook accounts;
         public CareerStore(AccountBook accounts) { this.accounts = accounts; }
 
-        public CareerRecord Read(long account)
+        public SqliteConnection Open() => accounts.Open();
+
+        /// <summary>False for an account that never played, and again after the market closed a season.</summary>
+        public bool Has(SqliteConnection db, long account)
         {
-            using SqliteConnection db = accounts.Open();
+            using SqliteCommand ask = db.CreateCommand();
+            ask.CommandText = "SELECT 1 FROM careers WHERE trader = $id";
+            ask.Parameters.AddWithValue("$id", account);
+            return ask.ExecuteScalar() != null;
+        }
+
+        public CareerRecord Read(SqliteConnection db, long account)
+        {
             using SqliteCommand ask = db.CreateCommand();
             ask.CommandText = "SELECT save, seen_ms, seq, reply FROM careers WHERE trader = $id";
             ask.Parameters.AddWithValue("$id", account);
@@ -27,9 +37,8 @@ namespace Steel.Career.Careers
             };
         }
 
-        public void Write(long account, CareerRecord record)
+        public void Write(SqliteConnection db, long account, CareerRecord record)
         {
-            using SqliteConnection db = accounts.Open();
             using SqliteCommand put = db.CreateCommand();
             put.CommandText = "INSERT INTO careers(trader, save, seen_ms, seq, reply) VALUES ($id, $save, $seen, $seq, $reply) " +
                               "ON CONFLICT(trader) DO UPDATE SET save = $save, seen_ms = $seen, seq = $seq, reply = $reply";

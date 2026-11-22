@@ -15,6 +15,7 @@ namespace Steel.Career.Accounts
             using SqliteConnection db = Open();
             Run(db, "CREATE TABLE IF NOT EXISTS careers (trader INTEGER PRIMARY KEY REFERENCES traders, save TEXT NOT NULL, " +
                     "seen_ms INTEGER NOT NULL, seq INTEGER NOT NULL, reply TEXT NOT NULL)");
+            Run(db, Careers.Wallet.Table);
         }
 
         public SqliteConnection Open()
@@ -37,7 +38,7 @@ namespace Steel.Career.Accounts
             return !row.Read() ? 0 : row.GetInt64(1) != 0 ? -1 : row.GetInt64(0);
         }
 
-        private static void Run(SqliteConnection db, string sql)
+        public static void Run(SqliteConnection db, string sql)
         {
             using SqliteCommand command = db.CreateCommand();
             command.CommandText = sql; command.ExecuteNonQuery();

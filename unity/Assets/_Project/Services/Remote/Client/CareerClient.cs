@@ -20,6 +20,9 @@ namespace Steel.Services.Remote
             this.token = token;
         }
 
+        /// <summary>The market between players for the same account: it answers under /v1/ beside /career/.</summary>
+        public NetworkMarket Market() => new NetworkMarket(new Uri(endpoint, "../v1/"), token);
+
         /// <summary>The whole career, after the server has counted the time away.</summary>
         public async Task<RemoteReply> Open()
         {

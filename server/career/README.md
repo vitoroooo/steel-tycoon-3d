@@ -44,7 +44,7 @@ Semua permintaan `POST` dengan `Authorization: Bearer <token>`. Bentuk pesannya 
 | Folder | Isi |
 |---|---|
 | `Host/Accounts` | token akun dari basis data pasar |
-| `Host/Careers` | karier per akun, jamnya, dan penyimpanannya (tabel `careers`) |
+| `Host/Careers` | karier per akun, jamnya, penyimpanannya (tabel `careers`), dan dompet bersama pasar (`Wallet.cs`) |
 | `Host/Http` | alamat HTTP |
 | `Host/Generate` | menulis `RemoteGameService` milik game dari `IGameService` |
 | `Host/Unity` | pengganti kecil `UnityEngine` (JSON, Resources, Vector2) supaya kode game terkompilasi di server |
@@ -62,9 +62,23 @@ Semua permintaan `POST` dengan `Authorization: Bearer <token>`. Bentuk pesannya 
 Menu awal → **Main online** → alamat dan token → karier dibuka dari server → kota dimuat dengan `RemoteGameService`
 (`GameHost.Online`). Karier di berkas HP tidak disentuh.
 
+## Satu dompet
+
+Kas dan stok HMS 1 akun pasar (`traders.cash`, `traders.stock`) adalah kas karier dan HMS 1 di lapak karier.
+
+- Tiap batch karier berjalan dalam satu transaksi SQLite: `Wallet.Bring` membawa apa yang diubah pasar (lot, kontrak,
+  biaya asosiasi) ke karier, lalu `Wallet.Leave` menulis kas, stok, dan kasta karier ke `traders` dan `standing`.
+- Tabel `wallets` mencatat angka terakhir yang ditulis karier; selisihnya dengan `traders` adalah perbuatan pasar.
+- Akun yang punya baris `wallets` tidak lagi mendapat stok gratis per jam dari pasar dan tidak bisa membeli kasta di
+  pasar; kastanya mengikuti karier.
+- Tutup season di pasar mengosongkan `careers` dan `wallets`; karier baru dibuka pada panggilan berikutnya.
+- Di game, halaman pasar, kontrak, asosiasi, dan season tersambung sendiri dengan akun **Main online** (`GameHost.Market`).
+
 ## Belum ada
 
-- Halaman pasar, kontrak, asosiasi, dan season masih masuk sendiri dengan token yang sama, dan kas/stok akun pasar
-  (`traders`) belum digabung dengan kas/stok karier.
+- Lot yang dibeli tidak diperiksa terhadap kapasitas lapak, dan pemain Kasta 1 bisa menyimpan HMS 1 dari pasar.
+- Nilai usaha saat tutup season hanya menghitung kas dan HMS 1, belum truk, alat, dan pabrik.
+- Stok kejar ketinggalan pemain yang masuk di tengah season tidak terbawa ke karier.
+- Season baru ditutup saat ada yang membuka pasar, bukan oleh jam server karier.
 - Posisi pemain dan truk dipercaya dari HP; kecepatan gerak belum diperiksa.
 - Saat server tidak terjangkau, pemain masih bisa bermain di salinan HP; hasilnya baru sah setelah server menjawab.

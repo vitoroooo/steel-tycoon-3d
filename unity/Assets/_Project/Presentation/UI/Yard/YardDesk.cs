@@ -21,7 +21,7 @@ namespace Steel.Presentation.UI
             "Perawatan alat","Keuangan","Regu & warga","Kejadian","Pasar jaringan","Kontrak langsung","Asosiasi","Season & grup","Uji performa HP","Catatan Pak Darto"};
         private bool forms;
         private static string Rp(double n) => "Rp" + n.ToString("N0", CultureInfo.GetCultureInfo("id-ID"));
-        internal YardDesk(CityHud hud, IGameService game, SliceInput input)
+        internal YardDesk(CityHud hud, IGameService game, SliceInput input, NetworkMarket market = null)
         {
             this.game = game; this.input = input;
             trial = hud.gameObject.AddComponent<DeviceTrial>();
@@ -44,6 +44,7 @@ namespace Steel.Presentation.UI
                 panel.gameObject.SetActive(true); input.IsBlocked = true; Turn(0);
             };
             panel.gameObject.SetActive(false);
+            if (market != null) { network = market; NetworkRun(network.Refresh); }
         }
         private Text Line(int size,int y,int height) =>
             UiFactory.Text(panel,"",size,new Vector2(738,height),new Vector2(0,y));

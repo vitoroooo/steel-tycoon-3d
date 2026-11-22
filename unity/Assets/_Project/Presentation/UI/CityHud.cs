@@ -29,7 +29,7 @@ namespace Steel.Presentation.UI
             drivers = FindObjectsOfType<MotorDriver>();
             board = new MarketBoard(this, host.Game, input);
             sorting = new SortingDesk(this, host.Game, input);
-            new YardDesk(this, host.Game, input); letter = new DartoLetter(this, host.Game, input);
+            new YardDesk(this, host.Game, input, host.Market); letter = new DartoLetter(this, host.Game, input);
             routes = new RouteDesk(this, host.Game, input, board.Open);
             NoticeText.text = lastSaveNotice = host.SaveNotice;
         }

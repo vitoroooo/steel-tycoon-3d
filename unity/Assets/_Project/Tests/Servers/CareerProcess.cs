@@ -14,6 +14,10 @@ namespace Steel.TestServers
         public int Port { get; private set; }
         /// <summary>An account the market issued; the career server knows it by the same token.</summary>
         public string Token { get; private set; }
+        /// <summary>Where the market between players answers for the same accounts.</summary>
+        public int MarketPort => market.Port;
+        /// <summary>A second account, which only trades on the market.</summary>
+        public string Neighbour() => market.IssueToken(false);
 
         public void Start()
         {
