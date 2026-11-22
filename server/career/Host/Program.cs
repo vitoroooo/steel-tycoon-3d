@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Steel.Career.Accounts;
 using Steel.Career.Careers;
@@ -9,15 +10,20 @@ using Steel.Services;
 
 namespace Steel.Career
 {
-    /// <summary>The career server: dotnet run -- <market database> <game Resources folder> [port].</summary>
+    /// <summary>The career server: dotnet run -- <market database> <game Resources folder> [port].
+    /// With "generate <folder>" it writes the phone's RemoteGameService instead.</summary>
     public static class Program
     {
         public static int Main(string[] args)
         {
+            if (args.Length == 2 && args[0] == "generate") { Generate.RemoteServiceWriter.Write(args[1]); return 0; }
             if (args.Length < 2) { Console.Error.WriteLine("usage: Steel.Career <market.db> <Resources folder> [port]"); return 2; }
             WebApplication app = Build(args[0], args[1], args.Length > 2 ? int.Parse(args[2]) : 8766,
                 () => DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
-            app.Run();
+            app.StartAsync().GetAwaiter().GetResult();
+            // port 0 lets the system choose; whoever started the server reads the address from this line
+            Console.WriteLine("career " + string.Join(" ", app.Urls));
+            app.WaitForShutdownAsync().GetAwaiter().GetResult();
             return 0;
         }
 

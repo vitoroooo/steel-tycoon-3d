@@ -15,6 +15,6 @@
     <Compile Include="Host/**/*.cs" />
     <Compile Include="$(Game)/Core/**/*.cs" LinkBase="Core" />
     <Compile Include="$(Game)/Services/**/*.cs" LinkBase="Services"
-             Exclude="$(Game)/Services/Map/MapLand.cs;$(Game)/Services/Network/**;$(Game)/Services/Launch/**;$(Game)/Services/Saving/CareerFiles*.cs;$(Game)/Services/Slice/GameHost.cs" />
+             Exclude="$(Game)/Services/Map/MapLand.cs;$(Game)/Services/Network/**;$(Game)/Services/Launch/**;$(Game)/Services/Remote/Client/**;$(Game)/Services/Saving/CareerFiles*.cs;$(Game)/Services/Slice/GameHost.cs" />
   </ItemGroup>
 </Project>

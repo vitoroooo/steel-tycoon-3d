@@ -22,7 +22,7 @@ namespace Steel.PlayTests.Boot
         {
             yield return BootStage.OpenMenu(Saved, Profiles());
             var menu = BootStage.Screen.Menu; Rect safe = BootStage.Screen.SafeRoot.rect;
-            foreach (var button in new[] { menu.Play, menu.NewCareer, menu.Graphics })
+            foreach (var button in new[] { menu.Play, menu.NewCareer, menu.Graphics, menu.Online })
             {
                 Rect area = BootStage.Area(button);
                 Assert.GreaterOrEqual(area.width, 88f, button.name); Assert.GreaterOrEqual(area.height, 88f, button.name);
@@ -34,6 +34,8 @@ namespace Steel.PlayTests.Boot
             Assert.Less(BootStage.Area(menu.NewCareer).xMax, safe.width / 2, "Starting over under the left thumb");
             Assert.Less(BootStage.Area(menu.Graphics).xMax, BootStage.Area(menu.Play).xMin);
             Assert.IsFalse(BootStage.Area(menu.NewCareer).Overlaps(BootStage.Area(menu.Graphics)));
+            foreach (var below in new[] { menu.NewCareer, menu.Graphics, menu.Play })
+                Assert.IsFalse(BootStage.Area(menu.Online).Overlaps(BootStage.Area(below)), below.name);
             Assert.AreEqual("LANJUTKAN", menu.Play.GetComponentInChildren<Text>().text);
             StringAssert.Contains("Hari ke-12", menu.Card.text); StringAssert.Contains("Rp 3.400.000", menu.Card.text);
         }
@@ -64,12 +66,12 @@ namespace Steel.PlayTests.Boot
             }
         }
 
-        [UnityTest] public IEnumerator MenuWithoutProfilesOrSavedCareerShowsOnlyPlay()
+        [UnityTest] public IEnumerator MenuWithoutProfilesOrSavedCareerShowsOnlyPlayAndOnline()
         {
             yield return BootStage.OpenMenu(CareerSummary.Empty, null);
             var menu = BootStage.Screen.Menu;
             Assert.IsNull(menu.Graphics); Assert.IsNull(menu.NewCareer);
-            Assert.AreEqual(1, menu.Screen.GetComponentsInChildren<Button>().Length);
+            CollectionAssert.AreEquivalent(new[] { menu.Play, menu.Online }, menu.Screen.GetComponentsInChildren<Button>());
         }
 
         [UnityTest] public IEnumerator NewCareerAsksFirstAndBatalKeepsTheCareer()

@@ -9,6 +9,9 @@ using UnityEngine;
 
 namespace Steel.Career.Http
 {
+    /// <summary>Why a request was turned away, in the shape the market server uses, so the game reads both alike.</summary>
+    [System.Serializable] public sealed class Refusal { public string message; }
+
     /// <summary>POST /career/open gives the phone its career; POST /career/act runs a batch of calls on it.</summary>
     public static class CareerRoutes
     {
@@ -34,7 +37,7 @@ namespace Steel.Career.Http
             using (var reader = new StreamReader(http.Request.Body)) body = await reader.ReadToEndAsync();
             RemoteReply reply;
             try { reply = body.Length > MaxBody ? null : work(account, body); }
-            catch (System.Text.Json.JsonException) { reply = null; }
+            catch (System.ArgumentException) { reply = null; }
             if (reply == null) { await Refuse(http, 400, "Kiriman tidak terbaca."); return; }
             http.Response.ContentType = "application/json";
             await http.Response.WriteAsync(JsonUtility.ToJson(reply));
@@ -43,7 +46,7 @@ namespace Steel.Career.Http
         private static Task Refuse(HttpContext http, int status, string why)
         {
             http.Response.StatusCode = status; http.Response.ContentType = "application/json";
-            return http.Response.WriteAsync(JsonUtility.ToJson(new RemoteResult { ok = false, error = why }));
+            return http.Response.WriteAsync(JsonUtility.ToJson(new Refusal { message = why }));
         }
     }
 }

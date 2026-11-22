@@ -16,6 +16,8 @@ namespace Steel.Services.Remote
         public long seq;
         public RemoteCall[] calls;
         public string digest;
+        /// <summary>The phone's game clock when it took the digest; the server runs its career up to here before comparing.</summary>
+        public double at;
     }
 
     [Serializable] public sealed class RemoteResult
@@ -34,5 +36,14 @@ namespace Steel.Services.Remote
         public string digest, save;
         /// <summary>The server's clock (Unix seconds) the save was written at.</summary>
         public long savedUtc;
+        /// <summary>Unity reads a missing text as empty, the server as null: both mean no career was sent.</summary>
+        public bool HasSave => !string.IsNullOrEmpty(save);
+        /// <summary>Why the first refused call was refused; null when every call ran.</summary>
+        public string Refusal()
+        {
+            foreach (RemoteResult result in results ?? new RemoteResult[0])
+                if (!result.ok) return string.IsNullOrEmpty(result.error) ? "Ditolak server." : result.error;
+            return null;
+        }
     }
 }

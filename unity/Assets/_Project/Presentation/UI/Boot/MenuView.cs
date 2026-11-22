@@ -15,9 +15,10 @@ namespace Steel.Presentation.UI.Boot
         public Button Play { get; }
         public Button NewCareer { get; }
         public Button Graphics { get; }
+        public Button Online { get; }
         public Text Card { get; }
 
-        internal MenuView(RectTransform safe, BootTheme theme, MenuFlow flow, GraphicsOption graphics)
+        internal MenuView(RectTransform safe, BootTheme theme, MenuFlow flow, GraphicsOption graphics, Action online = null)
         {
             var root = BootKit.Stretch("Menu Awal", safe);
             Vector2 topLeft = new Vector2(0, 1), bottomLeft = Vector2.zero, bottomRight = new Vector2(1, 0);
@@ -47,6 +48,10 @@ namespace Steel.Presentation.UI.Boot
                     new Vector2(220, BootKit.Thumb), new Vector2(x + 110, 76), flow.AskNewCareer);
                 x += 236;
             }
+            // a second row: the first is full, and the play button's side belongs to the right thumb
+            if (online != null)
+                Online = BootKit.Button(theme, root, Steel.Services.Remote.OnlineLogin.Button, 22, theme.Panel, theme.Text,
+                    bottomLeft, new Vector2(280, BootKit.Thumb), new Vector2(172, 180), () => online());
             if (graphics != null)
             {
                 Graphics = BootKit.Button(theme, root, MenuText.Graphics(graphics.Label), 20, theme.Panel, theme.Text,

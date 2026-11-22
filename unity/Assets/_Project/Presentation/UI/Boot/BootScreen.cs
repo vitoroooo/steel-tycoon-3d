@@ -9,7 +9,7 @@ namespace Steel.Presentation.UI.Boot
     /// The only object in the Boot scene. Shows splash, start menu and loading, then opens the city.
     /// Decisions live in MenuFlow (Services), wording in MenuText, look in BootTheme.
     /// </summary>
-    public sealed class BootScreen : MonoBehaviour
+    public sealed partial class BootScreen : MonoBehaviour
     {
         public const string Scene = "Boot", City = "City";
         public MenuFlow Flow { get; private set; }
@@ -33,8 +33,10 @@ namespace Steel.Presentation.UI.Boot
             var theme = BootTheme.Load();
             Flow = new MenuFlow(career, theme.SplashSeconds);
             SafeRoot = BootCanvas.Build(transform, theme);
-            Menu = new MenuView(SafeRoot, theme, Flow, graphics);
+            Login = NewLogin();
+            Menu = new MenuView(SafeRoot, theme, Flow, graphics, Login.Show);
             Confirm = new ConfirmView(SafeRoot, theme, Flow);
+            Online = new OnlineView(SafeRoot, theme, Login);
             Loading = new LoadingView(SafeRoot, theme);
             Splash = new SplashView(SafeRoot, theme, Flow.Skip);
             Draw();
@@ -45,7 +47,8 @@ namespace Steel.Presentation.UI.Boot
             if (Flow == null) return;
             // One slow first frame must not use up the splash before the player has seen it.
             Flow.Tick(Mathf.Min(Time.unscaledDeltaTime, MaxStep));
-            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) Flow.Back();
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) { Flow.Back(); Login.Back(); }
+            TickOnline();
             if (Flow.Stage != drawn) Draw();
             if (load == null) return;
             Loading.Set(load.progress / .9f);

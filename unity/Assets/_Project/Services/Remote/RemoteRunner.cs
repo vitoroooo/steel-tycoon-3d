@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Steel.Services;
-using Steel.Services.Remote;
 
-namespace Steel.Career.Commands
+namespace Steel.Services.Remote
 {
-    /// <summary>Runs one call from a phone on the server's copy of the career. Only IGameService methods a phone may send
-    /// are known here; the rules themselves are the game's own code.</summary>
-    public static class Dispatcher
+    /// <summary>Runs one sent call on a career: on the server's copy when a phone sends it, and on the phone's own copy
+    /// when it replays what the server has not answered yet. Only IGameService methods a phone may send are known here.</summary>
+    public static class RemoteRunner
     {
         private static readonly Dictionary<string, MethodInfo> Known = typeof(IGameService).GetMethods()
             .Where(method => !method.IsSpecialName && RemoteCalls.Sent(method.Name))
@@ -30,8 +28,7 @@ namespace Steel.Career.Commands
                 return new RemoteResult { ok = true };
             }
             catch (TargetInvocationException thrown) { return Refused(thrown.InnerException?.Message ?? thrown.Message); }
-            catch (Exception broken) when (broken is FormatException || broken is OverflowException ||
-                                           broken is System.Text.Json.JsonException)
+            catch (Exception broken) when (broken is FormatException || broken is OverflowException || broken is ArgumentException)
             { return Refused(broken.Message); }
         }
 

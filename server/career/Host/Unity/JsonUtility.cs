@@ -19,8 +19,14 @@ namespace UnityEngine
         };
 
         public static string ToJson(object value) => JsonSerializer.Serialize(value, value.GetType(), Options);
-        public static T FromJson<T>(string json) => JsonSerializer.Deserialize<T>(json, Options);
-        public static object FromJson(string json, Type type) => JsonSerializer.Deserialize(json, type, Options);
+        public static T FromJson<T>(string json) => (T)FromJson(json, typeof(T));
+
+        /// <summary>Like Unity, text that is not JSON is an ArgumentException.</summary>
+        public static object FromJson(string json, Type type)
+        {
+            try { return JsonSerializer.Deserialize(json, type, Options); }
+            catch (JsonException broken) { throw new ArgumentException("JSON tidak terbaca: " + broken.Message); }
+        }
 
         private static void FieldsOnly(JsonTypeInfo type)
         {

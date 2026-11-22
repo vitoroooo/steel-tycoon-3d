@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Steel.Career.Commands;
 using Steel.Career.Tests.Support;
 using Steel.Services;
 using Steel.Services.Remote;
@@ -24,14 +23,14 @@ namespace Steel.Career.Tests.Commands
 
         [Fact] public void ThePhoneCannotSendTimeOrAnUnknownCall()
         {
-            Assert.DoesNotContain("Advance", Dispatcher.Names);
-            Assert.DoesNotContain("CatchUp", Dispatcher.Names);
+            Assert.DoesNotContain("Advance", RemoteRunner.Names);
+            Assert.DoesNotContain("CatchUp", RemoteRunner.Names);
             using var town = new Town();
             var game = new LocalGameService(town.Rules);
             foreach (string name in new[] { "Advance", "CatchUp", "Save", "Digest", "get_View", null })
-                Assert.False(Dispatcher.Run(game, new RemoteCall { name = name, args = new[] { "100" } }).ok);
-            Assert.False(Dispatcher.Run(game, new RemoteCall { name = "SetBid", args = new[] { "1", "NaN" } }).ok);
-            Assert.False(Dispatcher.Run(game, new RemoteCall { name = "SetBid", args = new[] { "1" } }).ok);
+                Assert.False(RemoteRunner.Run(game, new RemoteCall { name = name, args = new[] { "100" } }).ok);
+            Assert.False(RemoteRunner.Run(game, new RemoteCall { name = "SetBid", args = new[] { "1", "NaN" } }).ok);
+            Assert.False(RemoteRunner.Run(game, new RemoteCall { name = "SetBid", args = new[] { "1" } }).ok);
         }
 
         /// <summary>A query the phone answers alone must not change the career, whatever it is asked.</summary>

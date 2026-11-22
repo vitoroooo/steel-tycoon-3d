@@ -48,7 +48,8 @@ namespace Steel.Career.Tests.Support
 
         public RemoteReply Send(string digest = null)
         {
-            var batch = new RemoteBatch { seq = Seq + 1, calls = waiting.ToArray(), digest = digest ?? Game.Digest() };
+            var batch = new RemoteBatch { seq = Seq + 1, calls = waiting.ToArray(), digest = digest ?? Game.Digest(),
+                at = Game.ClockSeconds };
             waiting.Clear();
             return Take(town.Careers.Act(account, batch));
         }
@@ -59,7 +60,7 @@ namespace Steel.Career.Tests.Support
         private RemoteReply Take(RemoteReply reply)
         {
             Last = reply; Seq = reply.seq;
-            if (reply.save == null) return reply;
+            if (!reply.HasSave) return reply;
             Game = LocalGameService.Resume(town.Rules, reply.save, reply.savedUtc, out _);
             Corrections++;
             return reply;

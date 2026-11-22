@@ -1,5 +1,4 @@
 using System.Linq;
-using Steel.Career.Commands;
 using Steel.Services;
 using Steel.Services.Remote;
 
@@ -45,14 +44,22 @@ namespace Steel.Career.Careers
             bool drifted = false;
             RemoteResult[] results = calls.Select(call =>
             {
-                double asked = call?.at ?? double.NaN, to = clock.Granted(asked, game.ClockSeconds, nowMs);
-                // a phone whose clock is not the server's gets the server's career back, clock and all
-                drifted |= !(System.Math.Abs(to - asked) <= CareerClock.Drift);
-                game.Advance(to - game.ClockSeconds);
-                return Dispatcher.Run(game, call);
+                drifted |= RunTo(call?.at ?? double.NaN, nowMs);
+                return RemoteRunner.Run(game, call);
             }).ToArray();
+            drifted |= RunTo(batch.at, nowMs);
+            // a phone whose clock is not the server's gets the server's career back, at the server's time
+            if (drifted) game.Advance(System.Math.Max(0, clock.Now(nowMs) - game.ClockSeconds));
             Seq++;
             return LastReply = Answer(results, drifted ? null : batch.digest, nowMs);
+        }
+
+        /// <summary>Runs the career up to the time the phone names, as far as the server's clock allows. True when it does not.</summary>
+        private bool RunTo(double asked, long nowMs)
+        {
+            double to = clock.Granted(asked, game.ClockSeconds, nowMs);
+            game.Advance(to - game.ClockSeconds);
+            return !(System.Math.Abs(to - asked) <= CareerClock.Drift);
         }
 
         public CareerRecord Record() => new CareerRecord

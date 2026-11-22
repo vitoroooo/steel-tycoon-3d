@@ -23,10 +23,13 @@ namespace Steel.Career.Careers
 
         public double AwayFor(long nowMs) => Math.Max(0, (nowMs - SeenMs) / 1000d);
 
+        /// <summary>The career's game clock as the server counts it.</summary>
+        public double Now(long nowMs) => gameAnchor + (nowMs - wallAnchor) / 1000d;
+
         /// <summary>The game time a call asking for <paramref name="asked"/> is run at.</summary>
         public double Granted(double asked, double current, long nowMs)
         {
-            double server = gameAnchor + (nowMs - wallAnchor) / 1000d;
+            double server = Now(nowMs);
             if (double.IsNaN(asked)) asked = server;
             return Math.Max(current, Math.Min(server + Ahead, Math.Max(server - Behind, asked)));
         }

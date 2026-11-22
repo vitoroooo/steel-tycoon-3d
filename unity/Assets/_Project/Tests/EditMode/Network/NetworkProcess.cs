@@ -13,6 +13,8 @@ namespace Steel.Tests.Network
         private readonly string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../.."));
         private Process server;
         internal int Port { get; private set; }
+        internal string Root => root;
+        internal string Database => Path.Combine(directory, "market.sqlite3");
 
         private Process Launch(string command)
         {

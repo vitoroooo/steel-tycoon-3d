@@ -9,7 +9,10 @@ namespace Steel.Services
         public IGameService Game { get; private set; }
         public CityLayout Layout { get; private set; }
         public bool Restored { get; private set; }
-        public string SaveNotice => files?.Notice ?? offlineNotice;
+        public string SaveNotice => remote?.Notice ?? files?.Notice ?? offlineNotice;
+        /// <summary>True when the career is the server's and this phone only shows it (PRD 12).</summary>
+        public bool Online => remote != null;
+        private Remote.RemoteGameService remote;
         private CareerFiles files;
         private LocalGameService local;
         private float checkpoint;
@@ -24,6 +27,8 @@ namespace Steel.Services
             var source = Source ?? new ResourceConfigSource();
             Layout = new CityLayout(source);
             bool fresh = CareerLaunch.TakeFresh(), replaced = false;
+            Remote.OnlineCareer online = CareerLaunch.TakeOnline();
+            if (online != null) { Game = remote = online.Play(source); return; }
             if (!CareerLaunch.UsesDisk) local = new LocalGameService(source);
             else
             {

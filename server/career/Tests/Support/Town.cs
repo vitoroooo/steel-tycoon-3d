@@ -31,7 +31,13 @@ namespace Steel.Career.Tests.Support
         public void Pass(double seconds) => NowMs += (long)Math.Round(seconds * 1000);
 
         /// <summary>Opens an account the way an operator does and returns its token.</summary>
-        public string Token(string name) => Market("trader", name).Trim();
+        public string Token(string name, bool rotate = true)
+        {
+            if (!rotate) return tokens[name];
+            return tokens[name] = Market("trader", name).Trim();
+        }
+        private readonly System.Collections.Generic.Dictionary<string, string> tokens =
+            new System.Collections.Generic.Dictionary<string, string>();
 
         public string Market(params string[] words)
         {
