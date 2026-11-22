@@ -1,0 +1,8 @@
+{
+  "wearPerHour": 0.5, "heavyWearPerHour": 2, "heavyAbove": 0.8,
+  "originalCostShare": 0.08, "originalHours": 48, "donorHours": 1,
+  "emergencyCostShare": 0.01, "emergencyHours": 0.25, "riskHours": 24,
+  "breakdownChance": 0.15, "accidentChance": 0.50,
+  "scaleCapacityKg": 3000, "scaleHoursPerLot": 0.25,
+  "trailerCapacityKg": 20000, "loaderKgPerHour": 10000
+}
