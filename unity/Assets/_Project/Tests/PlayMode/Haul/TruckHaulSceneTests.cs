@@ -51,6 +51,14 @@ namespace Steel.PlayTests.Haul
             panel.GetComponentsInChildren<Button>().Single(b => b.name == "TIMBANG & BONGKAR").onClick.Invoke();
             Assert.AreEqual(cash, host.Game.View.Cash);
             StringAssert.Contains("Parkir truk", panel.GetComponentsInChildren<Text>().Last(t => t.color == UiFactory.Gold).text);
+            panel.GetComponentsInChildren<Button>().Single(b => b.name == "KONTRAK SPK").onClick.Invoke();
+            Transform board = hud.SafeRoot.Find("Papan SPK"); Assert.IsTrue(board.gameObject.activeSelf);
+            board.GetComponentsInChildren<Button>().First(b => b.name == "AMBIL").onClick.Invoke();
+            Assert.IsFalse(host.Game.Spk.Active, "A collector without a yard cannot take a work order");
+            Assert.AreEqual(cash, host.Game.View.Cash);
+            yield return new WaitForSeconds(1.2f);
+            Assert.AreEqual(host.Game.GateQueue, Object.FindObjectOfType<Steel.Presentation.World.Gate.GateLine>()
+                .Trucks.Count(truck => truck.activeSelf), "The lane shows as many trucks as the gate's queue");
             panel.GetComponentsInChildren<Button>().Single(b => b.name == "TUTUP").onClick.Invoke();
             Assert.IsFalse(panel.gameObject.activeSelf);
         }

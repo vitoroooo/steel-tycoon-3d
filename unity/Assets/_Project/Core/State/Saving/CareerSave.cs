@@ -12,6 +12,7 @@ namespace Steel.Core.State.Saving
         public SiteSave[] sites;
         public SellerSave[] sellers;
         public Steel.Core.Trade.Haul.TruckLoad[] loads;
+        public Steel.Core.Trade.Spk.SpkSave spk;
         public MotorSave[] motors;
         public OrderSave[] routes;
         public double[] quota;

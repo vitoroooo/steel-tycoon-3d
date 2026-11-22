@@ -6,5 +6,7 @@
   "deskReach": 6,
   "engkelRun": 900000,
   "trontonRun": 1800000,
-  "trailerRun": 3000000
+  "trailerRun": 3000000,
+  "gatePerHour": 6,
+  "queueMost": 3
 }

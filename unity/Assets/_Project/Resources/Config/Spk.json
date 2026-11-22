@@ -1,0 +1,12 @@
+{
+  "bond": 0.05,
+  "latePerHour": 0.02,
+  "minPremium": 1.0,
+  "maxPremium": 1.12,
+  "onTimeReputation": 2,
+  "failReputation": 5,
+  "loaderCondition": 50,
+  "slot0MinTonnes": 20, "slot0MaxTonnes": 40, "slot0MinDays": 1, "slot0MaxDays": 2, "slot0Reputation": 30,
+  "slot1MinTonnes": 40, "slot1MaxTonnes": 100, "slot1MinDays": 2, "slot1MaxDays": 4, "slot1Reputation": 45,
+  "slot2MinTonnes": 100, "slot2MaxTonnes": 200, "slot2MinDays": 4, "slot2MaxDays": 5, "slot2Reputation": 60
+}

@@ -7,7 +7,12 @@ namespace Steel.Core.State.Slice
     public sealed partial class SliceSession
     {
         /// <summary>What the mill would pay for the load at this price per kg, after the truck's running cost.</summary>
-        public double GateNet(TruckLoad load, double perKg) => load.billableKg * perKg - Haul.RunCost(load.truck);
+        public double GateNet(TruckLoad load, double perKg) =>
+            SpkKg(load) * Spk.perKg + (load.billableKg - SpkKg(load)) * perKg - Haul.RunCost(load.truck);
+
+        /// <summary>Trucks of other suppliers ahead at the mill's manual gate this game hour (PRD 7.7).</summary>
+        public int GateQueue(double hour) =>
+            (int)(Trade.Street.SellerRoll.Of(0, (long)Math.Floor(hour), 900) * (Haul.QueueMost + 1));
 
         public double WeighIn(string truck, double perKg, double hour)
         {
@@ -19,7 +24,9 @@ namespace Steel.Core.State.Slice
                 throw new InvalidOperationException("Parkir truk di jembatan timbang dahulu.");
             double net = GateNet(load, NumberRules.NonNegative(perKg, nameof(perKg)));
             if (net <= 0) throw new InvalidOperationException("Nilai muatan tidak menutup biaya jalan.");
-            load.payout = net; load.weighedKg = load.kg; load.doneHour = hour + load.kg / Haul.CraneRate;
+            load.payout = net; load.weighedKg = load.kg;
+            load.doneHour = hour + GateQueue(hour) / Haul.GatePerHour + load.kg / Haul.CraneRate;
+            DeliverSpk(SpkKg(load), hour);
             UseAsset(truck);
             return net;
         }

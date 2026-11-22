@@ -1,6 +1,7 @@
 using UnityEngine;
 using Steel.Editor.Plan.Places.Builders;
 using Steel.Editor.Plan.Town;
+using Steel.Presentation.World.Gate;
 using Steel.Services.Map;
 
 namespace Steel.Editor.Plan.Places.Haul
@@ -8,7 +9,7 @@ namespace Steel.Editor.Plan.Places.Haul
     /// <summary>The gate of PT Baja Nusantara: a weighbridge trucks drive onto, a weighing post and a magnet crane over the bay.</summary>
     internal static class MillGate
     {
-        private const float DeckWidth = 4.2f, CraneZ = -5, CraneHeight = 7.5f;
+        private const float DeckWidth = 4.2f, CraneZ = -5, CraneHeight = 7.5f, LaneX = 9;
 
         internal static void Build(TownKit kit, Lot lot)
         {
@@ -29,6 +30,21 @@ namespace Steel.Editor.Plan.Places.Haul
             booth[1].Awning(kit.Trim, Tone.Orange, 0, 3.4f, 2.5f, 1, .25f);
             Props.Board(kit, lot.Part(-w / 2 + 4.5f, d / 2 - .8f, 8, 1), "PT BAJA NUSANTARA\nJEMBATAN TIMBANG");
             Shapes.Flat(kit.Trim, lot, Tone.Yellow, MapSite.PostRight, MapSite.PostForward, 1.6f, 1.6f, Lot.Floor + .02f);
+            Queue(lot);
+        }
+
+        /// <summary>The waiting lane beside the bridge, with the trucks that fill it when the gate is busy.</summary>
+        private static void Queue(Lot lot)
+        {
+            var line = new GameObject("Antrean gerbang").AddComponent<GateLine>();
+            line.transform.SetParent(CityGeometry.Root, false);
+            line.transform.SetPositionAndRotation(lot.Point(LaneX, Lot.Floor, 0), Quaternion.Euler(0, lot.Yaw, 0));
+            line.Trucks = new GameObject[3];
+            for (int i = 0; i < line.Trucks.Length; i++)
+            {
+                line.Trucks[i] = QueueTruck.Create(line.transform, i);
+                line.Trucks[i].transform.localPosition = new Vector3(0, 0, -lot.Depth / 2 + 4.5f + i * 6.8f);
+            }
         }
     }
 }

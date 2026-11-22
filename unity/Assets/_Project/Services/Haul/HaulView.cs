@@ -8,6 +8,8 @@ namespace Steel.Services
         public int GradeIndex;
         public bool Loading, Unloading;
         public double CapacityKg, LoadKg, TargetKg, HoursLeft, Net, RunCost, PerKg;
+        /// <summary>Kilograms of this load the running work order takes at its own price.</summary>
+        public double SpkKg;
         /// <summary>Yard stock per grade, for choosing what to load.</summary>
         public double[] Stock;
     }
@@ -19,6 +21,8 @@ namespace Steel.Services
         SliceLocation GatePost { get; }
         HaulView YardDock { get; }
         HaulView GateDock { get; }
+        /// <summary>Other suppliers' trucks waiting at the mill's gate now; each takes a sixth of a game hour.</summary>
+        int GateQueue { get; }
         /// <summary>How full this truck's bed is with yard stock right now, 0 to 1.</summary>
         double BedShare(string truck);
         void LoadTruck(int grade);

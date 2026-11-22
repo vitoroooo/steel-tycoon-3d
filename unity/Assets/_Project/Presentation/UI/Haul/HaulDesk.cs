@@ -16,7 +16,8 @@ namespace Steel.Presentation.UI
         private readonly RectTransform panel;
         private readonly Text title, truck, status, voice;
         private readonly Button[] grades = new Button[4];
-        private readonly Button stop, weigh;
+        private readonly Button stop, weigh, orders;
+        private readonly SpkDesk spk;
         private bool atGate;
         internal bool Opened => panel.gameObject.activeSelf;
         private static string Rp(double v) => "Rp" + v.ToString("N0", CultureInfo.GetCultureInfo("id-ID"));
@@ -35,6 +36,8 @@ namespace Steel.Presentation.UI
             }
             stop = Key("BERHENTI MUAT", 300, 125, -160, game.StopLoading);
             weigh = Key("TIMBANG & BONGKAR", 340, 105, -62, () => voice.text = "Nota timbang: " + Rp(game.WeighIn()) + " dibayar setelah bongkar.");
+            spk = new SpkDesk(hud.SafeRoot, game);
+            orders = UiFactory.Button(panel, "KONTRAK SPK", new Vector2(230, 64), new Vector2(-55, -160), spk.Open);
             UiFactory.Button(panel, "TUTUP", new Vector2(182, 64), new Vector2(-285, -160), Close);
             panel.gameObject.AddComponent<Ticker>().Every = Refresh;
             panel.gameObject.SetActive(false);
@@ -55,7 +58,7 @@ namespace Steel.Presentation.UI
             panel.gameObject.SetActive(true); input.IsBlocked = true; Refresh();
         }
 
-        private void Close() { panel.gameObject.SetActive(false); input.IsBlocked = false; hud.RefreshNow(); }
+        private void Close() { spk.Close(); panel.gameObject.SetActive(false); input.IsBlocked = false; hud.RefreshNow(); }
 
         private void Refresh()
         {
@@ -65,15 +68,18 @@ namespace Steel.Presentation.UI
                 : v.TruckName.ToUpperInvariant() + "  ·  muatan " + Ton(v.LoadKg) + " / " + Ton(v.CapacityKg) + (v.Grade == null ? "" : "  ·  " + v.Grade);
             status.text = v.Loading ? "Loader memuat sampai " + Ton(v.TargetKg) + ", sisa " + Minutes(v.HoursLeft)
                 : v.Unloading ? "Crane membongkar, sisa " + Minutes(v.HoursLeft) + "\nDibayar " + Rp(v.Net) + " setelah selesai"
-                : v.LoadKg > 0 ? "Nilai di gerbang pabrik " + Rp(v.PerKg) + "/kg\nBersih " + Rp(v.Net) + " setelah biaya jalan " + Rp(v.RunCost)
+                : v.LoadKg > 0 ? (v.SpkKg > 0 ? Ton(v.SpkKg) + " masuk SPK" : "Harga harian " + Rp(v.PerKg) + "/kg") + Queue() + "\nBersih " + Rp(v.Net) + " setelah biaya jalan " + Rp(v.RunCost)
                 : v.Notice ?? (atGate ? "Bak kosong. Muat dulu di kavling lapak Anda." : "Pilih grade yang dimuat. Loader bekerja 10 ton per jam game.");
             for (int i = 0; i < grades.Length; i++)
             {
                 grades[i].gameObject.SetActive(!atGate);
                 grades[i].GetComponentInChildren<Text>().text = game.YardInfo(i).Grade + "\n" + Ton(v.Stock[i]);
             }
-            stop.gameObject.SetActive(!atGate && v.Loading); weigh.gameObject.SetActive(atGate);
+            stop.gameObject.SetActive(!atGate && v.Loading); weigh.gameObject.SetActive(atGate); orders.gameObject.SetActive(atGate);
         }
+
+        private string Queue() => !atGate ? "" : game.GateQueue == 0 ? " · gerbang kosong"
+            : " · antre " + game.GateQueue + " truk (" + game.GateQueue * 10 + " menit game)";
 
         private static string Minutes(double gameHours) => Math.Ceiling(gameHours * 60) + " menit game";
     }

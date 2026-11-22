@@ -8,7 +8,8 @@ namespace Steel.Core.Trade.Haul
     {
         /// <summary>Where a truck stands to be loaded at the player's yard, and to be weighed at the mill gate.</summary>
         public readonly WorldPoint Yard, Gate;
-        public readonly double TruckKg, CraneRate, YardReach, GateReach, DeskReach;
+        public readonly double TruckKg, CraneRate, YardReach, GateReach, DeskReach, GatePerHour;
+        public readonly int QueueMost;
         private readonly ConfigValues values;
 
         public HaulRules(string json, WorldPoint yard, WorldPoint gate)
@@ -17,6 +18,7 @@ namespace Steel.Core.Trade.Haul
             TruckKg = values.Positive("truckKg"); CraneRate = values.Positive("craneKgPerHour");
             YardReach = values.Positive("yardReach"); GateReach = values.Positive("gateReach");
             DeskReach = values.Positive("deskReach");
+            GatePerHour = values.Positive("gatePerHour"); QueueMost = values.Integer("queueMost");
         }
 
         /// <summary>Fuel, toll and driver's meal for one delivery with this truck (PRD A.1 "biaya jalan").</summary>

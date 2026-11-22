@@ -27,6 +27,11 @@ namespace Steel.Services
         public SliceLocation GatePost => new SliceLocation(session.Haul.Gate);
         public HaulView YardDock => Dock(session.Haul.Yard, session.Haul.YardReach);
         public HaulView GateDock => Dock(session.Haul.Gate, session.Haul.GateReach);
+        public int GateQueue => session.GateQueue(GameHours);
+        private void AdvanceTrade()
+        {
+            session.Street.Advance(GameHours); session.AdvanceHaul(GameHours); session.AdvanceSpk(GameHours);
+        }
         private double GatePrice(int grade) => scrap.UnitRate((ScrapGrade)grade, 0, Prices.BuyFromK2);
 
         private HaulView Dock(WorldPoint dock, double reach)
@@ -41,6 +46,7 @@ namespace Steel.Services
             view.GradeIndex = load.grade; view.Grade = ScrapText.Grade((ScrapGrade)load.grade);
             view.LoadKg = session.OnBed(load, GameHours); view.TargetKg = load.targetKg;
             view.Loading = load.Loading; view.Unloading = load.Unloading; view.PerKg = GatePrice(load.grade);
+            view.SpkKg = load.Unloading ? 0 : session.SpkKg(load);
             view.Net = load.Unloading ? load.payout : session.GateNet(load, view.PerKg);
             view.HoursLeft = load.Unloading ? Math.Max(0, load.doneHour - GameHours)
                 : (load.targetKg - load.kg) / session.Maintenance.LoaderRate;
@@ -69,15 +75,6 @@ namespace Steel.Services
         {
             HaulView dock = GateDock;
             return session.WeighIn(DockedTruck(dock, "jembatan timbang"), dock.PerKg, GameHours);
-        }
-
-        private InteractionView NearbyPost()
-        {
-            if (session.Position.Distance(session.Haul.Gate) <= session.Haul.DeskReach)
-                return new InteractionView { Id = "gate", Title = "Pos timbang PT Baja Nusantara", Detail = "Timbang dan bongkar muatan truk" };
-            if (session.Yard.bandar && session.Position.Distance(session.Haul.Yard) <= session.Haul.DeskReach)
-                return new InteractionView { Id = "yardpost", Title = "Pos muat kavling Anda", Detail = "Muat stok lapak ke truk dengan loader" };
-            return null;
         }
     }
 }
