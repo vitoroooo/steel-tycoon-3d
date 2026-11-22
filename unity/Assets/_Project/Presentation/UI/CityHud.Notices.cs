@@ -15,6 +15,14 @@ namespace Steel.Presentation.UI
             return true;
         }
 
+        private string lastAlarm;
+        /// <summary>Trouble at the yard is announced wherever the player is.</summary>
+        private void Alarm()
+        {
+            string note = host.Game.Risk.Note;
+            if (note != lastAlarm && (lastAlarm = note) != null) NoticeText.text = note;
+        }
+
         private void ToggleCart()
         {
             if (host.Game.Cart.Held) host.Game.ReleaseCart(); else host.Game.GrabCart();

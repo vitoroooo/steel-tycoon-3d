@@ -18,6 +18,7 @@ namespace Steel.Services
                 new SliceWorld(source.Read("Piles")), scrap, FleetCatalog.Create(source),
                 new Core.Fleet.CartRules(source.Read("Gerobak")));
             CreateStreet(source); CreateHaul(source); session.OpenSpk(new Steel.Core.Trade.Spk.SpkRules(source.Read("Spk")));
+            session.OpenRisk(new Steel.Core.Risk.RiskRules(source.Read("Risk")));
         }
         public GameView View => new GameView
         {

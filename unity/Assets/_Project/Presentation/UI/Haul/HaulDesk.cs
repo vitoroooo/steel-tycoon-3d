@@ -16,8 +16,9 @@ namespace Steel.Presentation.UI
         private readonly RectTransform panel;
         private readonly Text title, truck, status, voice;
         private readonly Button[] grades = new Button[4];
-        private readonly Button stop, weigh, orders;
+        private readonly Button stop, weigh, orders, guards;
         private readonly SpkDesk spk;
+        private readonly SecurityDesk security;
         private bool atGate;
         internal bool Opened => panel.gameObject.activeSelf;
         private static string Rp(double v) => "Rp" + v.ToString("N0", CultureInfo.GetCultureInfo("id-ID"));
@@ -34,10 +35,12 @@ namespace Steel.Presentation.UI
                 int grade = i;
                 grades[i] = Key("G" + i, 182, -285 + i * 190, -62, () => game.LoadTruck(grade));
             }
-            stop = Key("BERHENTI MUAT", 300, 125, -160, game.StopLoading);
+            stop = Key("BERHENTI MUAT", 300, 230, -160, game.StopLoading);
             weigh = Key("TIMBANG & BONGKAR", 340, 105, -62, () => voice.text = "Nota timbang: " + Rp(game.WeighIn()) + " dibayar setelah bongkar.");
             spk = new SpkDesk(hud.SafeRoot, game);
             orders = UiFactory.Button(panel, "KONTRAK SPK", new Vector2(230, 64), new Vector2(-55, -160), spk.Open);
+            security = new SecurityDesk(hud.SafeRoot, game);
+            guards = UiFactory.Button(panel, "KEAMANAN", new Vector2(230, 64), new Vector2(-55, -160), security.Open);
             UiFactory.Button(panel, "TUTUP", new Vector2(182, 64), new Vector2(-285, -160), Close);
             panel.gameObject.AddComponent<Ticker>().Every = Refresh;
             panel.gameObject.SetActive(false);
@@ -58,7 +61,7 @@ namespace Steel.Presentation.UI
             panel.gameObject.SetActive(true); input.IsBlocked = true; Refresh();
         }
 
-        private void Close() { spk.Close(); panel.gameObject.SetActive(false); input.IsBlocked = false; hud.RefreshNow(); }
+        private void Close() { spk.Close(); security.Close(); panel.gameObject.SetActive(false); input.IsBlocked = false; hud.RefreshNow(); }
 
         private void Refresh()
         {
@@ -76,6 +79,7 @@ namespace Steel.Presentation.UI
                 grades[i].GetComponentInChildren<Text>().text = game.YardInfo(i).Grade + "\n" + Ton(v.Stock[i]);
             }
             stop.gameObject.SetActive(!atGate && v.Loading); weigh.gameObject.SetActive(atGate); orders.gameObject.SetActive(atGate);
+            guards.gameObject.SetActive(!atGate);
         }
 
         private string Queue() => !atGate ? "" : game.GateQueue == 0 ? " · gerbang kosong"

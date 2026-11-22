@@ -41,6 +41,7 @@ namespace Steel.Presentation.UI
             var v = host.Game.View; var near = host.Game.Nearby;
             if (lastSaveNotice != host.SaveNotice && (lastSaveNotice = host.SaveNotice) != null)
                 NoticeText.text = lastSaveNotice;
+            Alarm();
             CashText.text = Money(v.Cash);
             LoadText.text = "Buku usaha ›    K" + v.Caste + "    " + v.CarriedKg + " / " + v.CapacityKg + " kg";
             MarketText.text = "IBN  " + Money(v.Ibn) + "/kg\n" + (host.Game.RainHere ? "Hujan · " : "") + "Hari " +

@@ -31,6 +31,7 @@ namespace Steel.Editor.Plan.Places.Haul
             }
             works.Loader = LoaderModel.Create(works.transform);
             YardCallerBuilder.Build(kit, lot, works.transform);
+            Risk.GateTroubleBuilder.Build(lot);
             works.Rest = new Vector3(3, 0, -2); works.Dock = new Vector3(3, 0, lot.Depth / 2 - 3);
             works.Loader.localPosition = works.Rest;
         }

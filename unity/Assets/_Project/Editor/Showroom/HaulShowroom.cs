@@ -8,7 +8,7 @@ using Steel.Services.Map;
 
 namespace Steel.Editor.Showroom
 {
-    /// <summary>One sheet of truck hauling as built: the mill's weighbridge, and the player's yard with stock and loader.</summary>
+    /// <summary>One sheet of truck hauling as built: the mill's weighbridge and queue, and the player's yard with stock, loader, gang and guards.</summary>
     public static class HaulShowroom
     {
         private static readonly float[] Sides = { -35, 35 };
@@ -27,6 +27,8 @@ namespace Steel.Editor.Showroom
             var caller = works.GetComponent<YardCaller>();   // the collector as he stands reading the scale
             caller.Collector.localPosition = caller.Scale;
             caller.Arms.Hold(caller.GripLeft, caller.GripRight); caller.Arms.Snap();
+            var trouble = Object.FindObjectOfType<Steel.Presentation.World.Risk.GateTrouble>();   // a gang outside, the guards inside
+            foreach (GameObject person in trouble.Thugs.Concat(trouble.Guards)) person.SetActive(true);
             MapPlan plan = MapPlan.Load();
             MapSite[] sites = { plan.sites.First(s => s.kind == MapSite.MillGate), plan.sites.First(s => s.kind == MapSite.PlayerLapak) };
             int w = ShowroomStage.Width, h = ShowroomStage.Height, tileW = w / Sides.Length, tileH = h / sites.Length;

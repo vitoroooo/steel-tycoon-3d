@@ -1,0 +1,13 @@
+{
+  "heatPerLoad": 15, "heatDecayPerDay": 5, "raidBase": 0.10, "raidPerHeat": 0.005,
+  "fineFactor": 3, "raidReputation": 25, "reportReputation": 3, "seizedHours": 48,
+  "offerChance": 0.35, "offerMinKg": 300, "offerMaxKg": 1200, "marginMin": 3, "marginMax": 5, "legalMargin": 0.15,
+  "protectorFee": 50000000, "protectorCut": 0.5, "protectorExposed": 0.05, "exposedFactor": 2,
+  "extortChance": 0.08, "extortPerBillion": 0.04, "extortCap": 0.5, "deterPerGuard": 0.05, "deterMost": 0.8,
+  "payShare": 0.02, "negotiateShare": 0.01, "minDemand": 2000000, "lossFactor": 1.5,
+  "monthHours": 720, "answerHours": 12, "winQuietHours": 240,
+  "thugsBase": 4, "thugsPerBillion": 2, "thugsMost": 12, "thugHp": 60, "thugHit": 14, "tamerCalm": 0.5,
+  "guard1Hp": 160, "guard1Hit": 8, "guard1Cost": 6000000,
+  "guard2Hp": 80, "guard2Hit": 22, "guard2Cost": 4000000,
+  "guard3Hp": 50, "guard3Hit": 6, "guard3Cost": 5000000
+}
