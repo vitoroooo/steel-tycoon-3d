@@ -20,7 +20,7 @@ namespace Steel.Presentation.UI
                     return;
                 }
                 detail.text = "Kantor pabrik · gerbang PT Baja Nusantara di tenggara kota\n" +
-                    "Kasta 3: bandar, AMDAL aktif, reputasi 70, kas Rp3 miliar.\n" +
+                    "Kasta 3: level 28, AMDAL aktif, reputasi 70, kas Rp3 miliar.\n" +
                     (m.Filed ? "AMDAL: " + (m.Ready ? "aktif" : Math.Ceiling(m.Wait) + " jam game lagi") :
                     "Pengajuan AMDAL: " + Rp(m.AmdalFee));
                 if (!m.Filed) Key(0,"Ajukan AMDAL",() => forms = true);
@@ -35,6 +35,7 @@ namespace Steel.Presentation.UI
                 Key(0,"Ganti peralatan",NextProduct);
                 if (product == 0 ? !m.Shredder : !m.HasLine)
                     Key(1,product == 0 ? "Pasang shredder" : "Pasang lini",() => game.InstallLine(product));
+                if (!m.Rfid) Key(2,"RFID · Rp400 jt",() => game.InstallLine(3));
                 return;
             }
             var y = game.YardInfo(feedGrade);

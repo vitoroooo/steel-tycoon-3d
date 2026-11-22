@@ -14,6 +14,7 @@ namespace Steel.Tests.Mill
         {
             var s = JsonUtility.FromJson<CareerSave>(new LocalGameService(src).Save(1000));
             s.cash = 2000000000; s.mill.opened = s.mill.filed = s.mill.rolling = true;
+            s.finance.level = 40;
             s.mill.goods[1] = 320000;
             s.yard.applied = s.yard.leased = s.yard.bandar = true; s.yard.leaseUntil = 1000; s.yard.reputation = 100;
             var f = new CityLayout(src).Factory; s.x = f.X; s.z = f.Z;
@@ -34,9 +35,9 @@ namespace Steel.Tests.Mill
         }
         [Test] public void MissingTheDeadlineClosesTheAwardWithoutMintingPayment()
         {
-            double cash = g.View.Cash; g.OfferBridgeSteel(0); g.Advance(241*600);
+            double cash = g.View.Cash, payroll = g.CrewInfo().Wage; g.OfferBridgeSteel(0); g.Advance(241*600);
             Assert.IsFalse(g.GovernmentOrder(0).Awarded);
-            Assert.AreEqual(95,g.YardInfo(0).Rep); Assert.AreEqual(cash,g.View.Cash);
+            Assert.AreEqual(95,g.YardInfo(0).Rep); Assert.AreEqual(cash-10*payroll,g.View.Cash);
         }
         [Test] public void TwoDistrictStoresPayForTheirOwnStockAndHaulOnlyOnce()
         {

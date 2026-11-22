@@ -8,7 +8,8 @@ namespace Steel.Core.State.Slice
     public sealed partial class SliceSession
     {
         private static double CargoCost(Backpack cargo) => cargo.Items.Sum(p => p.AcquisitionCost);
-        private double WorkingCapital() => Yard.payout + accounts.stockCost.Sum() +
+        private double WorkingCapital() => Yard.payout + accounts.stockCost.Sum() + Mill.plantValue +
+            Mill.heatCost + Mill.costs.Sum() + Satellites.Sum(s => s.cost) +
             CargoCost(backpack) + CargoCost(Cart.Cargo) + CargoCost(Covered) +
             Fleet.All.Sum(m => CargoCost(m.Cargo)) + Routes.Orders.Sum(o => o.UnitCost * o.KgLeft);
 
@@ -27,6 +28,7 @@ namespace Steel.Core.State.Slice
             if (Yard.payout > 0) CollectShipment();
             if (CooperativeDebt == 0) return;
             CreditCash(WorkingCapital());
+            if (Mill.opened) { Mill = new Saving.MillSave(); Tender = new Saving.TenderSave(); LoadSites(null); }
             backpack.Clear(); Cart.Cargo.Clear(); Covered.Clear(); Routes.ForfeitOrders();
             foreach (var motor in Fleet.All) motor.Cargo.Clear();
             Array.Clear(accounts.stockCost, 0, accounts.stockCost.Length);

@@ -24,6 +24,7 @@ namespace Steel.Core.State.Slice
             if (site != null && site.leaseUntil > hour) throw new InvalidOperationException("Sewa masih aktif.");
             double equipment = site == null ? rules.Positive("loader")+rules.Positive("scale") : 0;
             Pay(rules.Positive("rent")+equipment);
+            RecordOperatingProfit(-rules.Positive("rent"));
             if (site == null)
             {
                 site = new SatelliteSave {district = district}; Satellites = Satellites.Concat(new[]{site}).ToArray();
@@ -44,15 +45,19 @@ namespace Steel.Core.State.Slice
                 if (hour%4 != site.district || hour >= site.leaseUntil || site.bid < floor) continue;
                 double kg = rules.Positive("npcLotKg"), cost = kg*site.bid;
                 if (Cash < cost || site.stock+kg > rules.Positive("capacityKg")) continue;
-                Pay(cost); site.stock += kg;
+                Pay(cost); site.stock += kg; site.cost += cost;
             }
         }
-        public void TransferSite(int district,ConfigValues rules)
+        public void TransferSite(int district,ConfigValues rules,double hour)
         {
             RequireNear(Rules.Factory); var site = SiteAt(district); double kg = rules.Positive("minShipmentKg");
             if (site == null || site.stock < kg || Yard.stock.Sum()+kg > rules.Positive("capacityKg"))
                 throw new InvalidOperationException("Perlu 15 ton HMS 2 di satelit dan ruang di lapak pusat.");
-            Pay(rules.Positive("shipFee")); site.stock -= kg; Yard.stock[1] += kg;
+            if (hour < Mill.gateReady) throw new InvalidOperationException("Tunggu truk sebelumnya lolos timbang.");
+            double fee = rules.Positive("shipFee"), cost = site.cost*(kg/site.stock);
+            Pay(fee); site.stock -= kg; Yard.stock[1] += kg; site.cost -= cost;
+            RecordStockPurchase(1,kg,cost+fee);
+            Mill.gateReady = hour + 1d / (Mill.rfid ? 20 : 6);
         }
     }
 }

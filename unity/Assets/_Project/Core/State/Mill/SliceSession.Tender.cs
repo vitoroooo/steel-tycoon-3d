@@ -10,9 +10,9 @@ namespace Steel.Core.State.Slice
         {
             RequireNear(Rules.Factory);
             long round = TenderSave.Current(hour);
-            if (!Mill.rolling || Yard.reputation < 60 || Tender.awarded ||
+            if (!Mill.rolling || BusinessLevel < 40 || Yard.reputation < 60 || Tender.awarded ||
                 Tender.offered && Tender.round == round || hour % TenderSave.Interval >= TenderSave.Closing)
-                throw new InvalidOperationException("Perlu lini rolling, reputasi 60 dan lelang terbuka.");
+                throw new InvalidOperationException("Perlu level 40, lini rolling, reputasi 60 dan lelang terbuka.");
             if (NumberRules.NonNegative(bid,"bid") <= 0) throw new InvalidOperationException("Harga tidak valid.");
             Tender = new TenderSave { offered = true,round = round,bid = bid,repAtBid = Yard.reputation,
                 certified = certified,last = "Penawaran disegel sampai penutupan." };
@@ -40,7 +40,7 @@ namespace Steel.Core.State.Slice
             var t = Tender;
             if (!t.awarded || Mill.goods[1] <= 0) throw new InvalidOperationException("Tidak ada pengiriman H-beam.");
             double kg = Math.Min(t.Remaining,Mill.goods[1]); double payment = t.bid*kg;
-            Mill.goods[1] -= kg; t.sent += kg; Cash += payment;
+            CollectSteelProceeds(1,kg,payment); t.sent += kg;
             if (t.Remaining <= 0)
             {
                 t.awarded = false; t.bid = 0; Yard.reputation = Math.Min(100,Yard.reputation+5);

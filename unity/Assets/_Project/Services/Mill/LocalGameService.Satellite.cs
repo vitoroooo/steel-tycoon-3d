@@ -25,7 +25,7 @@ namespace Steel.Services
         public void LeaseSatellite(int district) => session.LeaseSite(district,GameHours,business);
         public void PriceSatellite(int district,bool active) => session.SiteBid(district,GameHours,
             active ? System.Math.Ceiling(CounterRate(1)*1.05) : 0);
-        public void HaulSatellite(int district) => session.TransferSite(district,business);
+        public void HaulSatellite(int district) => session.TransferSite(district,business,GameHours);
         private void SiteHour(long hour) => session.SupplySites(hour,CounterRate(1),business);
     }
 }

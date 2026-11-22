@@ -26,8 +26,8 @@ namespace Steel.Services
         {
             if (!session.Yard.bandar) return;
             int grade = (int)(hour % 4);
-            session.Receive(grade, CounterRate(grade), business.Positive("npcLotKg"),
-                business.Positive("capacityKg"), hour);
+            session.CrewReceive(grade, CounterRate(grade), business.Positive("npcLotKg"),
+                business.Positive("capacityKg"), hour, session.Yard.Machine(false,hour).condition, session.Caste);
         }
         public YardView YardInfo(int grade)
         {
@@ -43,7 +43,8 @@ namespace Steel.Services
         public void Lease() => session.Lease(business, GameHours);
         public void OpenYard() => session.OpenYard(business, GameHours);
         public void SetBid(int grade, double price) => session.SetBid(grade, price, GameHours);
-        public double ShipGrade(int grade) => session.ShipGrade(grade, business,
-            scrap.UnitRate((ScrapGrade)grade, 0, Prices.BuyFromK2),GameHours,YardSoil);
+        public double ShipGrade(int grade) => session.CrewShipGrade(grade, business,
+            scrap.UnitRate((ScrapGrade)grade, 0, Prices.BuyFromK2),GameHours,YardSoil,
+            session.Yard.Machine(true,GameHours).condition,session.Caste);
     }
 }

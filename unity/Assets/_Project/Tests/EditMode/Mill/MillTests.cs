@@ -17,6 +17,7 @@ namespace Steel.Tests.Mill
             city = new CityLayout(source);
             state = JsonUtility.FromJson<CareerSave>(new LocalGameService(source).Save(1000));
             state.cash = 20000000000; state.yard.applied = state.yard.leased = state.yard.bandar = true;
+            state.finance.level = 40;
             state.yard.leaseUntil = 1000; state.yard.reputation = 80;
             state.yard.stock[1] = 40000;
             state.x = city.Factory.X; state.z = city.Factory.Z;

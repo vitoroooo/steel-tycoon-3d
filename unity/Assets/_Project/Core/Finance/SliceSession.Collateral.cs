@@ -38,6 +38,8 @@ namespace Steel.Core.State.Slice
             if (!Yard.bandar || !(loader ? accounts.loaderSeized : accounts.scaleSeized))
                 throw new InvalidOperationException("Alat ini belum perlu diganti.");
             Pay(prices.Positive(loader ? "loader" : "scale"));
+            Yard.Machine(loader,0);
+            Yard.machines[loader ? 1 : 0] = new Equipment.MachineState { randomState = loader ? 73 : 31 };
             if (loader) accounts.loaderSeized = false; else accounts.scaleSeized = false;
         }
 

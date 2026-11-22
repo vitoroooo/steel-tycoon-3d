@@ -18,6 +18,8 @@ namespace Steel.Core.State.Saving
         public MillSave mill;
         public TenderSave tender;
         public SatelliteSave[] satellites;
+        public FinanceSave finance;
+        public Steel.Core.Crew.CrewSave crew;
         public LotSave[] covered;
         public int story;
         public bool motorRoute, readForecast, sheltered;

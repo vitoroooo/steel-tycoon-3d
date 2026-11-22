@@ -52,19 +52,23 @@ namespace Steel.Core.State.Slice
             }
             if (CooperativeDebt > 0 && assets.Count <= 1)
             {
+                bool wasMill = Mill.opened;
                 LiquidateStock();
-                if (CooperativeDebt > 0) RestartBusiness();
+                if (CooperativeDebt > 0) RestartBusiness(prices,wasMill);
             }
         }
 
-        private void RestartBusiness()
+        private void RestartBusiness(ConfigValues prices,bool wasMill)
         {
-            Yard = new YardSave();
+            Mill = new MillSave(); Tender = new TenderSave(); LoadSites(null); RestoreCrew(null);
+            Yard = new YardSave { bandar = wasMill, applied = wasMill, leased = wasMill,
+                leaseUntil = wasMill ? (FinanceSeconds-financeClockOffset)/600+prices.Positive("leaseHours") : 0 };
             accounts.scaleSeized = accounts.loaderSeized = false;
             accounts.debt = accounts.interestDue = 0;
             accounts.quarterProfit = 0;
-            Cash = Rules.StartCash;
-            accounts.notice = "Usaha dimulai kembali di Kasta 1. Modal awal cair, level dan gerobak tetap.";
+            Cash = wasMill ? prices.Positive("minimumCash")-prices.Positive("loader")-prices.Positive("scale")
+                : Rules.StartCash;
+            accounts.notice = "Usaha dimulai kembali di Kasta " + Caste + ". Modal awal cair, level dan gerobak tetap.";
         }
     }
 }

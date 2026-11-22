@@ -28,8 +28,12 @@ namespace Steel.Core.State.Slice
         {
             RequireNear(Rules.Home);
             if (!Yard.stuck) throw new InvalidOperationException("Tidak ada trailer terjebak.");
-            if (tow) Pay(price);
-            else WorkLoader(hour, 1, 1);
+            if (tow) { Pay(price); RecordOperatingProfit(-price); }
+            else
+            {
+                if (!HasLoader) throw new InvalidOperationException("Loader tidak tersedia.");
+                WorkLoader(hour, 1, 1); UseAsset("loader");
+            }
             Yard.stuck = false; Yard.rescued = true; Yard.rescueHour = hour + (tow ? 0 : 1);
         }
     }

@@ -22,6 +22,7 @@ namespace Steel.Tests.Crew
             Game.InitCrew(new ConfigValues(TestConfig.Read("Crew")));
             Game.Position = rules.Home;
             Business = new ConfigValues(TestConfig.Read("Business"));
+            Game.ConfigureMaintenance(new Steel.Core.Equipment.MaintenanceRules(TestConfig.Read("Maintenance"),Business));
             Game.Yard.bandar = Game.Yard.applied = Game.Yard.leased = true;
             Game.Yard.leaseUntil = 10000;
             Game.Yard.bids[1] = 1;

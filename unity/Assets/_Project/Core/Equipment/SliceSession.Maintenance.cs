@@ -18,14 +18,15 @@ namespace Steel.Core.State.Slice
         public void RepairMachine(bool loader, RepairMethod method, double hour)
         {
             RequireNear(Rules.Home);
-            if (!Yard.bandar) throw new InvalidOperationException("Perawatan tersedia di lapak Kasta 2.");
+            if (!(loader ? HasLoader : HasScale)) throw new InvalidOperationException("Alat belum dimiliki.");
             var target = Yard.Machine(loader, hour);
             if (target.repairDue > hour || target.condition > 0 || loader && LoaderBusy(hour))
                 throw new InvalidOperationException("Alat belum dapat diperbaiki.");
             if (target.needsOriginal && method != RepairMethod.Original)
                 throw new InvalidOperationException("Alat donor memerlukan suku cadang asli.");
             var donor = Yard.Machine(!loader, hour);
-            if (method == RepairMethod.Donor && (donor.condition <= 0 || !loader && LoaderBusy(hour)))
+            if (method == RepairMethod.Donor && (!(loader ? HasScale : HasLoader) || donor.condition <= 0 ||
+                !loader && LoaderBusy(hour)))
                 throw new InvalidOperationException("Alat donor harus siap dan menganggur.");
             double cost = Maintenance.RepairCost(loader, method);
             Pay(cost);

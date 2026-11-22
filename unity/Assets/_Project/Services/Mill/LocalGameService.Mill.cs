@@ -5,7 +5,7 @@ namespace Steel.Services
 {
     public struct MillView
     {
-        public bool Filed, Open, Ready, HasLine, Shredder;
+        public bool Filed, Open, Ready, HasLine, Shredder, Rfid;
         public double Wait, Input, Goods, FinishIn, Batch, Price, UpgradeCost, AmdalFee;
     }
     public partial interface IGameService
@@ -26,7 +26,7 @@ namespace Steel.Services
             var m = session.Mill;
             return new MillView { Filed = m.filed, Open = m.opened, Ready = m.filed && GameHours >= m.permitAt,
                 Wait = Math.Max(0,m.permitAt-GameHours), Input = session.Yard.stock[grade], Goods = m.goods[product],
-                HasLine = product == 0 || (product == 1 ? m.rolling : m.bolts), Shredder = m.shredder,
+                HasLine = product == 0 || (product == 1 ? m.rolling : m.bolts), Shredder = m.shredder, Rfid = m.rfid,
                 FinishIn = Math.Max(0,m.completedAt-GameHours), Batch = m.pendingKg,
                 Price = Prices.Ibn * (product == 1 ? millRules.Positive("beamRate") :
                     product == 2 ? millRules.Positive("boltRate") : 1), AmdalFee = millRules.Positive("amdal"),

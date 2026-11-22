@@ -30,10 +30,18 @@ namespace Steel.Services
             market = new AiPriceBook(economy);
             scrap = new ScrapPricing(new ScrapConfig(source.Read("Scrap")));
             CreateSession(source);
+            InitMaintenance(source); InitCrew(source);
+            session.CrewExpense = session.ChargeOperatingExpense;
+            session.MaintenanceAccident += hour => session.InvestigateCrew(hour, session.Caste);
+            session.MaintenanceOffline = () => session.CrewOffline;
+            session.RepairPaid += cost => session.RecordOperatingProfit(-cost);
             market.Refresh(0, economy.SupplyTargetKg);
             clock.HourTick += hour => market.RefreshBucket(hour, economy.SupplyTargetKg);
             clock.HourTick += session.World.OnHour;
             clock.HourTick += session.Routes.OnHour;
+            clock.HourTick += _ => FinanceTime();
+            clock.HourTick += hour => session.CrewHour(hour, 0, session.Mill.shredder && session.Mill.pendingKg > 0 &&
+                hour - 1 < session.Mill.completedAt, session.Mill.opened, session.Mill.rfid);
             clock.HourTick += session.WeatherHour;
             clock.HourTick += SupplierHour;
             clock.HourTick += TenderHour;
@@ -46,12 +54,13 @@ namespace Steel.Services
         private void FinishTime(double elapsed)
         {
             session.Fleet.AdvanceTrip(elapsed); session.Routes.Advance(elapsed);
+            FinanceTime();
             session.PayShipment(GameHours); session.FinishHeat(GameHours);
         }
         public double CatchUp(double elapsedRealSeconds)
         {
-            double applied = clock.CatchUp(elapsedRealSeconds);
-            FinishTime(applied); return applied;
+            double applied = session.CrewCatchUp(elapsedRealSeconds,queueLimit,Advance);
+            FinanceTime(elapsedRealSeconds-applied); return applied;
         }
         public double Quote(ScrapPile pile) => scrap.Quote(pile, Prices.ScrapReference);
     }

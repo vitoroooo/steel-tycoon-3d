@@ -9,7 +9,7 @@ namespace Steel.Core.State.Slice
         public CareerSave Snapshot(int districts) => new CareerSave {
             version = 1, cash = Cash, x = Position.X, z = Position.Z, cartX = Cart.Position.X, cartZ = Cart.Position.Z,
             magnet = Magnet, xrf = Xrf, yard = Yard, mill = Mill, tender = Tender, covered = Covered.Snapshot(),
-            satellites = Satellites,
+            satellites = Satellites, finance = SaveFinance(), crew = Crew,
             firstSale = FirstSaleMade, grant = GrantCollected, cartHeld = Cart.Held,
             bag = backpack.Snapshot(), cart = Cart.Cargo.Snapshot(),
             motors = Fleet.All.Select(m => m.Snapshot()).ToArray(),
@@ -28,6 +28,7 @@ namespace Steel.Core.State.Slice
             Mill = MillSave.Restore(s.mill);
             Tender = TenderSave.Restore(s.tender);
             LoadSites(s.satellites);
+            LoadFinance(s.finance,s.seconds); RestoreCrew(s.crew);
             Covered.Load(s.covered ?? Array.Empty<LotSave>());
             Position = new WorldPoint(s.x, s.z); Cart.Restore(new WorldPoint(s.cartX, s.cartZ), s.cartHeld);
             backpack.Load(s.bag); Cart.Cargo.Load(s.cart);

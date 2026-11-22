@@ -15,7 +15,7 @@ namespace Steel.Core.State.Slice
         public double InterestDue => accounts.interestDue;
         public double FinanceSeconds => accounts.seconds;
         public string FinanceNotice => accounts.notice;
-        public int FinanceCaste => Yard.bandar ? 2 : 1;
+        public int FinanceCaste => Caste;
 
         public void RecordOperatingProfit(double margin)
         {

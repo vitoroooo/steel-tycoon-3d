@@ -43,7 +43,7 @@ namespace Steel.Services
             var current = Ticket(preview.Carrier, preview.District, preview.Purchased);
             if (current.Kg != preview.Kg || current.Goods != preview.Goods || current.Travel != preview.Travel)
                 throw new InvalidOperationException("Penawaran berubah. Periksa biaya terbaru.");
-            session.Dispatch(current, queueLimit);
+            session.Dispatch(current, session.CrewQueueLimit(queueLimit));
             if (current.Carrier == FleetCatalog.Triseda) MotorRoute = true;
         }
         public double CollectRoute() => session.CollectRoute();

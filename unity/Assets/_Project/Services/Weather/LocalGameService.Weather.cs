@@ -32,6 +32,7 @@ namespace Steel.Services
         }
         public void Shelter(bool store) { session.MoveCovered(store); if (store) StoredUnderRoof = true; }
         public void ImproveLand(bool pave) => session.InstallRoof(pave,business.Positive(pave ? "pave" : "roof"));
-        public void Rescue(bool tow) => session.Rescue(tow,GameHours,business.Positive("tow"));
+        public void Rescue(bool tow) => session.CrewRescue(tow,GameHours,business.Positive("tow"),
+            session.Yard.Machine(true,GameHours).condition,session.Caste);
     }
 }

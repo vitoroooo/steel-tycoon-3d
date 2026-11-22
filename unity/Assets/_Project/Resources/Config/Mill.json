@@ -1,6 +1,6 @@
 {
   "amdal":750000000, "permitHours":72, "cash":3000000000, "rep":70, "package":2950000000,
-  "shredder":2000000000, "rolling":4000000000, "bolts":2500000000,
+  "shredder":2000000000, "rolling":4000000000, "bolts":2500000000, "rfid":400000000,
   "dailyInputKg":30000, "chargeKg":10000, "meltLoss":0.10, "shreddedLoss":0.07,
   "powerPerKg":2000, "operatorShift":1800000, "beamRate":1.20, "boltRate":1.35
 }
