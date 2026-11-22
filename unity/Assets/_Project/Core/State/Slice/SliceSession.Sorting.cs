@@ -27,7 +27,9 @@ namespace Steel.Core.State.Slice
         public bool Magnetic(string id)
         {
             if (!Magnet) throw new InvalidOperationException("Beli magnet di meja usaha lapak.");
-            return Sample(id).Material != ScrapGrade.Dirt;
+            var material = Sample(id).Material;
+            UseAsset("magnet");
+            return material != ScrapGrade.Dirt;
         }
         public double Classify(string id, int bin, bool scan)
         {
@@ -36,6 +38,7 @@ namespace Steel.Core.State.Slice
             if (!scan && bin != (int)pile.Material)
                 throw new InvalidOperationException("Belum cocok. Perhatikan bentuk dan ketebalannya.");
             if (id != null) pile.Inspect(); else Bag.SortNext();
+            if (scan) UseAsset("xrf");
             return pile.WasteKg;
         }
     }

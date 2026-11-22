@@ -43,7 +43,7 @@ namespace Steel.Core.State.Slice
         public void PayShipment(double hour)
         {
             if (Yard.payout > 0 && hour >= Yard.unloadHour)
-            { Cash += Yard.payout; CreditSale(Yard.dispatchedKg); Yard.payout = 0; Yard.dispatchedKg = 0; }
+                CollectShipment();
         }
     }
 }

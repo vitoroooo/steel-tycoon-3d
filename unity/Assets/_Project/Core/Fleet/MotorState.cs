@@ -38,6 +38,13 @@ namespace Steel.Core.Fleet
             RemainingTripSeconds = NumberRules.NonNegative(dto.seconds, "seconds"); Cargo.Load(dto.cargo);
         }
 
+        internal void Repossess()
+        {
+            Owned = false; Occupied = false; Speed = 0;
+            RemainingTripSeconds = Rules.TripRealSeconds;
+            Cargo.Clear();
+        }
+
         public void Buy()
         {
             if (Owned) throw new InvalidOperationException("Anda sudah memiliki " + Rules.Label + ".");
