@@ -1,0 +1,13 @@
+{
+  "workFatigue": 10, "restRecovery": 10, "tiredThreshold": 30, "tiredFactor": 0.70,
+  "overtimeFactor": 1.40, "overtimeMorale": 5, "strikeThreshold": 20,
+  "wageOperator": 300000, "wageForeman": 500000, "wageSenior": 900000,
+  "trainingCost": 900000, "premiumFactor": 1.10, "premiumMorale": 5, "lateMorale": 5, "restMorale": 2,
+  "unsafeCondition": 20, "unsafeChance": 0.12, "tiredChance": 0.03, "breakdownChance": 0.50,
+  "investigationHours": 24, "incidentMorale": 30, "incidentReputation": 10,
+  "fineK2": 25000000, "fineK3": 250000000, "newcomerHours": 432, "twoEventWindowHours": 144,
+  "nightNoise": 2, "streetPenalty": 1, "dustPenalty": 1, "quietRecovery": 1,
+  "protestThreshold": 40, "blockadeThreshold": 20, "blockadeHours": 24,
+  "csrCost": 2000000, "csrPatience": 25, "csrReputation": 1, "csrCooldownHours": 24,
+  "seniorCapFactor": 1.5
+}
