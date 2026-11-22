@@ -5,7 +5,7 @@ namespace Steel.Presentation.UI
     /// <summary>Beginner's guide page. It is only shown when the player asks for it.</summary>
     internal sealed partial class YardDesk
     {
-        private const int GuidePage = 15;
+        private const int GuidePage = 16;
         private int topic;
 
         private void BuildGuide() => UiFactory.Button(panel, "PANDUAN", new Vector2(140, 54), new Vector2(134, 170),

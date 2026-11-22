@@ -42,6 +42,16 @@ ke pihak lain. Penjual tanpa stok atau pembeli tanpa dana untuk kiriman berikutn
 sebesar kas yang ia punya. Menarik tawaran yang belum diterima tidak dikenai penalti. Satu kontrak per pasangan penjual-pembeli.
 `suspend NAMA` menghentikan kontrak pedagang itu tanpa penalti.
 
+## Asosiasi dan blokade (PRD 6.3 dan 8.1)
+
+Di halaman **Asosiasi** pedagang mendirikan atau bergabung dengan asosiasi (maksimal 10 anggota; asosiasi bubar saat anggota
+terakhir keluar). Anggota berbagi chat: pesan maksimal 120 karakter, kata di `bannedWords` (`rules.json`) disensor, dan
+pesan anggota lain dapat dilaporkan ke tabel `reports` untuk pengelola. Kasta akun pasar naik dengan `promote`, yang memotong
+paket PRD A.4 dari kas pasar (Rp250 juta ke Kasta 2, Rp2,95 miliar ke Kasta 3). Anggota Kasta 3 dapat menyewa blokade rute
+pesaing Kasta 3 di luar asosiasinya: Rp500 juta, 1 hari game, jeda 3 hari game per target, dan target yang baru 7 hari nyata
+di Kasta 3 dilindungi. Selama diblokade, target tidak dapat memasang atau membeli lot dan kiriman kontraknya tertahan. Target
+dapat membalas dengan blokade sendiri atau menyewa pengawalan Rp50 juta (`escort`) yang langsung membuka rutenya.
+
 ## Protokol lokal
 
 Kedua endpoint memakai header `Authorization: Bearer <token>`. `GET /v1/market` mengembalikan akun terautentikasi, harga kota, batas harga, dan lot aktif. `POST /v1/orders` menerima JSON dengan `key` unik per niat transaksi dan salah satu bentuk berikut.
@@ -54,6 +64,11 @@ Kedua endpoint memakai header `Authorization: Bearer <token>`. `GET /v1/market` 
 | offer | buyer (nama pedagang), kg, price, days |
 | accept | contract |
 | end | contract |
+| found, join | name (nama asosiasi) |
+| leave, promote, escort | – |
+| say | text |
+| report | message (id pesan) |
+| blockade | name (nama pedagang target) |
 
 Setelah respons terputus, kirim ulang isi dan key yang sama untuk menerima nota sebelumnya. Konflik bisnis memakai HTTP 409, kredensial keliru 401, dan kolom keliru 400. Pembatalan milik pedagang lain mendapat 403. SQLite mengunci transaksi penulisan sebelum membaca saldo, menyelesaikan lot dan mencatat nota dalam satu commit. Tabel `trades` menyimpan nilai bruto, pajak dan akun pembeli. Relasi dengan `lots` mengidentifikasi penjual.
 

@@ -25,8 +25,10 @@ def deliver(db, contract):
 def run(db, hour, now):
     """Settles every delivery that has come due, oldest contract first."""
     while True:
-        contract = db.execute("SELECT * FROM contracts WHERE status='active' AND due<=? ORDER BY due,id",
-                              (hour,)).fetchone()
+        # a blockaded route moves nothing: those deliveries wait until it is open again
+        contract = db.execute("""SELECT * FROM contracts c WHERE status='active' AND due<=? AND NOT EXISTS
+                                 (SELECT 1 FROM blockades b WHERE b.target IN (c.seller, c.buyer) AND b.until>?)
+                                 ORDER BY due,id""", (hour, hour)).fetchone()
         if not contract:
             return
         # the seller's own collecting up to now counts, even if he has not looked at the market since

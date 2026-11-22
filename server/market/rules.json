@@ -9,5 +9,29 @@
   "contractMaxDays": 10,
   "contractPenaltyPercent": 10,
   "contractsShown": 8,
-  "partnersShown": 20
+  "partnersShown": 20,
+  "associationMax": 10,
+  "associationsShown": 12,
+  "chatMaxLength": 120,
+  "chatShown": 20,
+  "bannedWords": [
+    "anjing",
+    "bangsat",
+    "bajingan",
+    "kontol",
+    "memek",
+    "ngentot",
+    "goblok",
+    "tolol",
+    "babi"
+  ],
+  "promoteCost": [
+    250000000,
+    2950000000
+  ],
+  "blockadeCost": 500000000,
+  "blockadeHours": 24,
+  "blockadeCooldownHours": 72,
+  "casteThreeProtectionRealDays": 7,
+  "escortCost": 50000000
 }

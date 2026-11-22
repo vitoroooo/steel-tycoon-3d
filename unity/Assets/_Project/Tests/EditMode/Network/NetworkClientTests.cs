@@ -47,6 +47,7 @@ namespace Steel.Tests.Network
             Assert.AreEqual(wallet.stock + 5, buyer.Board.stock);
             Assert.AreEqual(0, buyer.Board.lots.Length);
             await ContractFlow.Run(seller, buyer);
+            await GuildFlow.Run(seller, buyer);
             buyer.Disconnect();
             Assert.IsFalse(buyer.HasSession);
             Assert.IsNull(buyer.Board);

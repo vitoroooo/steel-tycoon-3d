@@ -43,6 +43,7 @@ namespace Steel.Services
                 if (next.id <= 0 || next.lots == null || next.reference <= 0) throw new FormatException();
                 next.contracts = next.contracts ?? new NetworkContract[0];
                 next.traders = next.traders ?? new string[0];
+                NetworkGuild.Fill(next);
                 Board = next;
                 return "Papan pasar diperbarui.";
             }
@@ -71,7 +72,7 @@ namespace Steel.Services
             try
             {
                 var reply = await NetworkHttp.Request<NetworkReceipt>(endpoint, token, pending);
-                if (reply.lot <= 0 && reply.contract <= 0) throw new FormatException();
+                if (string.IsNullOrEmpty(reply.message)) throw new FormatException();
                 message = reply.message;
                 pending = null;
             }

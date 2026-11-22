@@ -2,10 +2,12 @@ import json
 import re
 import time
 
-from . import contracts
+from . import contracts, guild
 from .clock import advance, prices
 from .orders import MarketError, require, settle
 from .storage import digest, transaction
+
+ACTIONS = {**contracts.ACTIONS, **guild.ACTIONS}
 
 
 def board(db, trader, quote):
@@ -15,7 +17,8 @@ def board(db, trader, quote):
     buyers = db.execute("""SELECT COUNT(DISTINCT buyer) FROM trades JOIN lots ON trades.lot=lots.id
                            WHERE seller=?""", (trader,)).fetchone()[0]
     return {**quote, **dict(account), "buyers": buyers, "lots": [dict(row) for row in lots],
-            "contracts": contracts.listing(db, trader), "traders": contracts.partners(db, trader)}
+            "contracts": contracts.listing(db, trader), "traders": contracts.partners(db, trader),
+            **guild.summary(db, trader, quote["gameHour"])}
 
 
 def order(db, trader, body, quote):
@@ -31,7 +34,8 @@ def order(db, trader, body, quote):
 
     db.execute("SAVEPOINT settlement")
     try:
-        result = contracts.ACTIONS.get(command.get("action"), settle)(db, trader, command, quote)
+        guild.gate(db, trader, command, quote["gameHour"])
+        result = ACTIONS.get(command.get("action"), settle)(db, trader, command, quote)
         status = 200
     except MarketError as error:
         db.execute("ROLLBACK TO settlement")

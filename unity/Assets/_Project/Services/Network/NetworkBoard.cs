@@ -11,6 +11,13 @@ namespace Steel.Services
         public NetworkLot[] lots;
         public NetworkContract[] contracts = new NetworkContract[0];
         public string[] traders = new string[0];
+        public int caste = 1;
+        public long blockedUntil;
+        public string blockedBy = "";
+        public NetworkGuild association = new NetworkGuild();
+        public NetworkGuildEntry[] associations = new NetworkGuildEntry[0];
+        public string[] rivals = new string[0];
+        public bool Blocked => blockedUntil > gameHour;
     }
 
     [Serializable]
