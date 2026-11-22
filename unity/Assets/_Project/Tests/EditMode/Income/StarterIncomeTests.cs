@@ -19,7 +19,7 @@ namespace Steel.Tests.Income
             var bare = g.Income; double cash = g.View.Cash;
             Assert.Zero(bare.StreetSites); Assert.Zero(g.View.CarriedKg); Assert.Greater(cash, 500000);
             Assert.AreEqual(20, bare.RouteKg); Assert.AreEqual(30, bare.RouteMinutes);
-            Assert.That(bare.RestockMinutes, Is.GreaterThan(0).And.LessThanOrEqualTo(10));
+            Assert.That(bare.RestockMinutes, Is.GreaterThan(0).And.LessThanOrEqualTo(5));
             StringAssert.Contains("ambil hadiah setoran pertama", player.Hint);
             StringAssert.Contains("BUKA ARMADA, pesan rute gratis 20 kg (30 menit).", player.Earning);
             StringAssert.Contains("Warga menaruh tumpukan baru", player.Earning);
@@ -32,7 +32,7 @@ namespace Steel.Tests.Income
 
             player.Wait(g.Income.ArrivalMinutes);
             Assert.AreEqual(20, g.Income.DepotKg); Assert.Zero(g.Income.CartAwayMinutes);
-            Assert.GreaterOrEqual(g.Income.StreetSites, 3, "Residents refilled a site every ten minutes meanwhile");
+            Assert.GreaterOrEqual(g.Income.StreetSites, 6, "Residents refilled a site every five minutes meanwhile");
             StringAssert.Contains("Kiriman 20 kg sudah tiba. Buka armada, ketuk AMBIL KIRIMAN.", player.Earning);
             player.Home(); player.TakeCart(); Assert.AreEqual(20, g.CollectRoute()); player.SellAll();
             double afterRound = g.View.Cash; Assert.Greater(afterRound, cash);
@@ -43,8 +43,8 @@ namespace Steel.Tests.Income
             Assert.IsFalse(g.View.GrantCollected, "The dealer grant was never needed to keep earning");
         }
 
-        [TestCase(false, 10, TestName = "ADayOfStreetPickingAloneNeverWaitsLongerThanOneRefill")]
-        [TestCase(true, 10, TestName = "ADayOfFollowingEveryHintWithTheCartAwayNeverWaitsLongerThanOneRefill")]
+        [TestCase(false, 5, TestName = "ADayOfStreetPickingAloneNeverWaitsLongerThanOneRefill")]
+        [TestCase(true, 5, TestName = "ADayOfFollowingEveryHintWithTheCartAwayNeverWaitsLongerThanOneRefill")]
         public void ADayWithoutGrant(bool rounds, double longestWait)
         {
             player.ClearTheStreet();

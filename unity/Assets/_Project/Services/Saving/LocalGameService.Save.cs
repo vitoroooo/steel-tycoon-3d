@@ -21,7 +21,7 @@ namespace Steel.Services
                 s.quota == null || s.bag == null || s.cart == null || s.motors == null)
                 throw new FormatException("Simpanan tidak valid atau tidak kompatibel.");
             var game = new LocalGameService(config);
-            game.clock.Restore(s.seconds);
+            game.clock.Restore(s.seconds); game.session.World.Sync(game.GameHours);
             game.market.Refresh(s.seconds, game.supplyTargetKg);
             game.session.Load(s, Areas.Length, (long)Math.Floor(game.GameHours / 24));
             game.LoadGuide(s);

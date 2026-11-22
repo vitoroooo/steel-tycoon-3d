@@ -41,7 +41,7 @@ Core/State/Slice menyimpan posisi interaksi, world piles, inventori dan kas.
 Services memberi DTO untuk presentasi; inspeksi/pungut/sortir/konfirmasi jual lewat IGameService.
 Harga AI diperiksa lagi saat konfirmasi; penawaran kedaluwarsa harus diperbarui.
 City.json/Piles.json adalah data bersama untuk Core dan generator scene.
-Piles.json `restockHours`: tiap jam game satu tumpukan kosong terisi lagi (urutan kosong tersimpan di save).
+Piles.json `restockHours` (0,5 = 5 menit nyata): tiap selang itu satu tumpukan kosong terisi lagi (urutan kosong tersimpan di save).
 Services/Guide/IncomeView merangkum sumber uang pemula (tumpukan, isi ulang, rute gerobak gratis, kiriman)
 untuk Presentation/UI/Guide (IncomeHint, DartoLetter); tes di Tests/EditMode/Income dan PlayMode/StreetIncomeTests.
 Editor membangun geometri detail, PBR CC0, HDRI, URP, ACES, bloom dan SSAO.

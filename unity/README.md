@@ -82,7 +82,7 @@ The demo provides a loaner, not ownership/purchase or a cash grant. Entering tra
 the backpack into its cargo; exit leaves cargo in the pikap. Sorting/sales use the
 active container. Trip time counts occupied time, pauses outside, and clamps at zero;
 the next entry after completion begins another trip. No automated delivery reward exists.
-Piles.json configures ten street piles (192 kg). Every `restockHours` game hour (1 = about 10 real
+Piles.json configures ten street piles (192 kg). Every `restockHours` game hours (0.5 = 5 real
 minutes) the site emptied longest ago refills; the order is saved. The free gerobak round (20 kg,
 30 real minutes, Rp0) is the second starter income; the HUD hint and Pak Darto's letter name both.
 Picking up takes what fits (hand sack 15 kg, gerobak 50 kg); the rest stays at the site, is saved,

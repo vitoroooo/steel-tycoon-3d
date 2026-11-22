@@ -36,7 +36,7 @@ namespace Steel.PlayTests
             Assert.IsFalse(g.View.GrantCollected);
             yield return Readout();
             Assert.IsTrue(letter.gameObject.activeSelf, "Pak Darto explains the bare street once");
-            StringAssert.Contains("Warga menaruh rongsok baru tiap 10 menit",
+            StringAssert.Contains("Warga menaruh rongsok baru tiap 5 menit",
                 letter.GetComponentInChildren<Text>().text);
             StringAssert.Contains("PESAN RUTE", letter.GetComponentInChildren<Text>().text);
             StringAssert.Contains("ambil hadiah setoran pertama", hud.RouteText.text);
@@ -53,7 +53,7 @@ namespace Steel.PlayTests
             Assert.AreEqual(1, g.Route("cart", 0, false).Queue, "The held, empty gerobak is parked and sent");
             Assert.IsFalse(g.Cart.Held); Assert.AreEqual(cash, g.View.Cash);
             g.CatchUp(1800);
-            Assert.AreEqual(20, g.Income.DepotKg); Assert.GreaterOrEqual(g.Income.StreetSites, 3);
+            Assert.AreEqual(20, g.Income.DepotKg); Assert.GreaterOrEqual(g.Income.StreetSites, 6);
             buttons.Single(b => b.name == "AMBIL KIRIMAN").onClick.Invoke();
             buttons.Single(b => b.name == "KEMBALI").onClick.Invoke();
             Assert.AreEqual(15, g.View.CarriedKg);

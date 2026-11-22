@@ -10,13 +10,12 @@ namespace Steel.Core.State.Slice
     {
         private readonly List<WorldPile> piles = new List<WorldPile>();
         public IReadOnlyList<WorldPile> Piles => piles.AsReadOnly();
-        public int RestockHours { get; }
-        private long emptied;
+        public double RestockHours { get; }
+        private long emptied, refills;
         public SliceWorld(string json)
         {
             var v = new ConfigValues(json);
-            RestockHours = v.Integer("restockHours");
-            if (RestockHours == 0) throw new ArgumentOutOfRangeException("restockHours");
+            RestockHours = v.Positive("restockHours");
             int count = v.Integer("count");
             if (count < 0) throw new ArgumentOutOfRangeException("count");
             for (int i = 0; i < count; i++)
@@ -49,10 +48,16 @@ namespace Steel.Core.State.Slice
             emptied = Math.Max(emptied, order);
         }
 
-        public void OnHour(long hour)
+        /// <summary>Starts counting refills from this clock reading, so a restored career is not refilled at once.</summary>
+        public void Sync(double gameHours) => refills = (long)Math.Floor(gameHours / RestockHours);
+
+        /// <summary>Refills the longest-empty site once for every refill time passed since the last call.</summary>
+        public void Advance(double gameHours)
         {
-            if (hour <= 0 || hour % RestockHours != 0) return;
-            piles.Where(p => p.Collected).OrderBy(p => p.EmptiedOrder).FirstOrDefault()?.Restock();
+            long due = (long)Math.Floor(gameHours / RestockHours);
+            for (long n = Math.Min(due - refills, piles.Count); n > 0; n--)
+                piles.Where(p => p.Collected).OrderBy(p => p.EmptiedOrder).FirstOrDefault()?.Restock();
+            refills = due;
         }
 
         public WorldPile Find(string id) => piles.Find(p => p.Id == id) ??
