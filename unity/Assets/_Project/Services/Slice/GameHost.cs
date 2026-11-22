@@ -23,17 +23,20 @@ namespace Steel.Services
         {
             var source = Source ?? new ResourceConfigSource();
             Layout = new CityLayout(source);
-            if (Source != null || Application.isBatchMode) local = new LocalGameService(source);
+            bool fresh = CareerLaunch.TakeFresh(), retired = false;
+            if (!CareerLaunch.UsesDisk) local = new LocalGameService(source);
             else
             {
                 files = new CareerFiles(Application.persistentDataPath);
+                retired = fresh && files.Retire();
                 local = files.Open(source, Now, out double elapsed);
                 latest = files.LastUtc;
                 Restored = files.HasCareer;
                 if (Restored) Report(elapsed);
+                if (fresh && !retired) offlineNotice = "Karier lama tidak bisa diganti. Periksa ruang penyimpanan.";
             }
             Game = local;
-            if (Restored) Save();
+            if (Restored || retired) Save();
         }
         private void Update()
         {
