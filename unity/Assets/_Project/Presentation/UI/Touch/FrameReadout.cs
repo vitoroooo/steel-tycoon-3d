@@ -9,6 +9,8 @@ namespace Steel.Presentation.UI
         private Text caption;
         private double start;
         private int frames;
+        private DeviceTrial trial;
+        private void Start() => trial = GetComponentInParent<CityHud>().GetComponent<DeviceTrial>();
         internal static void Build(RectTransform root)
         {
             var panel = UiFactory.Panel("Profil grafis",root,Vector2.one,new Vector2(201,60),new Vector2(-115,-114));
@@ -28,7 +30,8 @@ namespace Steel.Presentation.UI
         {
             frames++; double now = Time.realtimeSinceStartupAsDouble, span = now - start;
             if (span < 2) return;
-            caption.text = "Grafis: " + MobileQuality.Label + "  ›\n" + (frames/span).ToString("N0") + " FPS";
+            string mode = trial && trial.Active ? "Uji: " + trial.Remaining + " dtk" : "Grafis: " + MobileQuality.Label;
+            caption.text = mode + "  ›\n" + (frames/span).ToString("N0") + " FPS";
             frames = 0; start = now;
         }
     }

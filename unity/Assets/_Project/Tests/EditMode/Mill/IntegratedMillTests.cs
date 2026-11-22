@@ -19,6 +19,19 @@ namespace Steel.Tests.Mill
             state.finance.level = 40;
         }
         private LocalGameService Load() => LocalGameService.Resume(src,JsonUtility.ToJson(state),1000,out _);
+        [Test] public void SafetyCertificateNeedsFundsTimeAndSurvivesClosingTheGame()
+        {
+            state.mill.rolling = true; state.yard.reputation = 80; state.cash = 200000001;
+            var g = Load();
+            Assert.Throws<System.InvalidOperationException>(() => g.OfferBridgeSteel(0));
+            g.ApplySafetyCertificate(); Assert.AreEqual(1,g.View.Cash);
+            Assert.Throws<System.InvalidOperationException>(() => g.ApplySafetyCertificate());
+            Assert.Throws<System.InvalidOperationException>(() => g.OfferBridgeSteel(0));
+            g = LocalGameService.Resume(src,g.Save(1000),1000+48*600,out _);
+            Assert.Zero(g.GovernmentOrder(0).SafetyWait);
+            g.Advance(72*600); g.OfferBridgeSteel(0);
+            Assert.IsTrue(JsonUtility.FromJson<CareerSave>(g.Save(100000)).tender.certified);
+        }
         [Test] public void BadDebtLiquidatesTheMillAndKeepsOneTierAndEarnedLevel()
         {
             state.finance.debt = 6000000000; state.finance.interestDue = 86400; state.cash = 0;

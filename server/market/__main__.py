@@ -4,6 +4,7 @@ import sqlite3
 from pathlib import Path
 
 from .http import serve
+from .moderation import moderate
 from .storage import initialize, provision
 
 
@@ -14,6 +15,8 @@ def main():
     trader = commands.add_parser("trader", help="Terbitkan token akun lokal")
     trader.add_argument("name")
     trader.add_argument("--rotate", action="store_true", help="Ganti token akun yang sudah ada")
+    for action in ("suspend", "restore"):
+        commands.add_parser(action).add_argument("name")
     server = commands.add_parser("serve")
     server.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
@@ -23,9 +26,12 @@ def main():
         serve(args.db, args.port)
         return
     try:
+        if args.command != "trader":
+            moderate(args.db, args.name, args.command == "suspend")
+            return
         print(provision(args.db, args.name, args.rotate))
     except (ValueError, sqlite3.IntegrityError) as error:
-        parser.exit(1, f"Gagal menerbitkan token. {error}\n")
+        parser.exit(1, f"Gagal memproses akun. {error}\n")
 
 
 if __name__ == "__main__":

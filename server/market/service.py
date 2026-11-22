@@ -11,7 +11,9 @@ def board(db, trader, quote):
     account = db.execute("SELECT id,name,cash,stock FROM traders WHERE id=?", (trader,)).fetchone()
     lots = db.execute("""SELECT l.id, t.id AS seller, t.name, l.kg, l.price FROM lots l
                          JOIN traders t ON t.id=l.seller WHERE l.status='open' ORDER BY l.id""")
-    return {**quote, **dict(account), "lots": [dict(row) for row in lots]}
+    buyers = db.execute("""SELECT COUNT(DISTINCT buyer) FROM trades JOIN lots ON trades.lot=lots.id
+                           WHERE seller=?""", (trader,)).fetchone()[0]
+    return {**quote, **dict(account), "buyers": buyers, "lots": [dict(row) for row in lots]}
 
 
 def order(db, trader, body, quote):
@@ -44,6 +46,8 @@ def dispatch(path, token, body, is_order, clock=time.time):
     with transaction(path) as db:
         trader = db.execute("SELECT * FROM traders WHERE token_hash=?", (digest(token),)).fetchone()
         require(trader, 401, "Token pedagang tidak sah.")
+        suspended = db.execute("SELECT 1 FROM suspensions WHERE trader=?", (trader["id"],)).fetchone()
+        require(not suspended, 403, "Akun ditangguhkan. Hubungi pengelola pasar.")
         quote = prices(advance(db, trader, int(clock())))
         if is_order:
             return order(db, trader["id"], body, quote)

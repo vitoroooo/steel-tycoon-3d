@@ -15,6 +15,18 @@ Server mendengarkan di 127.0.0.1 port 8765. Untuk Android lewat USB, jalankan `a
 
 ## Transaksi dari Buku usaha
 
+Untuk uji HP tanpa USB, pengelola perlu menyediakan domain dengan sertifikat TLS tepercaya dan reverse proxy HTTPS
+ke `127.0.0.1:8765`. Jangan membuka listener Python mentah ke internet. Batasi permintaan dan ukuran body di proxy;
+jangan log token, header Authorization, atau isi pesanan. Belum ada server publik bawaan.
+Di HP pilih **Alamat pasar**, ketik origin HTTPS dari pengelola, periksa nama server di dialog **Hubungkan akun**,
+lalu masukkan token khusus alamat itu. Alamat dan token tidak disimpan ketika game ditutup.
+
+Pakai nama samaran: papan lot menampilkan alias, harga dan jumlah, bukan kas atau stok pribadi.
+Jumlah pelanggan berbeda dihitung dari transaksi selesai; pembelian berulang oleh akun yang sama tidak menambahnya.
+Operator lokal dapat menjalankan `suspend NAMA` untuk menghentikan akses dan mengembalikan stok titipan satu kali,
+atau `restore NAMA` untuk memulihkan akses. Perintah menggunakan opsi `--db` yang sama seperti `trader`.
+Tindakan tercatat di `moderator_events`; tidak ada endpoint moderator lewat jaringan.
+
 Setelah halaman **Pasar jaringan** terdaftar di Buku usaha, pilih **Hubungkan akun**. Dengan token Sari, pilih **Jual HMS 1**, tentukan harga, lalu **Pasang lot 5 kg**. Buka **Akun & sinkron → Lepas akun**. Hubungkan token Hasan, buka **Papan lot** dan bayar lot Sari. Masuk kembali sebagai Sari untuk memeriksa kas. Dengan dua perangkat, tekan **Muat ulang** untuk memperbarui papan setelah tindakan pedagang lain.
 
 Setiap akun baru mendapat Rp200.000 dan 20 kg HMS 1 dari server. Rute pengumpulan pasar menambah 1 kg per jam game (600 detik), dengan kemajuan maksimal 48 jam game per jeda akses akun. Jam kota dan IBN tetap berjalan saat proses server berhenti. Harga lot harus dalam rentang 50–130% acuan HMS 1 saat dipasang dan dibeli. Penjual membayar pajak 2% dari nilai kotor, dibulatkan ke rupiah terdekat. Satu lot aktif per penjual. Membatalkan lot mengembalikan stok titipan.

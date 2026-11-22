@@ -12,6 +12,9 @@ namespace Steel.Services
         public NetworkBoard Board { get; private set; }
         public bool HasSession => token != null;
         public bool HasPending => pending != null;
+        public string Host => endpoint.Authority;
+
+        public NetworkMarket(string origin) { endpoint = MarketEndpoint.ForHost(origin); }
 
         public NetworkMarket(int port = 8765)
         {
@@ -43,7 +46,7 @@ namespace Steel.Services
             }
             catch (NetworkRejection error)
             {
-                if (error.Status == 401) Disconnect();
+                if (error.Status == 401 || error.Status == 403) Disconnect();
                 throw new InvalidOperationException(error.Message);
             }
         }

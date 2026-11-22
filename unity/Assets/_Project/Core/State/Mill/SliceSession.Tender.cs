@@ -6,16 +6,24 @@ namespace Steel.Core.State.Slice
     public sealed partial class SliceSession
     {
         public TenderSave Tender { get; private set; } = new TenderSave();
-        public void BidTender(double hour,double bid,bool certified)
+        public void FileSafetyPermit(double hour,ConfigValues rules)
+        {
+            RequireNear(Rules.Factory);
+            if (!Mill.opened || Mill.safetyReady > 0) throw new InvalidOperationException("Periksa status izin K3.");
+            Pay(rules.Positive("safetyCost")); Mill.safetyReady = hour + rules.Positive("safetyHours");
+        }
+        public void BidTender(double hour,double bid)
         {
             RequireNear(Rules.Factory);
             long round = TenderSave.Current(hour);
+            if (Mill.safetyReady <= 0 || hour < Mill.safetyReady)
+                throw new InvalidOperationException("Tender memerlukan sertifikat K3 aktif.");
             if (!Mill.rolling || BusinessLevel < 40 || Yard.reputation < 60 || Tender.awarded ||
                 Tender.offered && Tender.round == round || hour % TenderSave.Interval >= TenderSave.Closing)
                 throw new InvalidOperationException("Perlu level 40, lini rolling, reputasi 60 dan lelang terbuka.");
             if (NumberRules.NonNegative(bid,"bid") <= 0) throw new InvalidOperationException("Harga tidak valid.");
             Tender = new TenderSave { offered = true,round = round,bid = bid,repAtBid = Yard.reputation,
-                certified = certified,last = "Penawaran disegel sampai penutupan." };
+                certified = true,last = "Penawaran disegel sampai penutupan." };
         }
         public void ResolveTender(double hour,double reference)
         {
