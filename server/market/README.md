@@ -52,6 +52,17 @@ pesaing Kasta 3 di luar asosiasinya: Rp500 juta, 1 hari game, jeda 3 hari game p
 di Kasta 3 dilindungi. Selama diblokade, target tidak dapat memasang atau membeli lot dan kiriman kontraknya tertahan. Target
 dapat membalas dengan blokade sendiri atau menyewa pengawalan Rp50 juta (`escort`) yang langsung membuka rutenya.
 
+## Season dan Grup Usaha (PRD 11.3)
+
+Satu season berjalan 90 hari nyata sejak basis data dibuat; hari 76–90 adalah Pekan Tutup Buku. Kontrak hanya dapat
+ditawarkan atau diterima bila seluruh kirimannya selesai sebelum tutup buku. Saat season berakhir, lot dan kontrak
+dihentikan tanpa penalti, nilai usaha tiap pedagang (kas + stok × acuan) dicatat di sejarah grupnya beserta peringkat,
+Rp1 juta nilai menjadi 1 Poin Grup, lalu semua akun mulai lagi di Kasta 1 dengan modal awal di kota berikutnya (`cities`).
+Asosiasi tetap. Veteran memilih sekali per season paling banyak 3 bekal warisan yang dibuka level grupnya
+(`groupLevelPoints`, `legacies`). Server baru menerapkan bekal **Antrean offline +2 jam**; bekal lain (triseda, PT,
+reputasi, sortir) tercatat tetapi belum mengubah karier di game. Pedagang yang didaftarkan di tengah season mendapat
+stok kejar ketinggalan: 50% dari hasil rute pengumpulan sejak hari pertama season.
+
 ## Protokol lokal
 
 Kedua endpoint memakai header `Authorization: Bearer <token>`. `GET /v1/market` mengembalikan akun terautentikasi, harga kota, batas harga, dan lot aktif. `POST /v1/orders` menerima JSON dengan `key` unik per niat transaksi dan salah satu bentuk berikut.
@@ -69,6 +80,7 @@ Kedua endpoint memakai header `Authorization: Bearer <token>`. `GET /v1/market` 
 | say | text |
 | report | message (id pesan) |
 | blockade | name (nama pedagang target) |
+| bekal | picks (id bekal dipisah koma, maksimal 3) |
 
 Setelah respons terputus, kirim ulang isi dan key yang sama untuk menerima nota sebelumnya. Konflik bisnis memakai HTTP 409, kredensial keliru 401, dan kolom keliru 400. Pembatalan milik pedagang lain mendapat 403. SQLite mengunci transaksi penulisan sebelum membaca saldo, menyelesaikan lot dan mencatat nota dalam satu commit. Tabel `trades` menyimpan nilai bruto, pajak dan akun pembeli. Relasi dengan `lots` mengidentifikasi penjual.
 

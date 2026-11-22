@@ -15,7 +15,11 @@ def advance(db, trader, now):
     opened, now = db.execute("SELECT opened_at,last_time FROM city").fetchone()
     tick = TIME["realSecondsPerGameHour"]
     elapsed = max(0, now - trader["accrued_at"])
-    capped = min(elapsed, TIME["offlineCapRealSeconds"])
+    # the legacy "antrean offline +2 jam" (PRD 11.3) lengthens the cap in the season it was picked for
+    season = (now - opened) // (RULES["seasonRealDays"] * 86400) + 1
+    longer = db.execute("SELECT 1 FROM groups WHERE trader=? AND picked=? AND instr(','||picks||',', ',antrean,')",
+                        (trader["id"], season)).fetchone()
+    capped = min(elapsed, TIME["offlineCapRealSeconds"] + (RULES["legacyQueueHours"] * tick if longer else 0))
     hours = capped // tick
     if hours:
         # Move past discarded time as well, so repeated reads cannot farm the cap.

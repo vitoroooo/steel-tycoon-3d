@@ -18,6 +18,10 @@ namespace Steel.Services
         public NetworkGuildEntry[] associations = new NetworkGuildEntry[0];
         public string[] rivals = new string[0];
         public bool Blocked => blockedUntil > gameHour;
+        public int season = 1, seasonDay = 1, seasonDaysLeft = NetworkGroup.SeasonDays;
+        public bool closing;
+        public string city = "";
+        public NetworkGroup group = new NetworkGroup();
     }
 
     [Serializable]

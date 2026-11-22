@@ -15,12 +15,19 @@ def find(db, command, trader):
     return row
 
 
+def in_season(quote, days):
+    """Nobody is left with half a contract when the city closes (PRD 11.3, Pekan Tutup Buku)."""
+    require(quote["gameHour"] + days * DAY <= quote["seasonEnd"], 409,
+            "Kontrak ini melewati tutup buku season. Pilih kontrak yang lebih pendek.")
+
+
 def offer(db, trader, command, quote):
     require(set(command) == {"action", "buyer", "kg", "price", "days"}, 400, "Kolom kontrak keliru.")
     kg, price = whole(command, "kg", RULES["maxLotKg"]), whole(command, "price", 2**31 - 1)
     days = whole(command, "days", RULES["contractMaxDays"])
     require(days >= RULES["contractMinDays"], 400, "Kontrak berjalan 3 sampai 10 hari game.")
     check_price(quote, price)
+    in_season(quote, days)
     buyer = db.execute("SELECT id FROM traders WHERE name=?", (str(command["buyer"]),)).fetchone()
     require(buyer and buyer["id"] != trader, 409, "Pilih pedagang lain sebagai pembeli.")
     busy = db.execute("SELECT 1 FROM contracts WHERE seller=? AND buyer=? AND status IN ('offered','active')",
@@ -45,6 +52,7 @@ def accept(db, trader, command, quote):
     contract = find(db, command, trader)
     require(contract["status"] == "offered" and contract["buyer"] == trader, 403,
             "Hanya pembeli yang dapat menerima tawaran.")
+    in_season(quote, contract["days"])
     require(lock(db, contract), 409, "Kas akun pasar kurang untuk pengiriman pertama.")
     db.execute("UPDATE contracts SET status='active', due=? WHERE id=?", (quote["gameHour"] + DAY, contract["id"]))
     return {"contract": contract["id"], "message": "Kontrak berjalan. Dana pengiriman pertama dikunci."}

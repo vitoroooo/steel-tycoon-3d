@@ -34,6 +34,14 @@ namespace Steel.Tests.Network
             Assert.IsFalse(joiner.Board.Blocked);
             StringAssert.Contains("tidak sedang diblokade", await joiner.Escort());
 
+            // the first season of a new market: day 1 of 90 in Sukabaja, and no legacies before one season is closed
+            Assert.AreEqual(1, founder.Board.season);
+            Assert.AreEqual("Sukabaja", founder.Board.city);
+            Assert.AreEqual(NetworkGroup.SeasonDays, founder.Board.seasonDaysLeft);
+            Assert.IsFalse(founder.Board.closing || founder.Board.group.choose);
+            Assert.AreEqual(5, founder.Board.group.legacies.Length);
+            StringAssert.Contains("menutup satu season", await founder.PickLegacies(new[] { "triseda" }));
+
             await joiner.Leave();
             Assert.IsFalse(joiner.Board.association.Joined);
             await founder.Leave();

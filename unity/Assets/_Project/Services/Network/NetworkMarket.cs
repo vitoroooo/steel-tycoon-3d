@@ -44,6 +44,7 @@ namespace Steel.Services
                 next.contracts = next.contracts ?? new NetworkContract[0];
                 next.traders = next.traders ?? new string[0];
                 NetworkGuild.Fill(next);
+                NetworkGroup.Fill(next);
                 Board = next;
                 return "Papan pasar diperbarui.";
             }

@@ -2,12 +2,12 @@ import json
 import re
 import time
 
-from . import contracts, guild
+from . import contracts, guild, season
 from .clock import advance, prices
 from .orders import MarketError, require, settle
 from .storage import digest, transaction
 
-ACTIONS = {**contracts.ACTIONS, **guild.ACTIONS}
+ACTIONS = {**contracts.ACTIONS, **guild.ACTIONS, **season.ACTIONS}
 
 
 def board(db, trader, quote):
@@ -18,7 +18,7 @@ def board(db, trader, quote):
                            WHERE seller=?""", (trader,)).fetchone()[0]
     return {**quote, **dict(account), "buyers": buyers, "lots": [dict(row) for row in lots],
             "contracts": contracts.listing(db, trader), "traders": contracts.partners(db, trader),
-            **guild.summary(db, trader, quote["gameHour"])}
+            **guild.summary(db, trader, quote["gameHour"]), **season.summary(db, trader, quote)}
 
 
 def order(db, trader, body, quote):
@@ -56,6 +56,7 @@ def dispatch(path, token, body, is_order, clock=time.time):
         require(not suspended, 403, "Akun ditangguhkan. Hubungi pengelola pasar.")
         now = int(clock())
         quote = prices(advance(db, trader, now))
+        quote.update(season.roll(db, quote))
         contracts.run(db, quote["gameHour"], now)
         if is_order:
             return order(db, trader["id"], body, quote)
