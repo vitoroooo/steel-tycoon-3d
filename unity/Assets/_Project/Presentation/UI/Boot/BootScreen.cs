@@ -18,6 +18,7 @@ namespace Steel.Presentation.UI.Boot
         public ConfirmView Confirm { get; private set; }
         public LoadingView Loading { get; private set; }
         public RectTransform SafeRoot { get; private set; }
+        private const float MaxStep = .1f;
         private AsyncOperation load;
         private MenuStage drawn;
 
@@ -42,7 +43,8 @@ namespace Steel.Presentation.UI.Boot
         private void Update()
         {
             if (Flow == null) return;
-            Flow.Tick(Time.unscaledDeltaTime);
+            // One slow first frame must not use up the splash before the player has seen it.
+            Flow.Tick(Mathf.Min(Time.unscaledDeltaTime, MaxStep));
             if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) Flow.Back();
             if (Flow.Stage != drawn) Draw();
             if (load == null) return;

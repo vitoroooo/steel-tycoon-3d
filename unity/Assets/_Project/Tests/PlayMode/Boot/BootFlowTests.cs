@@ -51,9 +51,11 @@ namespace Steel.PlayTests.Boot
         [UnityTest] public IEnumerator SplashMovesOnByItself()
         {
             yield return BootStage.LoadScene();
-            Assert.AreEqual(MenuStage.Splash, BootStage.Screen.Flow.Stage);
-            yield return new WaitForSecondsRealtime(BootTheme.Load().SplashSeconds + .5f);
-            Assert.AreEqual(MenuStage.Menu, BootStage.Screen.Flow.Stage);
+            var flow = BootStage.Screen.Flow; float hold = BootTheme.Load().SplashSeconds, start = Time.realtimeSinceStartup;
+            Assert.AreEqual(MenuStage.Splash, flow.Stage); Assert.Greater(hold, .5f, "Splash is long enough to read");
+            while (flow.Stage == MenuStage.Splash && Time.realtimeSinceStartup - start < hold + 30) yield return null;
+            Assert.AreEqual(MenuStage.Menu, flow.Stage);
+            Assert.GreaterOrEqual(Time.realtimeSinceStartup - start, hold - .3f, "Splash was not cut short");
         }
     }
 }
