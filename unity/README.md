@@ -18,10 +18,13 @@ docker run --rm --network host \
 Do not add -quit: the test runner exits after completion. Results and logs are ignored.
 Never modify unity-lic or touch the unity-box container.
 Generated project/cache files may be root-owned after Docker writes them.
-ProjectSettings, Scenes/City.unity and Generated/* are generator outputs, not authored code.
+ProjectSettings, Scenes/Boot.unity, Scenes/City.unity and Generated/* are generator outputs, not authored code.
 
 ## Generate, play, build
-Open Assets/_Project/Scenes/City.unity and press Play.
+Players start in Scenes/Boot.unity (build index 0): splash, then the start menu (Lanjutkan / Karier baru /
+Grafis), then City. Open Boot to play that way, or City.unity to skip straight into the game.
+Start-screen look (title, colours, logo/hero/backdrop/font paths) is Resources/Theme/Boot.json; wording is
+Services/Launch/MenuText.cs. Menu: Steel > Generate Boot (headless: Steel.Editor.Boot.BootSceneBuilder.Generate).
 WASD / on-screen joystick walks; hold mouse-right / drag upper-right screen to orbit.
 E / bottom-right touch button: inspect, then pick up. Return to lapak to sort.
 Walk to Pabrik AI, preview price/margin, then confirm the sale (or cancel).

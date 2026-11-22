@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using UnityEngine;
 
 namespace Steel.Services
 {
-    public sealed class CareerFiles
+    public sealed partial class CareerFiles
     {
         [Serializable] private sealed class Slot
         {
@@ -40,10 +41,11 @@ namespace Steel.Services
             }
             catch (Exception e) { Debug.LogWarning("Slot karier tidak terbaca: " + e.GetType().Name); return null; }
         }
+        private IEnumerable<(int i, Slot slot)> Ranked() => Enumerable.Range(0, 2).Select(i => (i, slot: Read(i)))
+            .Where(c => c.slot != null).OrderByDescending(c => c.slot.sequence);
         public LocalGameService Open(IConfigSource config, long now, out double elapsed)
         {
-            foreach (var c in Enumerable.Range(0, 2).Select(i => new { i, slot = Read(i) })
-                .Where(c => c.slot != null).OrderByDescending(c => c.slot.sequence))
+            foreach (var c in Ranked())
             {
                 try
                 {

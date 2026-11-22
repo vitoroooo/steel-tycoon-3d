@@ -25,6 +25,8 @@ Sumber kebutuhan: PRD §17.1, angka dari docs/ECONOMY_SPEC.md (hasil Fase 0).
 | `Core/Time` | Steel.Core | Jam game, tick, simulasi offline |
 | `Core/State` | Steel.Core | GameState + save/load (JSON) |
 | `Services` | Steel.Services | Interface + implementasi lokal (pengganti backend) |
+| `Services/Launch` | Steel.Services | Alur layar awal (splash → menu → konfirmasi → muat), teks menu, ringkasan & mulai karier |
+| `Presentation/UI/Boot` | Steel.UI | Scene Boot: splash, menu awal dua jempol, layar muat; tema di `Resources/Theme/Boot.json` |
 | `Presentation/UI` | Steel.UI | HUD (§12.1), nav bawah (§12.2), dialog konfirmasi |
 | `Presentation/World` | Steel.World | Kota 3D HD (URP), kamera third-person |
 | `Presentation/Player` | Steel.Player | Character controller dan interaksi tumpukan di dunia |

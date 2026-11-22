@@ -48,8 +48,8 @@ namespace Steel.Editor
             PlayerSettings.productName = "Steel Tycoon 3D";
             PlayerSettings.defaultScreenWidth = 1280; PlayerSettings.defaultScreenHeight = 720;
             PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
-            EditorSceneManager.SaveScene(scene, "Assets/_Project/Scenes/City.unity");
-            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene("Assets/_Project/Scenes/City.unity", true) };
+            EditorSceneManager.SaveScene(scene, Packaging.BuildScenes.City);
+            Packaging.BuildScenes.Register();
             AssetDatabase.SaveAssets();
             Debug.Log("CITY_GENERATED: " + layout.Piles.Length + " piles, lapak, smelter, URP PBR + ACES + bloom + SSAO");
         }
