@@ -29,14 +29,14 @@ namespace Steel.Editor.Vehicles
                 new Vector3(8, .9f, .12f), dark, false);
             CityGeometry.Sign("DEALER RODA TIGA  /  TUNAI", Lot + new Vector3(0, 2.5f, Depth / 2 - .3f), .22f, SignText);
             var game = new LocalGameService(new ResourceConfigSource());
-            PriceBoard(game.VehicleOf(FleetCatalog.Triseda), -1.7f, dark);
+            PriceBoard(game.VehicleOf(FleetCatalog.Triseda), .4f, dark);
             PriceBoard(game.VehicleOf(FleetCatalog.Pikap), 2.1f, dark);
         }
 
         /// <summary>A standing board beside the vehicle; the numbers come from the same config the game charges.</summary>
         private static void PriceBoard(VehicleView vehicle, float side, Material frame)
         {
-            Vector3 foot = new Vector3(vehicle.X + side, 0, vehicle.Z + 1.2f);
+            Vector3 foot = new Vector3(vehicle.X + side, 0, vehicle.Z + 1.5f);   // behind the kerb side, clear of the way out
             CityGeometry.Box("Papan harga / tiang", foot + Vector3.up * .5f, new Vector3(.06f, 1, .06f), frame);
             CityGeometry.Box("Papan harga", foot + Vector3.up * 1.25f, new Vector3(1.5f, .62f, .06f), frame, false);
             string price = (vehicle.Price / 1e6).ToString("0.#", CultureInfo.GetCultureInfo("id-ID"));

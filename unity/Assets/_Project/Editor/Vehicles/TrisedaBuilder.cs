@@ -11,9 +11,9 @@ namespace Steel.Editor.Vehicles
     {
         // Measurements of tools/blender/kartun/triseda, in the model's own space (forward is +Z).
         private static readonly Vector3 SteeringAxis = new Vector3(0, .71f, -.36f);
-        private static readonly Vector3 HipJoints = new Vector3(0, 1.15f, .32f);   // front of the saddle: short arms
-        private const float GripX = .33f, GripY = 1.15f, GripZ = .84f;
-        private const float PegX = .26f, AnkleY = .42f, PegZ = .28f;
+        private static readonly Vector3 HipJoints = new Vector3(0, 1.15f, .4f);   // front of the saddle: short arms
+        private const float GripX = .29f, GripY = 1.15f, GripZ = .84f;
+        private const float PegX = .25f, AnkleY = .83f, PegZ = .5f;   // pegs beside the tank, within a short leg's reach
         private const float WheelRadius = .29f, SteerDegrees = 25;
 
         internal static Transform Create(Transform player)

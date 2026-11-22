@@ -10,8 +10,8 @@ namespace Steel.Editor.Vehicles
     {
         private const int IgnoreRaycastLayer = 2;
         private const float KerbClearance = .34f;
-        /// <summary>Vehicles for sale face the street south of the dealer lot.</summary>
-        private const float DealerYaw = 180;
+        /// <summary>Vehicles for sale face west: straight down the driveway to the main road.</summary>
+        private const float DealerYaw = 270;
 
         /// <summary>Stands the vehicle on its configured spot and returns its driver.</summary>
         internal static MotorDriver Attach(GameObject root, string id, Vector3 boxCenter, Vector3 boxSize,

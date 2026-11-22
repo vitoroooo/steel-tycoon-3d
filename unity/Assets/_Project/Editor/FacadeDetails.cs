@@ -6,9 +6,10 @@ namespace Steel.Editor
     {
         internal static void Street()
         {
-            foreach (int x in new[] { -7, 7 })
-                foreach (int z in new[] { -15, 12, 33 })
-                    ModelLibrary.Place("street_lamp_01", new Vector3(x, .2f, z), 6.5f, x < 0 ? 0 : 180);
+            // Lamps stand on the pavement behind the kerb, never in the mouth of the cross street.
+            foreach (float x in new[] { -7.6f, 7.6f })
+                foreach (int z in new[] { -19, 12, 33 })
+                    ModelLibrary.Place("street_lamp_01", new Vector3(x, StreetBuilder.PavementTop, z), 6.5f, x < 0 ? 0 : 180);
             for (int i = 0; i < 4; i++)
                 ModelLibrary.Place("modular_chainlink_fence", new Vector3(-24, .15f, -3 + i * 2.5f),
                     2.3f, 90, null, "modular_chainlink_fence");

@@ -8,7 +8,9 @@ namespace Steel.Editor
         /// <summary>Height of the pavement's walking surface; the road lies about 10 cm below it.</summary>
         internal const float PavementTop = .155f;
         /// <summary>Where the east kerb opens for the dealer, along the main road.</summary>
-        internal const float DrivewayZ = 6, DrivewayWidth = 8;
+        internal const float DrivewayZ = 3, DrivewayWidth = 4;
+        /// <summary>The cross street cuts through both pavements between these lines.</summary>
+        private const float CrossNorth = -7, CrossSouth = -17, PavementNorth = 55, PavementSouth = -35;
 
         internal static void Create()
         {
@@ -20,14 +22,25 @@ namespace Steel.Editor
             Material[] kerb = { CityMaterials.Plain("Kanstin putih", ToonPalette.Cream), CityMaterials.Plain("Kanstin hitam", ToonPalette.Ink) };
             foreach (int side in new[] { -1, 1 })
             {
-                CityGeometry.Box("Trotoar", new Vector3(side * 9, PavementTop - .125f, 10), new Vector3(4, .25f, 90), concrete);
+                Pavement(side, CrossNorth, PavementNorth, concrete);
+                Pavement(side, PavementSouth, CrossSouth, concrete);
                 // Painted kerbstones, black and white in turn. They are a lip on the pavement, never a wall.
                 for (int z = -32, stone = 0; z < 50; z += 2, stone++)
                 {
                     if (side > 0 && Mathf.Abs(z - DrivewayZ) < DrivewayWidth / 2) continue;   // the dealer's way out
+                    if (z > CrossSouth - 1 && z < CrossNorth + 1) continue;   // the cross street stays level
                     CityGeometry.Box("Kanstin", new Vector3(side * 7.05f, PavementTop - .09f, z), new Vector3(.2f, .2f, 1.9f), kerb[stone % 2], false);
                 }
             }
+            Markings(line, concrete);
+        }
+
+        private static void Pavement(int side, float south, float north, Material concrete) =>
+            CityGeometry.Box("Trotoar", new Vector3(side * 9, PavementTop - .125f, (south + north) / 2),
+                new Vector3(4, .25f, north - south), concrete);
+
+        private static void Markings(Material line, Material concrete)
+        {
             for (int z = -38; z < 54; z += 6)
                 CityGeometry.Box("Marka tengah", new Vector3(0, .07f, z), new Vector3(.12f, .015f, 3), line, false);
             for (int x = -5; x <= 5; x += 2)

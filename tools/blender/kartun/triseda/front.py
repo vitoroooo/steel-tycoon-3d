@@ -38,4 +38,8 @@ def frame():
         rod('Knalpot', (.2, -.45, .4), (.24, .25, .36), .05, cel('steel'), 14, .5),
         rod('Ujung knalpot', (.24, .2, .36), (.245, .36, .355), .062, cel('light'), 14, .4),
         shapes.block('Pijakan', (0, -.28, .33), (.62, .1, .035), cel('navy'), .4),
+    ] + [
+        # Short legs never reach the footboard: the rider's sandals rest on these pegs beside the tank.
+        rod('Pijakan lutut', (side * .16, -.5, .74), (side * .34, -.5, .74), .022, cel('navy'), 10, .4)
+        for side in (-1, 1)
     ]
