@@ -15,7 +15,8 @@ namespace Steel.Core.State.Slice
             var lots = Bag.Items.Where(p => buyer.Accepts(p.KnownGrade.Value)).ToArray();
             if (lots.Length == 0) throw new InvalidOperationException("Tidak ada barang yang diterima pembeli ini.");
             double kg = lots.Sum(p => p.SaleWeightKg);
-            double gross = lots.Sum(p => p.SaleWeightKg * buyer.Rate(pricing, prices, p.KnownGrade.Value, p.ReuseQuality));
+            double gross = lots.Sum(p => p.SaleWeightKg * p.RustFactor *
+                buyer.Rate(pricing, prices, p.KnownGrade.Value, p.ReuseQuality));
             double freight = ship ? Math.Ceiling(lots.Sum(p => p.GrossKg) * freightRate *
                 Rules.Home.Distance(buyer.Position)) : 0;
             if (gross < freight) throw new InvalidOperationException("Ongkir melebihi harga. Antar sendiri.");

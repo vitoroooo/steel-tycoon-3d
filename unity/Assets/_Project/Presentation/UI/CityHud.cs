@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using Steel.Services;
 using Steel.Presentation.Input;
 using Steel.Presentation.Vehicles;
-
 namespace Steel.Presentation.UI
 {
     public sealed partial class CityHud : MonoBehaviour
@@ -43,7 +42,7 @@ namespace Steel.Presentation.UI
                 NoticeText.text = lastSaveNotice;
             CashText.text = Money(v.Cash);
             LoadText.text = "Buku usaha ›    K" + v.Caste + "    " + v.CarriedKg + " / " + v.CapacityKg + " kg";
-            MarketText.text = "IBN  " + Money(v.Ibn) + "/kg\nHari " +
+            MarketText.text = "IBN  " + Money(v.Ibn) + "/kg\n" + (host.Game.RainHere ? "Hujan · " : "") + "Hari " +
                 (1 + Math.Floor(v.GameHours / 24)) + "   " + ((int)v.GameHours % 24).ToString("00") + ":" +
                 ((int)(v.GameHours % 1 * 60)).ToString("00");
             RouteText.text = DartoDirections.Hint(host.Game, v);

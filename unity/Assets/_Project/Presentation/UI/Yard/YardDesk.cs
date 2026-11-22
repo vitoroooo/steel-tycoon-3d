@@ -15,7 +15,8 @@ namespace Steel.Presentation.UI
         private readonly Text title, detail, feedback;
         private readonly Button[] keys = new Button[3];
         private readonly Action[] actions = new Action[3];
-        private int page, grade;
+        private int page, grade, district;
+        private static readonly string[] Pages = {"Izin & lahan","Alat sortir","Papan setoran","Cuaca","Lahan & angkutan"};
         private bool forms;
         private static string Rp(double n) => "Rp" + n.ToString("N0", CultureInfo.GetCultureInfo("id-ID"));
         internal YardDesk(CityHud hud, IGameService game, SliceInput input)
@@ -43,7 +44,7 @@ namespace Steel.Presentation.UI
         private Text Line(int size,int y,int height) =>
             UiFactory.Text(panel,"",size,new Vector2(738,height),new Vector2(0,y));
         private void Close() { panel.gameObject.SetActive(false); input.IsBlocked = false; }
-        private void Turn(int n) { page = (page + n + 3) % 3; forms = false; feedback.text = ""; Draw(); }
+        private void Turn(int n) { page = (page + n + Pages.Length) % Pages.Length; forms = false; feedback.text = ""; Draw(); }
         private void Try(int i)
         {
             try { actions[i]?.Invoke(); }
@@ -58,9 +59,10 @@ namespace Steel.Presentation.UI
         private void Draw()
         {
             var y = game.YardInfo(grade);
-            title.text = "Buku usaha   /   " + new[] {"Izin & lahan", "Alat sortir", "Papan setoran"}[page];
+            title.text = "Buku usaha   /   " + Pages[page];
             for (int i = 0; i < 3; i++) Key(i,null,null);
-            if (page == 0) Permit(y); else if (page == 1) Tools(y); else Orders(y);
+            if (page == 0) Permit(y); else if (page == 1) Tools(y); else if (page == 2) Orders(y);
+            else Forecast(page == 4);
         }
     }
 }

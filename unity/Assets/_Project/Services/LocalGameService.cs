@@ -33,16 +33,19 @@ namespace Steel.Services
             clock.HourTick += hour => market.RefreshBucket(hour, economy.SupplyTargetKg);
             clock.HourTick += session.World.OnHour;
             clock.HourTick += session.Routes.OnHour;
+            clock.HourTick += session.WeatherHour;
             clock.HourTick += SupplierHour;
         }
 
         public ScrapPile CreatePile(double kilograms, ScrapGrade grade) => new ScrapPile(kilograms, grade);
         public void Advance(double realSeconds)
-        { clock.Advance(realSeconds); session.Fleet.AdvanceTrip(realSeconds); session.Routes.Advance(realSeconds); }
+        { clock.Advance(realSeconds); FinishTime(realSeconds); }
+        private void FinishTime(double elapsed)
+        { session.Fleet.AdvanceTrip(elapsed); session.Routes.Advance(elapsed); session.PayShipment(GameHours); }
         public double CatchUp(double elapsedRealSeconds)
         {
             double applied = clock.CatchUp(elapsedRealSeconds);
-            session.Fleet.AdvanceTrip(applied); session.Routes.Advance(applied); return applied;
+            FinishTime(applied); return applied;
         }
         public double Quote(ScrapPile pile) => scrap.Quote(pile, Prices.ScrapReference);
     }

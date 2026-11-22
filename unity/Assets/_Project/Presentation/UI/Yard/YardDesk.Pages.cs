@@ -47,7 +47,7 @@ namespace Steel.Presentation.UI
                 double low = Math.Ceiling(y.Floor / 50)*50;
                 game.SetBid(grade,y.Bid < low ? low : y.Bid < low + 250 ? low + 250 : 0);
             });
-            Key(2,"Kirim 15 ton",() => feedback.text = "Diterima " + Rp(game.ShipGrade(grade)));
+            Key(2,"Kirim 15 ton",() => feedback.text = "Nota " + Rp(game.ShipGrade(grade)) + " dibayar setelah bongkar.");
         }
     }
 }
