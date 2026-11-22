@@ -22,7 +22,6 @@ namespace Steel.Tests.Support
             if (income.DepotKg > 0) { Home(); TakeCart(); Game.CollectRoute(); SellAll(); }
             else if (Game.View.CarriedKg > 0) SellAll();
             else if (Gather()) return;
-            else if (income.StreetSites > 0) Wait(income.CartAwayMinutes);
             else if (rounds && income.ArrivalMinutes == 0 && income.RouteKg > 0)
             { Home(); Game.BookRoute(Game.Route("cart", 0, false)); }
             else Wait(income.ArrivalMinutes > 0 ? Math.Min(income.ArrivalMinutes, income.RestockMinutes)

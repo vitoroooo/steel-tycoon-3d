@@ -13,11 +13,11 @@ namespace Steel.Presentation.UI
         {
             string home = "Lapak " + Compass.To(view, map.Home.X, map.Home.Z);
             if (income.DepotKg > 0)
-                return home + " · Kiriman " + income.DepotKg + " kg sudah tiba. Buka armada, ketuk AMBIL KIRIMAN.";
+                return home + " · Kiriman " + income.DepotKg + " kg sudah datang. BUKA ARMADA, AMBIL KIRIMAN.";
             if (income.StreetSites > 0) return Street(income, view);
-            string next = "Warga menaruh tumpukan baru " + Minutes(income.RestockMinutes) + " lagi.";
+            string next = "Tumpukan baru muncul " + Minutes(income.RestockMinutes) + " lagi.";
             if (income.ArrivalMinutes > 0)
-                return "Gang kosong. Kiriman rute tiba di lapak " + Minutes(income.ArrivalMinutes) + " lagi." +
+                return "Gang kosong. Kiriman gerobak sampai di lapak " + Minutes(income.ArrivalMinutes) + " lagi." +
                     (brief ? "" : "\n" + next);
             if (income.RouteKg > 0)
                 return "Gang kosong. " + home + " · BUKA ARMADA, pesan rute gratis " + income.RouteKg + " kg (" +
@@ -28,17 +28,18 @@ namespace Steel.Presentation.UI
         private static string Street(IncomeView income, GameView view)
         {
             string site = "Gang " + Compass.To(view, income.SiteX, income.SiteZ) + " · ";
-            if (income.SiteKg <= view.CapacityKg - view.CarriedKg)
-                return site + "Periksa tumpukan, lalu pungut. Sisa " + income.StreetSites + " tumpukan.";
-            return site + income.SiteKg + " kg tak muat di tas " + view.CapacityKg + " kg. " +
-                (income.CartAwayMinutes > 0 ? "Gerobak pulang " + Minutes(income.CartAwayMinutes) + " lagi."
-                    : "Dorong gerobak ke sini.");
+            double room = view.CapacityKg - view.CarriedKg;
+            if (income.SiteKg <= room)
+                return site + "Periksa dulu, baru pungut. Sisa " + income.StreetSites + " tumpukan.";
+            return site + "Tumpukan " + income.SiteKg + " kg, cuma muat " + room + " kg. " +
+                (income.CartAwayMinutes > 0 ? "Ambil dulu, gerobak pulang " + Minutes(income.CartAwayMinutes) + " lagi."
+                    : "Ambil semuatnya, sisanya aman.");
         }
 
         /// <summary>Pak Darto's answer to "the street is bare, where does money come from now?".</summary>
         public static string Letter(IncomeView income) =>
-            "Pak Darto  ·  Gang kosong?\nWarga menaruh rongsok baru tiap " + Minutes(income.RestockEveryMinutes) +
-            (income.RouteKg > 0 ? ". Atau di lapak: BUKA ARMADA lalu PESAN RUTE, gerobak pergi " +
-                Minutes(income.RouteMinutes) + " dan pulang membawa " + income.RouteKg + " kg gratis.  ›" : ". Ikuti petunjuk di bawah layar.  ›");
+            "Pak Darto  ·  Gang kosong?\nTiap " + Minutes(income.RestockEveryMinutes) + " warga buang rongsok lagi." +
+            (income.RouteKg > 0 ? " Daripada bengong, ke lapak: BUKA ARMADA, PESAN RUTE. Gerobak pulang " +
+                Minutes(income.RouteMinutes) + " lagi bawa " + income.RouteKg + " kg, gratis.  ›" : " Lihat petunjuk di bawah layar.  ›");
     }
 }

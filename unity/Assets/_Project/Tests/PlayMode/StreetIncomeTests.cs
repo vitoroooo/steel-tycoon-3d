@@ -30,13 +30,13 @@ namespace Steel.PlayTests
             StreetSweep.Until(host, 1);
             var last = g.Income; OwnedFleet.PlacePlayer(host, last.SiteX, last.SiteZ);
             g.Inspect(g.Nearby.Id); hud.Act();
-            StringAssert.Contains("Tumpukan terakhir di gang dipungut", hud.NoticeText.text);
+            StringAssert.Contains("Itu tumpukan terakhir di gang", hud.NoticeText.text);
             StreetSweep.Sell(host);
             Assert.Zero(g.Income.StreetSites); Assert.Greater(g.View.Cash, 500000);
             Assert.IsFalse(g.View.GrantCollected);
             yield return Readout();
             Assert.IsTrue(letter.gameObject.activeSelf, "Pak Darto explains the bare street once");
-            StringAssert.Contains("Warga menaruh rongsok baru tiap 10 menit",
+            StringAssert.Contains("Tiap 5 menit warga buang rongsok lagi",
                 letter.GetComponentInChildren<Text>().text);
             StringAssert.Contains("PESAN RUTE", letter.GetComponentInChildren<Text>().text);
             StringAssert.Contains("ambil hadiah setoran pertama", hud.RouteText.text);
@@ -53,7 +53,7 @@ namespace Steel.PlayTests
             Assert.AreEqual(1, g.Route("cart", 0, false).Queue, "The held, empty gerobak is parked and sent");
             Assert.IsFalse(g.Cart.Held); Assert.AreEqual(cash, g.View.Cash);
             g.CatchUp(1800);
-            Assert.AreEqual(20, g.Income.DepotKg); Assert.GreaterOrEqual(g.Income.StreetSites, 3);
+            Assert.AreEqual(20, g.Income.DepotKg); Assert.GreaterOrEqual(g.Income.StreetSites, 6);
             buttons.Single(b => b.name == "AMBIL KIRIMAN").onClick.Invoke();
             buttons.Single(b => b.name == "KEMBALI").onClick.Invoke();
             Assert.AreEqual(15, g.View.CarriedKg);

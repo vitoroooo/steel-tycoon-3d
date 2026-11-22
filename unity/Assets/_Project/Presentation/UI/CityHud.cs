@@ -51,7 +51,7 @@ namespace Steel.Presentation.UI
             ActionText.text = action;
             ActionPad.blocksRaycasts = near != null; ActionPad.alpha = near != null ? 1 : 0;
             VehicleHud.Refresh(this, host.Game.Vehicle);
-            PromptText.text = near == null ? "Geser kiri untuk bergerak · Usap kanan untuk melihat" :
+            PromptText.text = near == null ? GuideBook.Idle(host.Game.GuideRead) :
                 near.Title + "\n" + near.Detail;
         }
         private void Run(Action action)
@@ -76,7 +76,7 @@ namespace Steel.Presentation.UI
                 else if (near.Id == "home") sorting.Open(null);
                 else if (near.Id == "factory") ShowOffer();
                 else if (!near.Inspected) sorting.Open(near.Id);
-                else { host.Game.PickUp(near.Id); NoticeText.text = PickedUp(); }
+                else NoticeText.text = PickUp(near.Id);
             });
         }
         private void ShowOffer()

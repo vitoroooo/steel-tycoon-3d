@@ -13,9 +13,8 @@ namespace Steel.Services
             get
             {
                 var world = session.World;
-                double room = session.Bag.CapacityKg - session.Bag.CarriedKg;
-                var site = world.Piles.Where(p => !p.Collected).OrderBy(p => p.Scrap.GrossKg > room)
-                    .ThenBy(p => p.Position.Distance(session.Position)).FirstOrDefault();
+                var site = world.Piles.Where(p => !p.Collected)
+                    .OrderBy(p => p.Position.Distance(session.Position)).FirstOrDefault();
                 var round = Route("cart", 0, false);
                 double minute = hourSeconds / 60;
                 return new IncomeView

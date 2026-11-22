@@ -16,11 +16,11 @@ namespace Steel.Tests.Slice
         private void Take(int site) { At(site); g.Inspect("p" + site); g.PickUp("p" + site); }
 
         [Test]
-        public void OnlyEmptySitesRefillOnTheHourAndCarriedItemIsUntouched()
+        public void OnlyEmptySitesRefillOnTheHalfHourAndCarriedItemIsUntouched()
         {
             Take(0);
             At(1); g.Inspect("p1");
-            g.Advance(599);
+            g.Advance(299);
             Assert.IsTrue(g.IsCollected("p0"));
             g.Advance(1);
             Assert.IsFalse(g.IsCollected("p0"));
@@ -41,17 +41,33 @@ namespace Steel.Tests.Slice
         {
             g.SetPosition(g.Cart.X, g.Cart.Z); g.GrabCart();
             Take(3); Take(0); Take(5);
-            Assert.AreEqual(7, g.Income.StreetSites); Assert.AreEqual(10, g.Income.RestockMinutes, .001);
+            Assert.AreEqual(7, g.Income.StreetSites); Assert.AreEqual(5, g.Income.RestockMinutes, .001);
             g.ReadStreetTip();
-            g.Advance(300); Assert.AreEqual(5, g.Income.RestockMinutes, .001);
+            g.Advance(120); Assert.AreEqual(3, g.Income.RestockMinutes, .001);
             g = LocalGameService.Resume(source, g.Save(5000), 5000, out _);
             Assert.IsTrue(g.StreetTipRead); Assert.AreEqual(7, g.Income.StreetSites);
-            g.Advance(300);
+            g.Advance(180);
             Assert.IsFalse(g.IsCollected("p3")); Assert.IsTrue(g.IsCollected("p0")); Assert.IsTrue(g.IsCollected("p5"));
-            g.Advance(600);
+            g.Advance(300);
             Assert.IsFalse(g.IsCollected("p0")); Assert.IsTrue(g.IsCollected("p5"));
-            g.Advance(600);
+            g.Advance(300);
             Assert.AreEqual(10, g.Income.StreetSites); Assert.Zero(g.Income.RestockMinutes);
+        }
+
+        [Test]
+        public void PartlyCarriedSiteKeepsItsRestAcrossResumeAndRefillsToFullOnlyOnceEmptied()
+        {
+            Take(1);   // 18 kg pile, 15 kg hand sack
+            Assert.AreEqual(15, g.View.CarriedKg); Assert.IsFalse(g.IsCollected("p1"));
+            Assert.AreEqual(10, g.Income.StreetSites); Assert.Zero(g.Income.RestockMinutes);
+            g = LocalGameService.Resume(source, g.Save(5000), 5000, out _);
+            At(1); Assert.IsTrue(g.Nearby.Inspected); StringAssert.StartsWith("3 kg", g.Nearby.Detail);
+            g.Advance(1200); StringAssert.StartsWith("3 kg", g.Nearby.Detail, "A site that still holds scrap is not topped up");
+            g.SetPosition(g.Cart.X, g.Cart.Z); g.GrabCart(); At(1); g.PickUp("p1");
+            Assert.AreEqual(18, g.View.CarriedKg, "Sack and gerobak together now hold the whole pile");
+            Assert.IsTrue(g.IsCollected("p1"));
+            g.Advance(300); Assert.IsFalse(g.IsCollected("p1"));
+            StringAssert.StartsWith("18 kg", g.Nearby.Detail, "The refill is the full pile again");
         }
     }
 }

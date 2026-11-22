@@ -14,7 +14,7 @@ namespace Steel.Core.State.Slice
             bag = backpack.Snapshot(), cart = Cart.Cargo.Snapshot(),
             motors = Fleet.All.Select(m => m.Snapshot()).ToArray(),
             sites = World.Piles.Select(w => new SiteSave { id = w.Id, collected = w.Collected, emptied = w.EmptiedOrder,
-                inspected = w.Scrap.KnownGrade.HasValue, rainHours = w.Scrap.RainHours }).ToArray(),
+                kg = w.Collected ? 0 : w.Scrap.GrossKg, inspected = w.Scrap.KnownGrade.HasValue, rainHours = w.Scrap.RainHours }).ToArray(),
             routes = Routes.Snapshot(), quota = Enumerable.Range(0, districts).Select(Routes.Reserved).ToArray()
         };
 
@@ -36,7 +36,7 @@ namespace Steel.Core.State.Slice
             foreach (var site in s.sites)
             {
                 var w = World.Find(site.id);
-                World.Restore(w, site.collected, site.emptied);
+                World.Restore(w, site.collected, site.emptied, site.kg);
                 w.Scrap.RestoreRain(site.rainHours);
                 if (site.inspected) w.Scrap.Inspect();
             }

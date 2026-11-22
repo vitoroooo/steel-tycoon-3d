@@ -14,26 +14,26 @@ namespace Steel.Tests.Income
         [Test] public void EarningContinuesAfterEveryStreetSiteIsEmptied()
         {
             Assert.AreEqual(500000, g.View.Cash); Assert.AreEqual(50, g.View.CapacityKg);
-            StringAssert.Contains("Periksa tumpukan, lalu pungut. Sisa 10 tumpukan.", player.Hint);
+            StringAssert.Contains("Periksa dulu, baru pungut. Sisa 10 tumpukan.", player.Hint);
             player.ClearTheStreet();
             var bare = g.Income; double cash = g.View.Cash;
             Assert.Zero(bare.StreetSites); Assert.Zero(g.View.CarriedKg); Assert.Greater(cash, 500000);
             Assert.AreEqual(20, bare.RouteKg); Assert.AreEqual(30, bare.RouteMinutes);
-            Assert.That(bare.RestockMinutes, Is.GreaterThan(0).And.LessThanOrEqualTo(10));
+            Assert.That(bare.RestockMinutes, Is.GreaterThan(0).And.LessThanOrEqualTo(5));
             StringAssert.Contains("ambil hadiah setoran pertama", player.Hint);
             StringAssert.Contains("BUKA ARMADA, pesan rute gratis 20 kg (30 menit).", player.Earning);
-            StringAssert.Contains("Warga menaruh tumpukan baru", player.Earning);
+            StringAssert.Contains("Tumpukan baru muncul", player.Earning);
 
             player.Home(); Assert.IsTrue(g.Cart.Held);
             g.BookRoute(g.Route("cart", 0, false));
             Assert.IsFalse(g.Cart.Held, "Booking parks the empty cart instead of refusing");
             Assert.AreEqual(cash, g.View.Cash, "The cart round costs nothing");
-            StringAssert.Contains("Kiriman rute tiba di lapak 30 menit lagi.", player.Earning);
+            StringAssert.Contains("Kiriman gerobak sampai di lapak 30 menit lagi.", player.Earning);
 
             player.Wait(g.Income.ArrivalMinutes);
             Assert.AreEqual(20, g.Income.DepotKg); Assert.Zero(g.Income.CartAwayMinutes);
-            Assert.GreaterOrEqual(g.Income.StreetSites, 3, "Residents refilled a site every ten minutes meanwhile");
-            StringAssert.Contains("Kiriman 20 kg sudah tiba. Buka armada, ketuk AMBIL KIRIMAN.", player.Earning);
+            Assert.GreaterOrEqual(g.Income.StreetSites, 6, "Residents refilled a site every five minutes meanwhile");
+            StringAssert.Contains("Kiriman 20 kg sudah datang. BUKA ARMADA, AMBIL KIRIMAN.", player.Earning);
             player.Home(); player.TakeCart(); Assert.AreEqual(20, g.CollectRoute()); player.SellAll();
             double afterRound = g.View.Cash; Assert.Greater(afterRound, cash);
 
@@ -43,8 +43,8 @@ namespace Steel.Tests.Income
             Assert.IsFalse(g.View.GrantCollected, "The dealer grant was never needed to keep earning");
         }
 
-        [TestCase(false, 10, TestName = "ADayOfStreetPickingAloneNeverWaitsLongerThanOneRefill")]
-        [TestCase(true, 30, TestName = "ADayOfFollowingEveryHintNeverWaitsLongerThanOneCartRound")]
+        [TestCase(false, 5, TestName = "ADayOfStreetPickingAloneNeverWaitsLongerThanOneRefill")]
+        [TestCase(true, 5, TestName = "ADayOfFollowingEveryHintWithTheCartAwayNeverWaitsLongerThanOneRefill")]
         public void ADayWithoutGrant(bool rounds, double longestWait)
         {
             player.ClearTheStreet();
