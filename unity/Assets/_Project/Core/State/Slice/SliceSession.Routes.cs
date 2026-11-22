@@ -21,6 +21,7 @@ namespace Steel.Core.State.Slice
             if (ticket.Cost > Cash) throw new InvalidOperationException("Kas belum cukup.");
             Cash -= ticket.Cost;
             Routes.Book(ticket.Carrier, ticket.District, ticket.Seconds, ticket.Kg, ticket.Cost, ticket.Purchased);
+            if (car != null) UseAsset(ticket.Carrier);
         }
 
         public double CollectRoute()
