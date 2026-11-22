@@ -34,6 +34,8 @@ namespace Steel.Core.Scrap
             Revision++;
         }
         public void Clear() { items.Clear(); CarriedKg = 0; Revision++; }
+        internal ScrapPile NextUnsorted => items.Find(p => !p.IsSorted);
+        internal void SortNext() { NextUnsorted.Sort(); Revision++; }
         internal void RemoveWhere(Predicate<ScrapPile> accepted)
         {
             items.RemoveAll(accepted);

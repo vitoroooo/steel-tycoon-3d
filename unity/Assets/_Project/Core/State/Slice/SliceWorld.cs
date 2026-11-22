@@ -20,7 +20,8 @@ namespace Steel.Core.State.Slice
             {
                 string id = "p" + i;
                 piles.Add(new WorldPile(id, new WorldPoint(v.Get(id + "x"), v.Get(id + "z")),
-                    new ScrapPile(v.Positive(id + "kg"), (ScrapGrade)v.Integer(id + "grade"))));
+                    new ScrapPile(v.Positive(id + "kg"), (ScrapGrade)v.Integer(id + "grade"),
+                        v.Optional(id + "dirt", 0), v.Optional(id + "quality", 0))));
             }
         }
         public void OnHour(long hour)

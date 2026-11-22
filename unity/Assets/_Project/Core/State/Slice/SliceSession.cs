@@ -59,7 +59,7 @@ namespace Steel.Core.State.Slice
             if (offer.InventoryRevision != current.InventoryRevision || offer.QuoteTime != current.QuoteTime)
                 throw new InvalidOperationException("Penawaran berubah. Lihat harga terbaru dahulu.");
             Cash += current.Revenue;
-            if (current.Revenue > 0) FirstSaleMade = true;
+            if (current.Revenue > 0) CreditSale(current.Kilograms);
             Bag.RemoveWhere(p => p.KnownGrade != ScrapGrade.Reuse); return current.Revenue;
         }
     }

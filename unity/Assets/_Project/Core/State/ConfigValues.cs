@@ -21,6 +21,7 @@ namespace Steel.Core.State
             if (value <= 0) throw new FormatException("Expected positive value: " + key);
             return value;
         }
+        public double Optional(string key, double fallback) => values.TryGetValue(key, out var v) ? v : fallback;
 
         public double Fraction(string key)
         {

@@ -29,7 +29,7 @@ namespace Steel.PlayTests
             buttons.Single(b => b.name == "KEMBALI").onClick.Invoke();
             Assert.IsFalse(panel.gameObject.activeSelf);
             Assert.AreEqual(15, host.Game.View.CarriedKg);
-            hud.Act(); Assert.IsTrue(host.Game.View.LoadSorted);
+            hud.Act(); SortGesture.Drop(hud, "Campur"); Assert.IsTrue(host.Game.View.LoadSorted);
         }
     }
 }

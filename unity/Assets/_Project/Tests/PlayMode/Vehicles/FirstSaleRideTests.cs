@@ -26,11 +26,11 @@ namespace Steel.PlayTests.Vehicles
             var pile = host.Layout.Piles[0].Position;
             OwnedFleet.PlacePlayer(host, pile.X, pile.Z);
             yield return null;
-            hud.Act(); hud.Act();
+            hud.Act(); SortGesture.Drop(hud, "HMS 1"); hud.Act();
             Assert.AreEqual(12, game.View.CarriedKg);
             var lapak = host.Layout.Home;
             OwnedFleet.PlacePlayer(host, lapak.X, lapak.Z);
-            hud.Act();
+            hud.Act(); SortGesture.Drop(hud, "HMS 1");
             var factory = host.Layout.Factory;
             OwnedFleet.PlacePlayer(host, factory.X, factory.Z);
             hud.Act(); hud.Cancel();
