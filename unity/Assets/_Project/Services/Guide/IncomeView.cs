@@ -9,12 +9,16 @@ namespace Steel.Services
         public double SiteKg;
         /// <summary>Real minutes until residents refill the next emptied site; zero while none is empty.</summary>
         public double RestockMinutes;
+        /// <summary>Real minutes between two refills.</summary>
+        public double RestockEveryMinutes;
         /// <summary>Scrap already delivered to the lapak and waiting to be taken.</summary>
         public double DepotKg;
         /// <summary>Real minutes until the next round under way arrives; zero when nothing is under way.</summary>
         public double ArrivalMinutes;
         /// <summary>The free cart round on offer; zero kilograms once the district is picked clean for the day.</summary>
         public double RouteKg, RouteMinutes;
+        /// <summary>Real minutes until the gerobak is back from its round; zero while it is at hand.</summary>
+        public double CartAwayMinutes;
     }
 
     public partial interface IGameService
