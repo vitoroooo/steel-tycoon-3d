@@ -31,14 +31,14 @@ namespace Steel.Presentation.UI.Boot
                 new Vector2(-112, -40), TextAnchor.MiddleRight);
             BootKit.Picture(theme.hero, root, new Vector2(0, .5f), new Vector2(420, 360), new Vector2(250, -10));
 
-            var card = UiFactory.Rect("Kartu Karier", root, bottomRight, new Vector2(400, 190), new Vector2(-232, 263));
+            var card = UiFactory.Rect("Kartu Karier", root, bottomRight, new Vector2(420, 190), new Vector2(-242, 263));
             BootKit.Fill(card, theme.Panel, false);
             BootKit.Label(theme, card, MenuText.CardTitle(flow.Career.State), 22, theme.Accent, new Vector2(.5f, 1),
-                new Vector2(360, 34), new Vector2(0, -32), TextAnchor.MiddleLeft, true);
+                new Vector2(380, 34), new Vector2(0, -32), TextAnchor.MiddleLeft, true);
             Card = BootKit.Label(theme, card, MenuText.CardBody(flow.Career, DateTimeOffset.UtcNow.ToUnixTimeSeconds()),
-                24, theme.Text, new Vector2(.5f, 0), new Vector2(360, 124), new Vector2(0, 72), TextAnchor.UpperLeft);
-            Play = BootKit.Button(theme, root, MenuText.Play(flow.Career.State), 34, theme.Accent, theme.AccentInk,
-                bottomRight, new Vector2(400, 112), new Vector2(-232, 88), flow.Play);
+                24, theme.Text, new Vector2(.5f, 0), new Vector2(380, 124), new Vector2(0, 72), TextAnchor.UpperLeft);
+            Play = BootKit.Button(theme, root, MenuText.Play(flow.Career.State), 32, theme.Accent, theme.AccentInk,
+                bottomRight, new Vector2(420, 112), new Vector2(-242, 88), flow.Play);
 
             float x = 32;
             if (flow.OffersNewCareer)
@@ -49,8 +49,8 @@ namespace Steel.Presentation.UI.Boot
             }
             if (graphics != null)
             {
-                Graphics = BootKit.Button(theme, root, MenuText.Graphics(graphics.Label), 22, theme.Panel, theme.Text,
-                    bottomLeft, new Vector2(240, BootKit.Thumb), new Vector2(x + 120, 76), () => { });
+                Graphics = BootKit.Button(theme, root, MenuText.Graphics(graphics.Label), 20, theme.Panel, theme.Text,
+                    bottomLeft, new Vector2(280, BootKit.Thumb), new Vector2(x + 140, 76), () => { });
                 var caption = Graphics.GetComponentInChildren<Text>();
                 Graphics.onClick.AddListener(() => { graphics.Cycle(); caption.text = MenuText.Graphics(graphics.Label); });
             }
