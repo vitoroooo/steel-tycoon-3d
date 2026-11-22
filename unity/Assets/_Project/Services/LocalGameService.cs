@@ -20,7 +20,7 @@ namespace Steel.Services
             var time = new TimeConfig(source.Read("Time"));
             business = new Core.State.ConfigValues(source.Read("Business"));
             millRules = new Core.State.ConfigValues(source.Read("Mill"));
-            queueLimit = time.OfflineCapRealSeconds;
+            queueLimit = time.OfflineCapRealSeconds; hourSeconds = time.RealSecondsPerGameHour;
             routeConfig = new Core.State.ConfigValues(source.Read("Routes"));
             var economy = new EconomyConfig(source.Read("Economy"));
             supplyTargetKg = economy.SupplyTargetKg;

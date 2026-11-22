@@ -14,7 +14,9 @@ namespace Steel.Core.State.Slice
             var car = ticket.Carrier == "cart" ? null : Fleet.Find(ticket.Carrier);
             bool available = car == null ? !Cart.Held && Cart.Cargo.CarriedKg == 0 :
                 car.Owned && !car.Occupied && car.Cargo.CarriedKg == 0;
-            if (!available) throw new InvalidOperationException("Armada harus dimiliki, kosong dan diparkir.");
+            if (!available) throw new InvalidOperationException(car == null
+                ? "Kosongkan gerobak dahulu: sortir dan jual muatannya, baru pesan rute."
+                : "Armada harus dimiliki, kosong dan diparkir.");
             if (ticket.Kg <= 0) throw new InvalidOperationException("Pasokan habis. Coba kecamatan lain atau besok.");
             if (Routes.Orders.Where(r => r.Carrier == ticket.Carrier).Sum(r => r.SecondsLeft)
                 + ticket.Seconds > queueLimit) throw new InvalidOperationException("Antrean armada sudah penuh.");
