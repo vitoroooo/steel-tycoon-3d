@@ -7,7 +7,7 @@ namespace Steel.Editor.Map
     /// <summary>Who is out in Sukabaja and where: the one place to edit when a street feels empty.</summary>
     internal static class Townsfolk
     {
-        private const float Pavement = .16f;   // top of the main road's sidewalks
+        private const float Pavement = StreetBuilder.PavementTop;   // top of the main road's sidewalks
 
         internal static void Create()
         {
@@ -26,7 +26,7 @@ namespace Steel.Editor.Map
             // The market lane: a man on a bench outside a shop, another squatting by the road.
             Bench(P(-36.3f, 20), 90);
             NpcBuilder.Idler("Bapak duduk", CharacterCatalog.RedShirt, "m_sit_chair_idle_look_around", P(-36.3f, 20), 270, .4f);
-            NpcBuilder.Idler("Jongkok pinggir jalan", CharacterCatalog.Neighbour, "m_crouch_idle", P(10.3f, 2.5f, Pavement), 270, .7f);
+            NpcBuilder.Idler("Jongkok pinggir jalan", CharacterCatalog.Neighbour, "m_crouch_idle", P(10.3f, -1.5f, Pavement), 270, .7f);
             NpcBuilder.Idler("Jongkok gang pasar", CharacterCatalog.RedShirt, "m_crouch_idle", P(-36.6f, 6), 250, .2f);
             // The smelter: a hand watching the weighbridge, another strapping billets.
             NpcBuilder.Idler("Petugas timbang", CharacterCatalog.Worker, "m_idle_look_around_01", P(23.5f, -28.6f), 300, .8f);

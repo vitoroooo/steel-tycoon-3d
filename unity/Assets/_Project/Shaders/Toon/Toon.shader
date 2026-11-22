@@ -7,6 +7,7 @@ Shader "Steel/Toon"
         _BaseMap ("Decal (optional)", 2D) = "white" {}
         _Shade ("Shadow tone", Range(0, 1)) = .68
         [HDR] _EmissionColor ("Glow", Color) = (0, 0, 0, 1)
+        [Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull", Float) = 2
         _OutlineColor ("Line colour", Color) = (.1, .11, .14, 1)
         _OutlineWidth ("Line width (m)", Range(0, .05)) = .012
     }
@@ -16,6 +17,7 @@ Shader "Steel/Toon"
         Pass
         {
             Name "ForwardLit" Tags { "LightMode" = "UniversalForward" }
+            Cull [_Cull]
             HLSLPROGRAM
             #pragma vertex ToonVertex
             #pragma fragment ToonFragment

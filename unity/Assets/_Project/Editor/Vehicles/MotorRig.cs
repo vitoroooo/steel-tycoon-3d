@@ -9,6 +9,7 @@ namespace Steel.Editor.Vehicles
     internal static class MotorRig
     {
         private const int IgnoreRaycastLayer = 2;
+        private const float KerbClearance = .34f;
         /// <summary>Vehicles for sale face the street south of the dealer lot.</summary>
         private const float DealerYaw = 180;
 
@@ -26,7 +27,10 @@ namespace Steel.Editor.Vehicles
                 part.gameObject.isStatic = false;
             }
             var box = root.AddComponent<BoxCollider>();
-            box.center = boxCenter; box.size = boxSize;
+            // The body starts above kerb height: wheels climb a low step, only walls and props stop the vehicle.
+            float top = boxCenter.y + boxSize.y / 2;
+            box.center = new Vector3(boxCenter.x, (top + KerbClearance) / 2, boxCenter.z);
+            box.size = new Vector3(boxSize.x, top - KerbClearance, boxSize.z);
             root.AddComponent<Rigidbody>().isKinematic = true;
             root.AddComponent<FallRecovery>().SpawnOffset =
                 new Vector3(view.X - layout.Spawn.X, 0, view.Z - layout.Spawn.Z);

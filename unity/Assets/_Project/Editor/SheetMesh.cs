@@ -10,7 +10,7 @@ namespace Steel.Editor
             const string path = "Assets/_Project/Generated/CorrugatedSheet.asset";
             var existing = AssetDatabase.LoadAssetAtPath<Mesh>(path);
             if (existing != null) return existing;
-            const int segments = 128;
+            const int segments = 28;   // seven broad ridges: reads as corrugated without a saw-tooth edge
             var vertices = new Vector3[(segments + 1) * 2]; var uv = new Vector2[vertices.Length];
             var triangles = new int[segments * 6];
             for (int i = 0; i <= segments; i++)
@@ -18,7 +18,7 @@ namespace Steel.Editor
                 {
                     float x = (float)i / segments;
                     vertices[i * 2 + j] = new Vector3(x - .5f,
-                        Mathf.Sin(x * Mathf.PI * 32) * .014f + Mathf.Pow(x - .5f, 2) * .13f, j - .5f);
+                        Mathf.Sin(x * Mathf.PI * 14) * .022f + Mathf.Pow(x - .5f, 2) * .13f, j - .5f);
                     uv[i * 2 + j] = new Vector2(x, j);
                     if (j == 0 && i < segments)
                     {

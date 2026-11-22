@@ -22,6 +22,7 @@ namespace Steel.Editor
             Bounds bounds = BoundsOf(go); go.transform.localScale *= height / Mathf.Max(.001f, bounds.size.y);
             bounds = BoundsOf(go);
             go.transform.position += position - new Vector3(bounds.center.x, bounds.min.y, bounds.center.z);
+            Toon.ModelPaint.Apply(go, name);
             foreach (Transform t in go.GetComponentsInChildren<Transform>()) t.gameObject.isStatic = true;
             foreach (var filter in go.GetComponentsInChildren<MeshFilter>())
                 filter.gameObject.AddComponent<MeshCollider>().sharedMesh = filter.sharedMesh;

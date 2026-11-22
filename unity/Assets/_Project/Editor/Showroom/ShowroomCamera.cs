@@ -17,7 +17,7 @@ namespace Steel.Editor.Showroom
             camera.nearClipPlane = .05f;
             camera.clearFlags = sky ? CameraClearFlags.Skybox : CameraClearFlags.SolidColor;
             camera.backgroundColor = new Color(.42f, .44f, .46f);
-            camera.gameObject.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing = true;
+            camera.gameObject.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing = false;
             sheet = new Texture2D(width, height, TextureFormat.RGB24, false);
         }
 

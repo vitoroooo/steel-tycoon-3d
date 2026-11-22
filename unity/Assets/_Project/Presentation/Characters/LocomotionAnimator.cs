@@ -3,7 +3,6 @@ using UnityEngine;
 namespace Steel.Presentation.Characters
 {
     /// <summary>Feeds the measured ground speed (m/s) to the idle → walk → run blend.</summary>
-    [RequireComponent(typeof(Animator))]
     public sealed class LocomotionAnimator : MonoBehaviour
     {
         /// <summary>Speed is measured over this window so very short frames do not distort it.</summary>
@@ -12,6 +11,9 @@ namespace Steel.Presentation.Characters
         private static readonly int Speed = Animator.StringToHash("Speed");
         /// <summary>Holds the idle clip while something else carries the avatar, such as a vehicle.</summary>
         public bool Frozen { get; set; }
+
+        /// <summary>Ground speed in m/s over the last sample; procedural rigs read this instead of an Animator.</summary>
+        public float GroundSpeed => Frozen ? 0 : speed;
         private Animator animator;
         private Vector3 sampleStart;
         private float elapsed;
@@ -19,7 +21,7 @@ namespace Steel.Presentation.Characters
 
         private void OnEnable()
         {
-            animator = GetComponent<Animator>();
+            TryGetComponent(out animator);
             sampleStart = transform.position;
             elapsed = 0;
         }
@@ -35,7 +37,8 @@ namespace Steel.Presentation.Characters
                 sampleStart = transform.position;
                 elapsed = 0;
             }
-            animator.SetFloat(Speed, Frozen ? 0 : speed, Damping, Time.deltaTime);
+            if (animator && animator.runtimeAnimatorController)
+                animator.SetFloat(Speed, Frozen ? 0 : speed, Damping, Time.deltaTime);
         }
     }
 }

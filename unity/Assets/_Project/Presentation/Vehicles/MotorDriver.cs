@@ -17,7 +17,9 @@ namespace Steel.Presentation.Vehicles
         /// <summary>Steering input in -1..1; zero while nobody drives.</summary>
         public float Steer { get; private set; }
         public VehicleView View => host.Game.VehicleOf(VehicleId);
-        private const float RideHeight = .035f;
+        /// <summary>Half the wheelbase used to find the ground, and how fast the body may climb or drop (m/s).</summary>
+        public float AxleReach = .8f;
+        private const float RideHeight = 0, ClimbSpeed = 1.6f;
         private GameHost host;
         private SliceInput input;
         private Rigidbody body;
@@ -45,10 +47,13 @@ namespace Steel.Presentation.Vehicles
         private void Report(Vector3 p, float metresPerSecond, float? heading = null) =>
             host.Game.ReportVehicle(VehicleId, p.x, p.z, metresPerSecond, heading ?? body.rotation.eulerAngles.y);
 
+        private Vector3 Grounded(Vector3 point, Quaternion rotation) =>
+            MotorPhysics.OnGround(point, rotation * Vector3.forward, AxleReach, RideHeight);
+
         private void ResetMotion()
         {
             speed = 0;
-            body.position = MotorPhysics.OnGround(body.position, RideHeight);
+            body.position = Grounded(body.position, body.rotation);
             Report(body.position, 0);
         }
 
@@ -67,7 +72,9 @@ namespace Steel.Presentation.Vehicles
             if (MotorPhysics.Overlaps(body, box, rotation)) rotation = body.rotation;
             Vector3 delta = rotation * Vector3.forward * speed * Time.fixedDeltaTime;
             if (MotorPhysics.Blocked(body, box, rotation, delta)) { delta = Vector3.zero; speed = 0; }
-            Vector3 position = MotorPhysics.OnGround(body.position + delta, RideHeight);
+            Vector3 position = Grounded(body.position + delta, rotation);
+            // Wheels roll up a kerb; the body never snaps to the new height in one physics step.
+            position.y = Mathf.MoveTowards(body.position.y, position.y, ClimbSpeed * Time.fixedDeltaTime);
             body.MovePosition(position); body.MoveRotation(rotation);
             Report(position, speed, rotation.eulerAngles.y);
         }

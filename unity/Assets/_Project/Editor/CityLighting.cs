@@ -5,58 +5,35 @@ using UnityEngine.Rendering.Universal;
 
 namespace Steel.Editor
 {
+    /// <summary>The render pipeline of the editor and desktop build: the same flat look the phone gets, a little sharper.</summary>
     internal static class CityLighting
     {
         internal static void Create()
         {
             string path = CityMaterials.Generated;
-            var renderer = AssetDatabase.LoadAssetAtPath<UniversalRendererData>(path + "CityRenderer.asset");
+            var renderer = AssetDatabase.LoadAssetAtPath<UniversalRendererData>(path + "ToonRenderer.asset");
             if (!renderer)
             {
                 renderer = ScriptableObject.CreateInstance<UniversalRendererData>();
-                AssetDatabase.CreateAsset(renderer, path + "CityRenderer.asset");
-                var type = typeof(UniversalRendererData).Assembly.GetType(
-                    "UnityEngine.Rendering.Universal.ScreenSpaceAmbientOcclusion");
-                if (type != null)
-                {
-                    var ao = (ScriptableRendererFeature)ScriptableObject.CreateInstance(type);
-                    ao.name = "Screen Space Ambient Occlusion"; AssetDatabase.AddObjectToAsset(ao, renderer);
-                    var settings = new SerializedObject(ao);
-                    settings.FindProperty("m_Settings.Downsample").boolValue = true;
-                    settings.FindProperty("m_Settings.Intensity").floatValue = 1.3f;
-                    settings.FindProperty("m_Settings.Radius").floatValue = .18f;
-                    settings.ApplyModifiedPropertiesWithoutUndo(); renderer.rendererFeatures.Add(ao);
-                }
+                AssetDatabase.CreateAsset(renderer, path + "ToonRenderer.asset");
             }
-            var pipeline = AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>(path + "CityPipeline.asset");
+            var pipeline = AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>(path + "ToonPipeline.asset");
             if (!pipeline)
             {
                 pipeline = UniversalRenderPipelineAsset.Create(renderer);
-                AssetDatabase.CreateAsset(pipeline, path + "CityPipeline.asset");
+                AssetDatabase.CreateAsset(pipeline, path + "ToonPipeline.asset");
             }
-            pipeline.supportsCameraDepthTexture = true; pipeline.supportsHDR = true;
-            pipeline.msaaSampleCount = 2; pipeline.shadowDistance = 95;
-            var pipelineSettings = new SerializedObject(pipeline);
-            pipelineSettings.FindProperty("m_MainLightShadowsSupported").boolValue = true;
-            pipelineSettings.FindProperty("m_MainLightShadowmapResolution").intValue = 2048;
-            pipelineSettings.FindProperty("m_SoftShadowsSupported").boolValue = true;
-            pipelineSettings.ApplyModifiedPropertiesWithoutUndo();
+            // No HDR, no post-processing, no depth texture: the palette is the picture.
+            pipeline.supportsCameraDepthTexture = false; pipeline.supportsHDR = false;
+            pipeline.msaaSampleCount = 4; pipeline.shadowDistance = 70; pipeline.useSRPBatcher = true;
+            var settings = new SerializedObject(pipeline);
+            settings.FindProperty("m_MainLightShadowsSupported").boolValue = true;
+            settings.FindProperty("m_MainLightShadowmapResolution").intValue = 2048;
+            settings.FindProperty("m_SoftShadowsSupported").boolValue = false;
+            settings.FindProperty("m_AdditionalLightsRenderingMode").intValue = (int)LightRenderingMode.Disabled;
+            settings.ApplyModifiedPropertiesWithoutUndo();
             GraphicsSettings.renderPipelineAsset = pipeline; QualitySettings.renderPipeline = pipeline;
             Atmosphere.SkyDome.Create();
-            var volume = new GameObject("Atmosfer / ACES").AddComponent<Volume>(); volume.isGlobal = true;
-            var profile = AssetDatabase.LoadAssetAtPath<VolumeProfile>(path + "CityVolume.asset");
-            if (!profile)
-            {
-                profile = ScriptableObject.CreateInstance<VolumeProfile>();
-                AssetDatabase.CreateAsset(profile, path + "CityVolume.asset");
-                var tone = profile.Add<Tonemapping>(); tone.mode.Override(TonemappingMode.ACES);
-                var bloom = profile.Add<Bloom>(); bloom.intensity.Override(.24f); bloom.threshold.Override(1.1f);
-                var color = profile.Add<ColorAdjustments>(); color.contrast.Override(14); color.postExposure.Override(.2f);
-                foreach (var component in profile.components) AssetDatabase.AddObjectToAsset(component, profile);
-            }
-            volume.sharedProfile = profile;
-            if (profile.TryGet<ColorAdjustments>(out var adjustments)) adjustments.postExposure.Override(-.2f);
-            EditorUtility.SetDirty(profile);
             EditorUtility.SetDirty(renderer); EditorUtility.SetDirty(pipeline);
         }
     }

@@ -1,0 +1,11 @@
+"""Proportions of the pengepul, in metres: three heads tall, feet at z = 0, facing -Y."""
+HEIGHT = 1.42
+HEAD = (0, 0, 1.06)             # centre of the skull
+SKULL = (.33, .30, .30)         # radii: wider than deep, like a soft bean
+NECK = (0, 0, .76)
+HIP_Z, HIP_X = .40, .10
+SHOULDER = (.215, 0, .70)
+ELBOW = (.30, -.03, .52)
+WRIST = (.32, -.09, .37)
+KNEE_Z, ANKLE_Z = .22, .06
+FACE_Y = -.285                  # where features sit on the front of the skull

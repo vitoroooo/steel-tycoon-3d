@@ -16,7 +16,9 @@ namespace Steel.Editor.Vehicles
             var concrete = CityMaterials.Surface("concrete_floor_02", new Vector2(3, 3));
             var iron = CityMaterials.Surface("corrugated_iron", new Vector2(4, 1));
             var dark = CityMaterials.Plain("Baja gelap", new Color(.09f, .12f, .14f), .7f, .45f);
-            CityGeometry.Box("Dealer / lantai", Lot + Vector3.down * .02f, new Vector3(Width, .15f, Depth), concrete);
+            CityGeometry.Box("Dealer / lantai", Lot + Vector3.up * (StreetBuilder.PavementTop - .075f),
+                new Vector3(Width, .15f, Depth), concrete);
+            DealerDriveway.Create(StreetBuilder.DrivewayZ, StreetBuilder.DrivewayWidth);
             CityGeometry.Box("Dealer / dinding", Lot + new Vector3(0, WallHeight / 2, Depth / 2),
                 new Vector3(Width, WallHeight, .2f), iron);
             RoofBuilder.Create(Lot + new Vector3(0, WallHeight + .2f, 2), Width, 6, .8f);

@@ -2,6 +2,7 @@
 #define STEEL_TOON_INPUT
 // Shared by every pass so the SRP batcher can group all toon materials.
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonMaterial.hlsl"   // Shadows.hlsl needs LerpWhiteTo
 
 TEXTURE2D(_BaseMap); SAMPLER(sampler_BaseMap);
 

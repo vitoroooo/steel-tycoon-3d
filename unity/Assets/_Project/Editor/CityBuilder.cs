@@ -39,8 +39,7 @@ namespace Steel.Editor
             var camera = new GameObject("Main Camera", typeof(Camera)); camera.tag = "MainCamera";
             camera.AddComponent<AudioListener>(); camera.GetComponent<Camera>().fieldOfView = 62;
             camera.GetComponent<Camera>().nearClipPlane = .1f; camera.GetComponent<Camera>().farClipPlane = 200;
-            var data = camera.AddComponent<UniversalAdditionalCameraData>(); data.renderPostProcessing = true;
-            data.antialiasing = AntialiasingMode.FastApproximateAntialiasing;
+            var data = camera.AddComponent<UniversalAdditionalCameraData>(); data.renderPostProcessing = false;
             var orbit = camera.AddComponent<OrbitCamera>(); orbit.Target = player;
             new GameObject("HUD").AddComponent<CityHud>();
             var settings = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset")[0]);
@@ -51,7 +50,7 @@ namespace Steel.Editor
             EditorSceneManager.SaveScene(scene, Packaging.BuildScenes.City);
             Packaging.BuildScenes.Register();
             AssetDatabase.SaveAssets();
-            Debug.Log("CITY_GENERATED: " + layout.Piles.Length + " piles, lapak, smelter, URP PBR + ACES + bloom + SSAO");
+            Debug.Log("CITY_GENERATED: " + layout.Piles.Length + " piles, lapak, smelter, toon, flat sky, no post-processing");
         }
     }
 }
