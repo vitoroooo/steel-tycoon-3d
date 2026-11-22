@@ -6,7 +6,18 @@
  "widths": {"lingkar": 18, "arteri": 14, "kolektor": 9, "rel": 8, "kali": 16},
  "roundabouts": [[-20, 150, 17]],
  "areas": {"pusat": ["Pusat Kota", "#AEBBDA"], "pasar": ["Pasar Lama", "#F6DC92"], "kampung": ["Kampung Rawa", "#A9D6CF"], "industri": ["Kawasan Industri", "#F2B79A"], "selatan": ["Selatan: lapak & bongkaran", "#EACDAA"], "pinggir": ["Pinggiran (luar jalan lingkar)", "#D3E0B4"]},
- "ways": [
+ "sites": [
+    {"name": "Dealer truk", "kind": "dealer-truk", "x": 157.5, "z": 42.5, "yaw": 228, "width": 30, "depth": 24},
+    {"name": "Kavling lapak 1", "kind": "kavling-lapak", "x": -135.5, "z": -107.5, "yaw": 0, "width": 30, "depth": 24},
+    {"name": "Kavling lapak 2", "kind": "kavling-lapak", "x": -102.5, "z": -111.5, "yaw": 90, "width": 30, "depth": 24},
+    {"name": "Kavling lapak 3", "kind": "kavling-lapak", "x": -51.5, "z": -100.5, "yaw": 345, "width": 22, "depth": 20},
+    {"name": "Kavling lapak 4", "kind": "kavling-lapak", "x": -47.5, "z": -124.5, "yaw": 165, "width": 22, "depth": 20},
+    {"name": "Kavling lapak 5", "kind": "kavling-lapak", "x": -23.5, "z": -95.5, "yaw": 0, "width": 24, "depth": 20},
+    {"name": "Kavling lapak 6", "kind": "kavling-lapak", "x": -15.5, "z": -118.5, "yaw": 180, "width": 24, "depth": 20},
+    {"name": "Kavling pabrik 1", "kind": "kavling-pabrik", "x": 131.5, "z": -184.5, "yaw": 180, "width": 28, "depth": 22},
+    {"name": "Kavling pabrik 2", "kind": "kavling-pabrik", "x": 140.5, "z": -157.5, "yaw": 12, "width": 28, "depth": 22}
+  ],
+  "ways": [
   {"name": "Kali Sukabaja", "kind": "kali", "points": [[-275, 118], [-200, 92], [-130, 112], [-60, 88], [10, 104], [70, 84], [130, 100], [190, 78], [275, 96]]},
   {"name": "Rel Sukabaja", "kind": "rel", "points": [[125, 260], [120, 205], [135, 140], [128, 70], [140, 10], [128, -60], [105, -130], [112, -200], [118, -260]]},
   {"name": "Jl. Lingkar Sukabaja", "kind": "lingkar", "points": [[-205, 185], [-120, 212], [-10, 205], [95, 218], [185, 190], [228, 120], [222, 30], [236, -60], [218, -150], [150, -205], [40, -198], [-70, -214], [-170, -190], [-222, -120], [-212, -20], [-232, 70]], "closed": true},

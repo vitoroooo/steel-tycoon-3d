@@ -9,7 +9,7 @@ namespace Steel.Editor.Map
     /// <summary>The smelter's grounds: gate and weighbridge where scrap is sold, stock bays under the gantry, product and walls.</summary>
     internal static class SmelterYard
     {
-        private const float West = 12.5f, North = -19, South = -71, East = 53, GateHalf = 3.5f;
+        private const float West = 12.5f, North = -19, South = -71, East = 53, GateHalf = 3.5f, RoadNorth = -3;
         private static readonly Vector3 Gantry = new Vector3(23, 0, -51);
         /// <summary>Scrap heaps under the gantry as x, z, heading, scale.</summary>
         private static readonly Vector4[] Heaps = { new Vector4(23, -43, 0, 1), new Vector4(22.5f, -51.5f, 180, .92f), new Vector4(23.5f, -60, 8, 1.05f) };
@@ -60,7 +60,8 @@ namespace Steel.Editor.Map
                 CityGeometry.Box("Tiang gerbang pabrik", new Vector3(gateX + side * GateHalf, 2.9f, North), new Vector3(.5f, 5.8f, .5f), dark);
             CityGeometry.Box("Palang gerbang pabrik", new Vector3(gateX, 5.4f, North), new Vector3(GateHalf * 2 + .5f, .9f, .3f), dark, false);
             CityGeometry.Sign("PT BAJA NUSANTARA", new Vector3(gateX, 5.4f, North + .17f), .22f, new Color(1, .81f, .48f), 180);
-            SengFence.Run(new Vector3(East, 0, 4), new Vector3(East, 0, South));
+            SengFence.Run(new Vector3(East, 0, 4), new Vector3(East, 0, RoadNorth));   // Jl. Baja Raya runs on east between the two
+            SengFence.Run(new Vector3(East, 0, North), new Vector3(East, 0, South));
             SengFence.Run(new Vector3(East, 0, South), new Vector3(West, 0, South));
         }
     }

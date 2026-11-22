@@ -25,6 +25,8 @@ namespace Steel.Editor.Plan.Land
         internal bool Free(int place, Vector2 spot) =>
             land.PlaceAt(spot.x, spot.y) == place && !Plan.core.Holds(spot.x, spot.y, OldTownEdge) && !taken.Contains(Key(spot));
 
+        internal int Owner(Vector2 spot) => land.PlaceAt(spot.x, spot.y);
+
         internal bool Fits(int place, Lot lot, float gap)
         {
             foreach (Vector2 spot in Spots(lot, gap))

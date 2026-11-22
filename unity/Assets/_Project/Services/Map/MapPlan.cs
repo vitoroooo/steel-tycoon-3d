@@ -14,6 +14,7 @@ namespace Steel.Services.Map
         public MapRect[] built;
         public MapWay[] ways;
         public MapPlace[] places;
+        public MapSite[] sites;
         public MapRoundabout[] roundabouts;
 
         public static MapPlan Load()

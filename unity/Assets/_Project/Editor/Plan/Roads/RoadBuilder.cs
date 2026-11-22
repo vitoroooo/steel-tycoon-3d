@@ -5,7 +5,7 @@ namespace Steel.Editor.Plan.Roads
     /// <summary>Lays every planned street: asphalt, raised pavements with painted kerbstones, and lane markings.</summary>
     internal static class RoadBuilder
     {
-        internal const float KerbWidth = .22f;
+        internal const float KerbWidth = .22f, Apron = .003f;
         /// <summary>Just under the terrain: skirts run down to here so nothing shows a gap.</summary>
         internal static readonly float GroundLevel = Ground.GroundZones.CityLevel - .05f;
 
@@ -17,16 +17,16 @@ namespace Steel.Editor.Plan.Roads
                 float half = line.Way.width / 2;
                 kit.Asphalt.Lay(line, -half, profile.Top, half, profile.Top, piece => !paving.Built(line.Middle(piece)));
                 foreach (int side in new[] { -1, 1 })
-                    Pavement(paving, line, profile, side, kit.Walk, kit.PaleKerb, kit.DarkKerb);
+                    Pavement(paving, line, profile, side, kit);
                 Bridge.Create(paving, line, half + profile.Pavement, StreetBuilder.PavementTop, kit);
                 Markings.Create(paving, line, profile, kit);
                 if (profile.Median > 0) Median.Create(paving, line, profile, kit);
             }
         }
 
-        private static void Pavement(Paving paving, WayLine line, RoadProfile profile, int side,
-            Strip walk, Strip pale, Strip dark)
+        private static void Pavement(Paving paving, WayLine line, RoadProfile profile, int side, RoadKit kit)
         {
+            Strip walk = kit.Walk, pale = kit.PaleKerb, dark = kit.DarkKerb;
             float inner = side * line.Way.width / 2, outer = inner + side * profile.Pavement;
             float kerb = inner + side * KerbWidth, top = StreetBuilder.PavementTop;
             bool Stands(int piece) => !paving.Crossed(line.Middle(piece) + line.Sides[piece] * (inner + outer) / 2,
@@ -37,6 +37,8 @@ namespace Steel.Editor.Plan.Roads
                 if (side > 0) strip.Lay(line, from, fromHeight, to, toHeight, keep);
                 else strip.Lay(line, to, toHeight, from, fromHeight, keep);
             }
+            // Where a street joins, the pavement gives way to asphalt, so the mouth of the junction has no bare wedge.
+            Band(kit.Asphalt, inner, profile.Top - Apron, outer, profile.Top - Apron, piece => !Stands(piece) && !paving.Built(line.Middle(piece)));
             Band(walk, kerb, top, outer, top, Stands);
             Band(walk, outer, top, outer, GroundLevel, Stands);
             foreach (Strip stones in new[] { pale, dark })

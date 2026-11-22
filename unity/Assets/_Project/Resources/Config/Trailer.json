@@ -7,8 +7,8 @@
   "braking": 7,
   "turnDegrees": 36,
   "enterRange": 5,
-  "spawnX": 4.2,
-  "spawnZ": 44.5,
+  "spawnX": 147.32,
+  "spawnZ": 44.10,
   "tripRealSeconds": 3600,
   "exitMaxSpeed": 0.6
 }

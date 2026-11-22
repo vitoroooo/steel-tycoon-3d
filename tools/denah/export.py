@@ -1,6 +1,6 @@
 """Bakes the plan into what the game reads. Run: python3 tools/denah/export.py
 
-Writes Resources/Map/Sukabaja.json (streets as smooth lines, places with their size) and
+Writes Resources/Map/Sukabaja.json (streets as smooth lines, places with their size, sites as written) and
 Resources/Map/SukabajaLahan.bytes, a PNG at one pixel per metre: red is the place that owns the
 ground (index + 1, 0 for none), green is what runs over it (see KINDS), blue marks verge.
 """
@@ -57,7 +57,7 @@ def main():
     places = [{'name': p[3].replace('|', ' '), 'detail': p[4].replace('|', ' '), 'area': p[2], 'x': p[0], 'z': p[1],
                'sqm': int(sqm[i])} for i, p in enumerate(plan['places'])]
     baked = {'bounds': rect(plan['bounds']), 'core': rect(plan['current']), 'built': [rect(r) for r in plan['built']],
-             'ways': baked_ways(plan), 'places': places,
+             'ways': baked_ways(plan), 'places': places, 'sites': plan.get('sites', []),
              'roundabouts': [{'x': x, 'z': z, 'radius': r} for x, z, r in plan['roundabouts']]}
     (OUT / 'Sukabaja.json').write_text(json.dumps(baked, ensure_ascii=False, separators=(',', ':')) + '\n')
     print('MAP_BAKED', len(baked['ways']), 'ways,', len(places), 'places, smallest', int(sqm.min()), 'm2,', land.shape[:2])

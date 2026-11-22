@@ -6,59 +6,54 @@ using Steel.PlayTests.Support;
 using Steel.Presentation.Vehicles;
 using Steel.Presentation.Vehicles.Towing;
 using Steel.Services;
+using Steel.Services.Map;
 
 namespace Steel.PlayTests.Vehicles
 {
-    /// <summary>The heavy trucks leave the pool under their own power, and a trailer deck follows its tractor.</summary>
+    /// <summary>The heavy trucks leave the dealer's forecourt under their own power and turn onto its street.</summary>
     public sealed class TruckDriveTests
     {
         private const double Cash = 2000000000;
-        private const float TimeLimit = 40;
+        private const float TimeLimit = 60, Lane = 2.5f, Kerb = .3f;
+        private const int Pieces = 25;   // about fifty metres up the street
 
         [UnityTest]
-        public IEnumerator EveryTruckDrivesDownTheMainRoadOnItsWheels()
+        public IEnumerator EveryTruckLeavesTheDealerAndDrivesUpItsStreet()
         {
             foreach (string id in FleetCatalog.Heavy)
             {
                 yield return OwnedFleet.LoadWealthyCity(Cash);
-                var host = Object.FindObjectOfType<GameHost>();
-                MotorDriver driver = OwnedFleet.Buy(host, id);
-                host.Game.EnterVehicle(id);
-                Vector3 start = driver.transform.position;
-                var pilot = new Autopilot(driver.transform, new Vector3(start.x, 0, start.z - 25));
-                driver.MoveInput = pilot;
-                float worstGap = 0;
+                MotorDriver driver = Board(id, out Autopilot pilot);
+                float worstGap = 0, widest = 0;
+                var hitch = driver.GetComponent<TrailerHitch>();
                 for (float end = Time.time + TimeLimit; Time.time < end && !pilot.Done;)
                 {
                     yield return new WaitForFixedUpdate();
                     worstGap = Mathf.Max(worstGap, Mathf.Abs(GroundProbe.Gap(driver.transform.position)));
+                    if (hitch != null) widest = Mathf.Max(widest, Mathf.Abs(hitch.Fold));
                 }
                 Assert.IsTrue(pilot.Done, id + " stuck at " + driver.transform.position + " behind " + GroundProbe.Ahead(driver.transform));
-                Assert.Less(worstGap, .05f, id + " floated or sank on the road");
+                Assert.Less(worstGap, Kerb, id + " left the ground by more than a kerb between the forecourt and the street");
+                Assert.Less(Mathf.Abs(GroundProbe.Gap(driver.transform.position)), .05f, id + " does not rest on the street");
+                if (hitch == null) continue;
+                Assert.Greater(widest, 4, "The deck must lag behind the tractor as it turns out of the dealer");
+                Assert.Less(widest, hitch.MaxFold, "Turning onto the street must not jackknife the trailer");
             }
         }
 
-        [UnityTest]
-        public IEnumerator TrailerDeckSwingsInATurnAndStraightensBehindTheTractor()
+        /// <summary>Buys the truck, sits in it and plots the way out: straight off the forecourt, then left-lane up the street.</summary>
+        private static MotorDriver Board(string id, out Autopilot pilot)
         {
-            yield return OwnedFleet.LoadWealthyCity(Cash);
             var host = Object.FindObjectOfType<GameHost>();
-            MotorDriver driver = OwnedFleet.Buy(host, FleetCatalog.Trailer);
-            host.Game.EnterVehicle(FleetCatalog.Trailer);
-            var hitch = driver.GetComponent<TrailerHitch>();
+            MotorDriver driver = OwnedFleet.Buy(host, id);
+            host.Game.EnterVehicle(id);
+            MapPlan plan = MapPlan.Load();
             Vector3 start = driver.transform.position;
-            var pilot = new Autopilot(driver.transform, new Vector3(-3, 0, start.z - 14), new Vector3(-3, 0, start.z - 50));
+            (MapWay street, int index) = MapRoute.Nearest(plan, new Vector2(start.x, start.z));
+            int from = Mathf.Min(index + 6, street.xs.Length - 1), to = Mathf.Min(index + Pieces, street.xs.Length - 1);
+            pilot = new Autopilot(driver.transform, MapRoute.Along(street, from, to, 4, Lane));
             driver.MoveInput = pilot;
-            float widest = 0;
-            for (float end = Time.time + TimeLimit; Time.time < end && !pilot.Done;)
-            {
-                yield return new WaitForFixedUpdate();
-                widest = Mathf.Max(widest, Mathf.Abs(hitch.Fold));
-            }
-            Assert.IsTrue(pilot.Done, "Trailer stuck at " + driver.transform.position + " behind " + GroundProbe.Ahead(driver.transform));
-            Assert.Greater(widest, 4, "The deck must lag behind the tractor while it changes lanes");
-            Assert.Less(widest, hitch.MaxFold, "A lane change must not jackknife the trailer");
-            Assert.Less(Mathf.Abs(hitch.Fold), 3, "After a straight run the deck is back in line");
+            return driver;
         }
     }
 }

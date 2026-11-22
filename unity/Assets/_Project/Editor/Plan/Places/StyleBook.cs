@@ -7,7 +7,7 @@ namespace Steel.Editor.Plan.Places
     {
         private static readonly (string Word, StyleSheet Sheet)[] Words =
         {
-            ("Kavling pabrik", Styles.FactoryPlot), ("Kavling lapak", Styles.LapakPlot), ("Kavling", Styles.Shed),
+            ("Kavling pabrik", Styles.PlotLand), ("Kavling lapak", Styles.PlotLand), ("Kavling", Styles.Shed),
             ("Bengkel motor", Styles.Shop), ("Pasar", Styles.Shop), ("Pecinan", Styles.Shop), ("Kuliner", Styles.Shop),
             ("Dealer roda", Styles.Shop), ("SPBU", Styles.Shop), ("Toko", Styles.Shop), ("Rest area", Styles.Shop),
             ("Lapak awal", Styles.Shop),

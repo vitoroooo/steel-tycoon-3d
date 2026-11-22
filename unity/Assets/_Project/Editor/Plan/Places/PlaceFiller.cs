@@ -15,7 +15,7 @@ namespace Steel.Editor.Plan.Places
         {
             var grid = new LandGrid(plan);
             var kit = new TownKit();
-            int lots = 0, extras = 0;
+            int lots = Sites.Create(grid, kit), extras = 0;
             for (int place = 0; place < plan.places.Length; place++)
             {
                 StyleSheet style = StyleBook.Of(plan.places[place]);
