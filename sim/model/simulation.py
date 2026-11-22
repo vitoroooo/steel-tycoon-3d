@@ -27,7 +27,8 @@ def run(c):
                     break
             p = Player(len(players), kind, c['types'][kind][1],
                        rng.randrange(c['districts']), day,
-                       c['start_cash'] + c['tutorial'], reputation=c['rep_start'])
+                       c['start_cash'] + (0 if c.get('mobile') else c['tutorial']),
+                       reputation=c['rep_start'])
             if day == 0:
                 seed_role(p, roles[_], c)
             players.append(p)

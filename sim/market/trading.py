@@ -1,12 +1,6 @@
 """Cash-constrained price discovery and inventory transfers."""
 from market.budget import allowance
-
-
-def bid(buyer, ref, c):
-    prices = c['prices']
-    base = prices['bandar'] if buyer.caste == 2 else prices['smelter']
-    adjustment = prices['stock_response'] * (1 - buyer.stock / c['yard_capacity'])
-    return ref * max(prices['minimum'], min(prices['maximum'], base + adjustment))
+from market.quotes import bid, npc_quote
 
 
 def settle(seller, quantity, price, cost, c, player=False):
@@ -20,7 +14,9 @@ def settle(seller, quantity, price, cost, c, player=False):
 
 def sell(seller, quantity, cost, buyers, ref, c, flows, caps=None):
     remaining = quantity
-    floor = ref * c['prices']['ai1' if seller.caste == 1 else 'ai2']
+    fallback, freight = npc_quote(seller.caste, ref, c)
+    floor = fallback - freight
+    lot = c['batch'] * (1 - c['dirt']) if c.get('mobile') and seller.caste == 2 else 0
     offers = []
     for buyer in buyers:
         price = bid(buyer, ref, c)
@@ -31,6 +27,8 @@ def sell(seller, quantity, cost, buyers, ref, c, flows, caps=None):
     for _, _, price, buyer, distance in sorted(offers, reverse=True):
         room = max(0, min(c['yard_capacity'] - buyer.stock, buyer.demand))
         amount = min(remaining, room, max(0, buyer.cash) / price)
+        if lot:
+            amount = int(amount / lot) * lot
         if amount <= 0:
             continue
         buyer.cash -= amount * price
@@ -47,11 +45,16 @@ def sell(seller, quantity, cost, buyers, ref, c, flows, caps=None):
         if seller.caste == 1 or remaining >= c['ai_batch']:
             amount = remaining if caps is None else allowance(
                 caps, seller.caste, seller.district, min(remaining, seller.npc_remaining))
-            if seller.caste == 2 and amount < c['ai_batch']:
+            shipped = int(amount / lot) * lot if lot else amount
+            if seller.caste == 2 and shipped < c['ai_batch']:
+                shipped = 0
+            if shipped != amount:
                 if caps is not None:
-                    caps[seller.caste][seller.district] += amount
-                amount = 0
-            settle(seller, amount, floor, cost * amount / quantity, c)
+                    caps[seller.caste][seller.district] += amount - shipped
+                amount = shipped
+            settle(seller, amount, fallback, cost * amount / quantity, c)
+            if freight:
+                seller.earn(-amount * freight)
             remaining -= amount
             if caps is not None:
                 seller.npc_remaining -= amount

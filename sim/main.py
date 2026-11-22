@@ -7,7 +7,7 @@ from report.writer import write
 
 def main():
     root = Path(__file__).resolve().parent
-    configs = {name: load(name) for name in ('baseline', 'fixed', 'stress')}
+    configs = {name: load(name) for name in ('baseline', 'fixed', 'stress', 'mobile')}
     results = {name: run(config) for name, config in configs.items()}
     summaries, _ = write(results, configs, root / 'output')
     for name, summary in summaries.items():

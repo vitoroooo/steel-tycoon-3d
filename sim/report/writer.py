@@ -25,7 +25,7 @@ def write(results, configs, output):
     lines = ['# Laporan simulasi ekonomi Fase 0', '',
              'Seed 73; 1.000 pemain awal, 90 hari nyata, +20 pendatang/hari.',
              'Target revisi Putaran 2; konfigurasi lengkap di config/. Bukan telemetri.', '',
-             '| Ukuran | PRD awal | Usulan |', '|---|---:|---:|']
+             '| Ukuran | PRD awal | Putaran 2 | Harga mobile (kontrol) |', '|---|---:|---:|---:|']
     rows = {}
     for name, r in results.items():
         s, e = summaries[name], evidence[name]
@@ -33,7 +33,7 @@ def write(results, configs, output):
         csv_write(output / f'{name}_weekly.csv', s['weekly'])
         rows[name] = {'Tunggu bandar 15 ton (median hari)': s['wait'],
                       'Porsi AI maksimum H1–60': s['max_ai'],
-                      'Arbitrase NPC→AI (Rp/kg, pikap)': e['arbitrage_per_kg']}
+                      'Margin beli NPC → pembeli NPC terbaik (Rp/kg, pikap)': e['arbitrage_per_kg']}
         for k, value in s['profit'].items():
             rows[name][f'Laba harian median Kasta {k} (Rp)'] = value
         for key, value in s['milestones'].items():
@@ -44,7 +44,8 @@ def write(results, configs, output):
         rows[name]['Inflasi moneter mingguan maksimum setelah H14'] = max(
             w['monetary'] for w in s['weekly'] if w['day'] > configs[name]['targets']['inflation_after'])
     for key in rows['baseline']:
-        lines.append(f'| {key} | {display(rows["baseline"][key])} | {display(rows["fixed"][key])} |')
+        values = [display(rows[name][key]) for name in ('baseline', 'fixed', 'mobile')]
+        lines.append(f'| {key} | ' + ' | '.join(values) + ' |')
     for name, s in summaries.items():
         lines += ['', f'## {name}', f'Kriteria revisi: `{json.dumps(s["checks"])}`.',
                   f'Hari tanpa input H1–60: {s["no_demand"]}; tanpa transaksi AI, rasio N/A.',

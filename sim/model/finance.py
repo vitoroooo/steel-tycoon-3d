@@ -7,9 +7,15 @@ def close_day(p, day, c):
         wages = w['driver'] if p.vehicle == 2 else 0
     elif p.caste == 2:
         wages = w['crew'] * w['kuli'] + w['driver'] + w['operator']
-        p.earn(-c['rent'] / c['rent_days'])
+        if not c.get('mobile'):
+            p.earn(-c['rent'] / c['rent_days'])
     else:
         wages = w['eaf_count'] * w['eaf'] + w['operator'] + w['driver']
+    if c.get('mobile') and day < p.lease_until:
+        # Cash was paid upfront. Recognize the expense over the term, even after promotion.
+        expense = c['rent'] / c['rent_days']
+        p.profit -= expense
+        p.quarter -= expense
     duty = min(1, getattr(p, 'workload', 1)) if c['variable_staff'] else 1
     p.earn(-wages * c['game_days'] * duty)
     p.earn(-p.assets * c['maintenance'])
