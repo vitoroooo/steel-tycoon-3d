@@ -1,0 +1,8 @@
+[Unit]
+Description=Sukabaja: salinan basis data pemain
+
+[Service]
+Type=oneshot
+User=sukabaja
+WorkingDirectory=/opt/sukabaja
+ExecStart=/usr/bin/python3 -m server.backup /var/lib/sukabaja/pasar.sqlite3 /var/lib/sukabaja/backup 14

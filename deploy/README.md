@@ -25,8 +25,14 @@ Memeriksa: `systemctl status sukabaja-career`, `journalctl -u sukabaja-career -n
 Tes dari game sendiri: taruh `{"origin":"https://<domain>","token":"<token akun uji>"}` di
 `unity/UserSettings/akun-online.json` (tidak ikut git), lalu jalankan tes EditMode `PublicServerTests`.
 
+## Cadangan
+
+`sukabaja-backup.timer` menyalin basis data pemain tiap hari pukul 02.30 WIB ke `/var/lib/sukabaja/backup`
+(14 salinan terakhir). Memulihkan: hentikan kedua layanan, salin satu berkas `pasar-*.sqlite3` ke
+`/var/lib/sukabaja/pasar.sqlite3`, hapus `pasar.sqlite3-wal` dan `-shm`, lalu nyalakan lagi.
+
 ## Belum ada
 
 - Pendaftaran akun dari dalam game: akun dibuat pengelola dengan `account.sh`.
-- Cadangan otomatis `/var/lib/sukabaja`.
+- Cadangan di luar VPS: salinan harian masih di disk yang sama.
 - Aturan game di server ikut versi yang dipasang; APK lama yang aturannya berbeda akan terus dikoreksi server.

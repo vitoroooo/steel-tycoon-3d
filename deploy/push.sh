@@ -23,9 +23,10 @@ install -d -o sukabaja -g sukabaja -m 750 /var/lib/sukabaja
 install -d /opt/sukabaja
 rsync -a --delete --exclude systemd /home/ubuntu/sukabaja-release/ /opt/sukabaja/
 chown -R root:root /opt/sukabaja && chmod -R a+rX /opt/sukabaja && chmod 755 /opt/sukabaja/career/Steel.Career
-install -m 644 /home/ubuntu/sukabaja-release/systemd/*.service /etc/systemd/system/
+install -m 644 /home/ubuntu/sukabaja-release/systemd/* /etc/systemd/system/
 systemctl daemon-reload
 systemctl enable --now sukabaja-market sukabaja-career
+systemctl enable --now sukabaja-backup.timer
 systemctl restart sukabaja-market sukabaja-career
 sleep 3
 systemctl is-active sukabaja-market sukabaja-career
