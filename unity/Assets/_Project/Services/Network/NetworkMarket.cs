@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Steel.Services
 {
-    public sealed class NetworkMarket
+    public sealed partial class NetworkMarket
     {
         private readonly Uri endpoint;
         private string token, pending;
@@ -41,6 +41,8 @@ namespace Steel.Services
             {
                 var next = await NetworkHttp.Request<NetworkBoard>(endpoint, token, null);
                 if (next.id <= 0 || next.lots == null || next.reference <= 0) throw new FormatException();
+                next.contracts = next.contracts ?? new NetworkContract[0];
+                next.traders = next.traders ?? new string[0];
                 Board = next;
                 return "Papan pasar diperbarui.";
             }
@@ -69,7 +71,7 @@ namespace Steel.Services
             try
             {
                 var reply = await NetworkHttp.Request<NetworkReceipt>(endpoint, token, pending);
-                if (reply.lot <= 0) throw new FormatException();
+                if (reply.lot <= 0 && reply.contract <= 0) throw new FormatException();
                 message = reply.message;
                 pending = null;
             }

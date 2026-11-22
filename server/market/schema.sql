@@ -43,3 +43,16 @@ CREATE TABLE IF NOT EXISTS moderator_events (
     operation TEXT NOT NULL CHECK(operation IN ('suspend','restore')),
     recorded_at INTEGER NOT NULL
 );
+CREATE TABLE IF NOT EXISTS contracts (
+    id INTEGER PRIMARY KEY,
+    seller INTEGER NOT NULL REFERENCES traders,
+    buyer INTEGER NOT NULL REFERENCES traders CHECK (buyer != seller),
+    kg INTEGER NOT NULL CHECK (kg > 0),
+    price INTEGER NOT NULL CHECK (price > 0),
+    days INTEGER NOT NULL CHECK (days > 0),
+    delivered INTEGER NOT NULL CHECK (delivered BETWEEN 0 AND days),
+    locked INTEGER NOT NULL CHECK (locked >= 0),
+    due INTEGER NOT NULL,
+    penalty INTEGER NOT NULL DEFAULT 0,
+    status TEXT NOT NULL CHECK (status IN ('offered', 'active', 'done', 'withdrawn', 'broken'))
+);

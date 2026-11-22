@@ -31,6 +31,17 @@ Setelah halaman **Pasar jaringan** terdaftar di Buku usaha, pilih **Hubungkan ak
 
 Setiap akun baru mendapat Rp200.000 dan 20 kg HMS 1 dari server. Rute pengumpulan pasar menambah 1 kg per jam game (600 detik), dengan kemajuan maksimal 48 jam game per jeda akses akun. Jam kota dan IBN tetap berjalan saat proses server berhenti. Harga lot harus dalam rentang 50–130% acuan HMS 1 saat dipasang dan dibeli. Penjual membayar pajak 2% dari nilai kotor, dibulatkan ke rupiah terdekat. Satu lot aktif per penjual. Membatalkan lot mengembalikan stok titipan.
 
+## Kontrak langsung (PRD C.2)
+
+Di halaman **Kontrak langsung** Buku usaha, penjual memilih pembeli, berat HMS 1 per hari game, harga (dalam batas acuan)
+dan lama 3–10 hari game, lalu **Kirim tawaran**. Pembeli menerima dengan **Terima**: dana kiriman pertama dikunci dari kas
+pasarnya. Tiap hari game server memindahkan stok ke pembeli, membayar dana terkunci ke penjual (pajak 2%), dan mengunci dana
+kiriman berikutnya. Kiriman yang jatuh tempo diselesaikan saat siapa pun mengakses pasar, jadi tetap berjalan ketika kedua
+pedagang offline. Membatalkan kontrak berjalan mengembalikan dana terkunci dan membayar penalti 10% dari nilai sisa kontrak
+ke pihak lain. Penjual tanpa stok atau pembeli tanpa dana untuk kiriman berikutnya dianggap membatalkan dan membayar penalti
+sebesar kas yang ia punya. Menarik tawaran yang belum diterima tidak dikenai penalti. Satu kontrak per pasangan penjual-pembeli.
+`suspend NAMA` menghentikan kontrak pedagang itu tanpa penalti.
+
 ## Protokol lokal
 
 Kedua endpoint memakai header `Authorization: Bearer <token>`. `GET /v1/market` mengembalikan akun terautentikasi, harga kota, batas harga, dan lot aktif. `POST /v1/orders` menerima JSON dengan `key` unik per niat transaksi dan salah satu bentuk berikut.
@@ -40,6 +51,9 @@ Kedua endpoint memakai header `Authorization: Bearer <token>`. `GET /v1/market` 
 | sell | kg, price |
 | buy | lot |
 | cancel | lot |
+| offer | buyer (nama pedagang), kg, price, days |
+| accept | contract |
+| end | contract |
 
 Setelah respons terputus, kirim ulang isi dan key yang sama untuk menerima nota sebelumnya. Konflik bisnis memakai HTTP 409, kredensial keliru 401, dan kolom keliru 400. Pembatalan milik pedagang lain mendapat 403. SQLite mengunci transaksi penulisan sebelum membaca saldo, menyelesaikan lot dan mencatat nota dalam satu commit. Tabel `trades` menyimpan nilai bruto, pajak dan akun pembeli. Relasi dengan `lots` mengidentifikasi penjual.
 

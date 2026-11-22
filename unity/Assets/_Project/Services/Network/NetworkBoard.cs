@@ -9,6 +9,8 @@ namespace Steel.Services
         public int ibn, minimum, maximum, reference, buyers;
         public string name;
         public NetworkLot[] lots;
+        public NetworkContract[] contracts = new NetworkContract[0];
+        public string[] traders = new string[0];
     }
 
     [Serializable]
@@ -23,7 +25,7 @@ namespace Steel.Services
     [Serializable]
     internal sealed class NetworkReceipt
     {
-        public long lot = 0;
+        public long lot = 0, contract = 0;
         public string message = "";
     }
 
