@@ -1,0 +1,1 @@
+"""Suite integrasi pasar lokal."""
