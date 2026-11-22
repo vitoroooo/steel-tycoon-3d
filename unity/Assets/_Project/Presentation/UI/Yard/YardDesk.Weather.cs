@@ -9,6 +9,7 @@ namespace Steel.Presentation.UI
             var w = game.Weather(land ? 0 : district);
             if (!land)
             {
+                game.ReadForecast();
                 detail.text = w.Area + "   ·   " + (w.Rain ? "Hujan" : "Cerah") + "   ·   Tanah " + w.Soil +
                     "\n" + w.Forecast + "\nTeras lapak: " + w.CoveredKg + "/50 kg terlindung dari karat.";
                 Key(0,"Kecamatan berikut",() => district = (district + 1) % 3);

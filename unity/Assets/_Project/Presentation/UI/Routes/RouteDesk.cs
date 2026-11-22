@@ -54,7 +54,11 @@ namespace Steel.Presentation.UI
             if (key == 2) purchase = !purchase;
             Refresh();
         }
-        internal void Open() { panel.gameObject.SetActive(true); input.IsBlocked = true; Refresh(); }
+        internal void Open()
+        {
+            if (!game.MotorRoute && game.VehicleOf(FleetCatalog.Triseda).Owned) { vehicle = 1; district = 0; }
+            panel.gameObject.SetActive(true); input.IsBlocked = true; Refresh();
+        }
         private void Close() { panel.gameObject.SetActive(false); input.IsBlocked = false; }
         private void Try(Func<string> act)
         {

@@ -30,7 +30,7 @@ namespace Steel.Services
                 CoveredKg = session.Covered.CarriedKg, Stuck = y.stuck, Settlement = y.payout, DueHour = y.unloadHour,
                 Forecast = DistrictWeather.RainHours(Hour+1,district) + " dari 24 jam ke depan diprakirakan hujan" };
         }
-        public void Shelter(bool store) => session.MoveCovered(store);
+        public void Shelter(bool store) { session.MoveCovered(store); if (store) StoredUnderRoof = true; }
         public void ImproveLand(bool pave) => session.InstallRoof(pave,business.Positive(pave ? "pave" : "roof"));
         public void Rescue(bool tow) => session.Rescue(tow,GameHours,business.Positive("tow"));
     }

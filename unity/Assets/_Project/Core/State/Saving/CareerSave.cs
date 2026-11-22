@@ -16,6 +16,8 @@ namespace Steel.Core.State.Saving
         public bool magnet, xrf;
         public YardSave yard;
         public LotSave[] covered;
+        public int story;
+        public bool motorRoute, readForecast, sheltered;
     }
     [Serializable] public sealed class LotSave
     {
