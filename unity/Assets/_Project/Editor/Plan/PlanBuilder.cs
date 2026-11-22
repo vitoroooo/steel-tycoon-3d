@@ -21,6 +21,7 @@ namespace Steel.Editor.Plan
             foreach (WayLine rail in paving.Rails) Rail.RailBuilder.Create(rail, paving, kit);
             kit.Build();
             Places.Builders.Plots.Reset();
+            Npc.OtherPlayersBuilder.Build();
             Places.PlaceFiller.Create(Plan);
             Debug.Log("PLAN_BUILT: " + paving.Roads.Count + " streets, " + Strip.Parent.childCount + " sector meshes");
         }

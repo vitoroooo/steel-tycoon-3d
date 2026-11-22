@@ -16,6 +16,9 @@ namespace Steel.Career.Careers
         public double Cash => game.WalletCash;
         public double StockKg => game.WalletStockKg;
         public int Caste => game.WalletCaste;
+        public float X => game.PresenceX;
+        public float Z => game.PresenceZ;
+        public string Vehicle => game.PresenceVehicle;
         /// <summary>What the market did to this account's purse while the career was not looking.</summary>
         public void Settle(double cash, double kg) => game.SettleMarket(cash, kg);
 

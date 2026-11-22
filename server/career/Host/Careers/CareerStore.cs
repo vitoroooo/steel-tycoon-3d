@@ -22,6 +22,14 @@ namespace Steel.Career.Careers
             return ask.ExecuteScalar() != null;
         }
 
+        public string Name(SqliteConnection db, long account)
+        {
+            using SqliteCommand ask = db.CreateCommand();
+            ask.CommandText = "SELECT name FROM traders WHERE id = $id";
+            ask.Parameters.AddWithValue("$id", account);
+            return ask.ExecuteScalar() as string ?? "";
+        }
+
         public CareerRecord Read(SqliteConnection db, long account)
         {
             using SqliteCommand ask = db.CreateCommand();

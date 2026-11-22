@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Steel.PlayTests.Support;
 using Steel.Presentation.UI.Boot;
+using Steel.Presentation.World.Town;
 using Steel.Services;
 using Steel.Services.Remote;
 using Steel.TestServers;
@@ -62,6 +63,16 @@ namespace Steel.PlayTests.Remote
             }, 30, "The server's career carries the pile");
             Assert.AreEqual(Carried(seen.Result, rules), host.Game.View.CarriedKg, 1e-9);
             Assert.IsNull(host.SaveNotice);
+
+            // the city is shared: a second player who signs in is seen walking in it, under his name
+            Assert.IsEmpty(Object.FindObjectsOfType<Ghost>());
+            Task<RemoteReply> neighbour = Client(server.Neighbour()).Open();
+            yield return Wait(() => Object.FindObjectsOfType<Ghost>().Length == 1, 30, "The other player is shown");
+            Ghost other = Object.FindObjectOfType<Ghost>();
+            Assert.AreEqual("Hasan", other.Label.text);
+            GameView start = LocalGameService.Resume(rules, neighbour.Result.save, neighbour.Result.savedUtc, out _).View;
+            Assert.Less(Vector2.Distance(new Vector2(other.transform.position.x, other.transform.position.z),
+                new Vector2(start.PlayerX, start.PlayerZ)), .5f, "He stands where the server saw him");
         }
 
         private static double Carried(RemoteReply reply, IConfigSource rules) =>

@@ -17,6 +17,8 @@ namespace Steel.Services.Remote
         /// <summary>Why the server refused the last call, or that it cannot be reached.</summary>
         public string Notice => link.Notice ?? refusal;
         public string Digest => game.Digest();
+        /// <summary>The other players in the city as the server's last answer told; a new array with every answer.</summary>
+        public RemotePlayer[] Others { get; private set; } = new RemotePlayer[0];
 
         public RemoteGameService(IConfigSource rules, RemoteReply opened, RemoteLink link)
         {
@@ -45,6 +47,7 @@ namespace Steel.Services.Remote
         {
             if (reply == null) return;
             refusal = reply.Refusal();
+            Others = reply.others ?? new RemotePlayer[0];
             if (!reply.HasSave) return;
             game = LocalGameService.Resume(rules, reply.save, reply.savedUtc, out _);
             Corrections++;

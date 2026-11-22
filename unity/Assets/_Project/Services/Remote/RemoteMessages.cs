@@ -36,6 +36,12 @@ namespace Steel.Services.Remote
         public string digest, save;
         /// <summary>The server's clock (Unix seconds) the save was written at.</summary>
         public long savedUtc;
+        /// <summary>The other players in the city, nearest first; not part of the career, so never part of the digest.</summary>
+        public RemotePlayer[] others;
+        public RemoteReply Among(RemotePlayer[] seen)
+        {
+            var copy = (RemoteReply)MemberwiseClone(); copy.others = seen; return copy;
+        }
         /// <summary>Unity reads a missing text as empty, the server as null: both mean no career was sent.</summary>
         public bool HasSave => !string.IsNullOrEmpty(save);
         /// <summary>Why the first refused call was refused; null when every call ran.</summary>

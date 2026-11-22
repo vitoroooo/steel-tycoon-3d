@@ -14,6 +14,9 @@ namespace Steel.Services
         public bool Online => remote != null;
         /// <summary>Online, the market between players is the same account as the career: one purse.</summary>
         public NetworkMarket Market { get; private set; }
+        /// <summary>The other players in the shared city; none while playing offline.</summary>
+        public Remote.RemotePlayer[] Others => remote != null ? remote.Others : NoOne;
+        private static readonly Remote.RemotePlayer[] NoOne = new Remote.RemotePlayer[0];
         private Remote.RemoteGameService remote;
         private CareerFiles files;
         private LocalGameService local;

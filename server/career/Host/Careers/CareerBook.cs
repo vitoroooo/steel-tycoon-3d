@@ -14,6 +14,9 @@ namespace Steel.Career.Careers
         private readonly MarketClock market;
         private readonly ConcurrentDictionary<long, object> locks = new ConcurrentDictionary<long, object>();
         private readonly ConcurrentDictionary<long, Career> open = new ConcurrentDictionary<long, Career>();
+        private readonly ConcurrentDictionary<long, string> names = new ConcurrentDictionary<long, string>();
+        /// <summary>The shared city: every answer also tells a phone who else is in it.</summary>
+        public City.TownSquare Square { get; } = new City.TownSquare();
 
         public CareerBook(IConfigSource rules, CareerStore store, Func<long> nowMs)
         {
@@ -47,7 +50,8 @@ namespace Steel.Career.Careers
                     Wallet.Leave(db, account, career, market.Hour(db, now));
                     store.Write(db, account, career.Record());
                     Accounts.AccountBook.Run(db, "COMMIT");
-                    return reply;
+                    Square.Show(account, names.GetOrAdd(account, _ => store.Name(db, account)), career, now);
+                    return reply.Among(Square.Others(account, now));
                 }
                 catch
                 {
