@@ -2,9 +2,10 @@
 import json
 from pathlib import Path
 
-PLAN = Path(__file__).resolve().parents[2] / 'docs/design/peta/sukabaja.json'
-SCALE = 2.6          # pixels per metre
-MARGIN = 40
+ROOT = Path(__file__).resolve().parents[2]
+PLAN = ROOT / 'docs/design/peta/sukabaja.json'
+SCALE = 3.0          # pixels per metre
+MARGIN = 30
 
 
 def load():
@@ -13,36 +14,23 @@ def load():
 
 def px(plan, x, z):
     """Picture position of a map point; north is up."""
-    return (MARGIN + (x - plan['x'][0]) * SCALE, MARGIN + (plan['z'][-1] - z) * SCALE)
+    west, _, _, north = plan['bounds']
+    return (MARGIN + (x - west) * SCALE, MARGIN + (north - z) * SCALE)
 
 
-def box(plan, west, south, east, north):
-    left, top = px(plan, west, north)
-    right, bottom = px(plan, east, south)
-    return [left, top, right, bottom]
-
-
-def cell_box(plan, col, row_from_north):
-    """Bounds of one grid cell; rows are counted from the north, as written in the plan."""
-    row = len(plan['z']) - 2 - row_from_north
-    return box(plan, plan['x'][col], plan['z'][row], plan['x'][col + 1], plan['z'][row + 1])
-
-
-def inner(plan, bounds, west, south, east, north):
-    """The part of a block left after the streets along its edges take their half width."""
-    def half(lines, at):
-        return plan['widths'].get(lines.get(str(at), ''), 0) / 2 * SCALE
-    return [bounds[0] + half(plan['linesX'], west), bounds[1] + half(plan['linesZ'], north),
-            bounds[2] - half(plan['linesX'], east), bounds[3] - half(plan['linesZ'], south)]
-
-
-def cell_inner(plan, col, row_from_north):
-    row = len(plan['z']) - 2 - row_from_north
-    return inner(plan, cell_box(plan, col, row_from_north),
-                 plan['x'][col], plan['z'][row], plan['x'][col + 1], plan['z'][row + 1])
+def metres(plan, left, top):
+    """The map point under a picture pixel."""
+    west, _, _, north = plan['bounds']
+    return (west + (left - MARGIN) / SCALE, north - (top - MARGIN) / SCALE)
 
 
 def size(plan):
-    width = (plan['x'][-1] - plan['x'][0]) * SCALE + MARGIN * 2
-    height = (plan['z'][-1] - plan['z'][0]) * SCALE + MARGIN * 2
-    return int(width), int(height)
+    west, south, east, north = plan['bounds']
+    return int((east - west) * SCALE + MARGIN * 2), int((north - south) * SCALE + MARGIN * 2)
+
+
+def area_ratio(plan):
+    """How many times the playable area of today's map fits into the plan."""
+    west, south, east, north = plan['bounds']
+    old_west, old_south, old_east, old_north = plan['current']
+    return (east - west) * (north - south) / ((old_east - old_west) * (old_north - old_south))

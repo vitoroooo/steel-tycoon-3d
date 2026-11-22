@@ -11,16 +11,20 @@ namespace Steel.Editor.Vehicles
         private const int IgnoreRaycastLayer = 2;
         private const float KerbClearance = .34f;
         /// <summary>Vehicles for sale face west: straight down the driveway to the main road.</summary>
-        private const float DealerYaw = 270;
+        internal const float DealerYaw = 270;
 
         /// <summary>Stands the vehicle on its configured spot and returns its driver.</summary>
         internal static MotorDriver Attach(GameObject root, string id, Vector3 boxCenter, Vector3 boxSize,
+            params Vector3[] exitPoints) => Attach(root, id, DealerYaw, boxCenter, boxSize, exitPoints);
+
+        /// <summary>The same, facing yaw degrees from north.</summary>
+        internal static MotorDriver Attach(GameObject root, string id, float yaw, Vector3 boxCenter, Vector3 boxSize,
             params Vector3[] exitPoints)
         {
             var source = new ResourceConfigSource();
             VehicleView view = new LocalGameService(source).VehicleOf(id);
             var layout = new CityLayout(source);
-            root.transform.SetPositionAndRotation(ParkingSpot.On(view.X, view.Z), Quaternion.Euler(0, DealerYaw, 0));
+            root.transform.SetPositionAndRotation(ParkingSpot.On(view.X, view.Z), Quaternion.Euler(0, yaw, 0));
             foreach (Transform part in root.GetComponentsInChildren<Transform>())
             {
                 part.gameObject.layer = IgnoreRaycastLayer;

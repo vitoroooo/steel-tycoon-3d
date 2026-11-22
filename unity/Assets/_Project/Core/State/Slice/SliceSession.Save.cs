@@ -21,7 +21,8 @@ namespace Steel.Core.State.Slice
         public void Load(CareerSave s, int districts, long day)
         {
             if (s.version != 1 || s.grant && !s.firstSale || s.quota.Length != districts ||
-                s.motors.Length != Fleet.All.Count || s.motors.Select(m => m.id).Distinct().Count() != s.motors.Length ||
+                s.motors.Any(m => Fleet.All.All(f => f.Rules.Id != m.id)) ||   // a career saved before a vehicle existed still loads
+                s.motors.Select(m => m.id).Distinct().Count() != s.motors.Length ||
                 s.motors.Count(m => m.occupied) + (s.cartHeld ? 1 : 0) > 1) throw new FormatException("Karier tidak valid");
             Cash = NumberRules.NonNegative(s.cash, "cash"); FirstSaleMade = s.firstSale; GrantCollected = s.grant;
             Magnet = s.magnet; Xrf = s.xrf; Yard = YardSave.Restore(s.yard);

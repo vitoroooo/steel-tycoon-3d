@@ -12,7 +12,8 @@ namespace Steel.PlayTests.Vehicles
     public sealed class ParkedWheelsTests
     {
         private const float Tolerance = .03f;
-        private static readonly string[] Parked = { "Gerobak dorong", "Motor triseda", "Pikap bekas" };
+        private static readonly string[] Parked =
+            { "Gerobak dorong", "Motor triseda", "Pikap bekas", "Truk engkel", "Tronton", "Trailer flat-deck" };
 
         [UnityTest]
         public IEnumerator TyresRestOnTheGround()
@@ -30,7 +31,7 @@ namespace Steel.PlayTests.Vehicles
             {
                 Transform vehicle = GameObject.Find(name).transform;
                 Transform[] wheels = vehicle.GetComponentsInChildren<Transform>()
-                    .Where(part => part.name.StartsWith("Wheel_")).ToArray();
+                    .Where(part => part.name.StartsWith("Wheel_") || part.name.StartsWith("DeckWheel_")).ToArray();
                 Assert.IsNotEmpty(wheels, name + " has no wheels");
                 foreach (Transform wheel in wheels)
                 {
