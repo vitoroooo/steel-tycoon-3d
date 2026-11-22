@@ -17,7 +17,7 @@ namespace Steel.Presentation.UI
         private readonly Action[] actions = new Action[3];
         private int page, grade, district;
         private static readonly string[] Pages = {"Izin & lahan","Alat sortir","Papan setoran","Cuaca",
-            "Lahan & angkutan","Pabrik baja","Lini produksi"};
+            "Lahan & angkutan","Pabrik baja","Lini produksi","Tender pemerintah","Lapak satelit"};
         private bool forms;
         private static string Rp(double n) => "Rp" + n.ToString("N0", CultureInfo.GetCultureInfo("id-ID"));
         internal YardDesk(CityHud hud, IGameService game, SliceInput input)
@@ -65,7 +65,9 @@ namespace Steel.Presentation.UI
             for (int i = 0; i < 3; i++) Key(i,null,null);
             if (page == 0) Permit(y); else if (page == 1) Tools(y); else if (page == 2) Orders(y);
             else if (page < 5) Forecast(page == 4);
-            else FactoryDesk(page == 6);
+            else if (page < 7) FactoryDesk(page == 6);
+            else if (page == 7) DrawTender();
+            else DrawSatellite();
         }
     }
 }

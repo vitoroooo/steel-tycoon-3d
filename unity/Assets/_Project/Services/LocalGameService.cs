@@ -36,6 +36,8 @@ namespace Steel.Services
             clock.HourTick += session.Routes.OnHour;
             clock.HourTick += session.WeatherHour;
             clock.HourTick += SupplierHour;
+            clock.HourTick += TenderHour;
+            clock.HourTick += SiteHour;
         }
 
         public ScrapPile CreatePile(double kilograms, ScrapGrade grade) => new ScrapPile(kilograms, grade);
