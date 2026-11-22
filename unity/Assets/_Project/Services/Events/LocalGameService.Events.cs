@@ -9,7 +9,8 @@ namespace Steel.Services
     public sealed partial class LocalGameService
     {
         private double[] SteelRates => new[] { Prices.Ibn, Prices.Ibn * millRules.Positive("beamRate"), Prices.Ibn * millRules.Positive("boltRate") };
-        private void EventHour(long hour) => session.AdvanceEvents(hour, Prices.Ibn, SteelRates);
+        private void EventHour(long hour)
+        { session.AdvanceEvents(hour, Prices.Ibn, SteelRates); session.ReuseHour(hour, Prices.ScrapReference); }
 
         public EventView Events
         {

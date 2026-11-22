@@ -3,7 +3,7 @@ using System;
 namespace Steel.Core.Events
 {
     /// <summary>The events waiting for an answer and the ones already rolled for. Saved as is.</summary>
-    [Serializable] public sealed class EventSave
+    [Serializable] public sealed partial class EventSave
     {
         public int sequence;
         /// <summary>The last game day an inspection and a flash tender were rolled for.</summary>
@@ -29,7 +29,7 @@ namespace Steel.Core.Events
         {
             if (saved == null) return new EventSave();
             bool Bad(double value) => !(value >= 0) || double.IsInfinity(value);
-            if (saved.sequence < 0 || saved.dirtGrade < 0 || saved.dirtGrade > 3 || saved.dirt >= 1 ||
+            if (saved.ReuseBroken() || saved.sequence < 0 || saved.dirtGrade < 0 || saved.dirtGrade > 3 || saved.dirt >= 1 ||
                 saved.flashProduct < 0 || saved.flashProduct > 2 || saved.flashTaken && !saved.flash ||
                 saved.flashSent > saved.flashKg || saved.flash && !(saved.flashKg > 0 && saved.flashPrice > 0) ||
                 Bad(saved.dirtKg) || Bad(saved.dirt) || Bad(saved.dirtUntil) || Bad(saved.honestUntil) || Bad(saved.ibnOpen) ||

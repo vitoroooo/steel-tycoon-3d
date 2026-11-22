@@ -9,9 +9,13 @@ namespace Steel.Tests
     {
         public static string Read(string name) => new ResourceConfigSource().Read(name);
 
-        /// <summary>The same configuration on days without cheating collectors or strikes, for tests that count what a yard receives.</summary>
-        public static IConfigSource Calm(IConfigSource source) => new OverrideConfigSource(
-            new OverrideConfigSource(source, "Events", "dirtyChance", 1e-12), "Events", "strikeChance", 1e-12);
+        /// <summary>The same configuration on days without cheating collectors, strikes or reuse finds, for tests that count what a yard receives.</summary>
+        public static IConfigSource Calm(IConfigSource source)
+        {
+            foreach (string chance in new[] { "dirtyChance", "strikeChance", "reuseChance" })
+                source = new OverrideConfigSource(source, "Events", chance, 1e-12);
+            return source;
+        }
 
         public static string With(string name, string key, double value)
         {
