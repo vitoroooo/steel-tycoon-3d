@@ -44,6 +44,9 @@ City.json/Piles.json adalah data bersama untuk Core dan generator scene.
 Piles.json `restockHours` (0,5 = 5 menit nyata): tiap selang itu satu tumpukan kosong terisi lagi (urutan kosong tersimpan di save).
 Services/Guide/IncomeView merangkum sumber uang pemula (tumpukan, isi ulang, rute gerobak gratis, kiriman)
 untuk Presentation/UI/Guide (IncomeHint, DartoLetter); tes di Tests/EditMode/Income dan PlayMode/StreetIncomeTests.
+Panduan pemula: Presentation/UI/Guide/GuideBook (teks dan angka dibaca dari game yang berjalan) ditampilkan
+YardDesk.Guide di Buku usaha lewat tombol PANDUAN. Panduan hanya terbuka bila pemain mengetuknya; baris
+prompt saat diam menunjuk ke sana sampai pemain pernah membukanya. Tes: GuideBookTests, PlayMode/GuideBookPageTests.
 Editor membangun geometri detail, PBR CC0, HDRI, URP, ACES, bloom dan SSAO.
 Scenes/City.unity, Generated/* serta ProjectSettings adalah keluaran generator (boleh >100 baris).
 Input/Player/UI/World/Vehicles aktif; Core/Fleet menyimpan kapasitas pikap dan waktu trip.

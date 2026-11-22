@@ -18,7 +18,7 @@ namespace Steel.Presentation.UI
         private int page, grade, district;
         private static readonly string[] Pages = {"Izin & lahan","Alat sortir","Papan setoran","Cuaca",
             "Lahan & angkutan","Pabrik baja","Lini produksi","Tender pemerintah","Lapak satelit",
-            "Perawatan alat","Keuangan","Regu & warga","Pasar jaringan","Uji performa HP"};
+            "Perawatan alat","Keuangan","Regu & warga","Pasar jaringan","Uji performa HP","Panduan pemula"};
         private bool forms;
         private static string Rp(double n) => "Rp" + n.ToString("N0", CultureInfo.GetCultureInfo("id-ID"));
         internal YardDesk(CityHud hud, IGameService game, SliceInput input)
@@ -36,7 +36,7 @@ namespace Steel.Presentation.UI
             UiFactory.Button(panel, "TUTUP", new Vector2(156,54), new Vector2(-285,-156), Close);
             UiFactory.Button(panel, "SEBELUMNYA", new Vector2(194,54), new Vector2(24,-156), () => Turn(-1));
             UiFactory.Button(panel, "BERIKUTNYA", new Vector2(194,54), new Vector2(271,-156), () => Turn(1));
-            BuildIndex();
+            BuildIndex(); BuildGuide();
             var tab = hud.SafeRoot.Find("Usaha"); tab.GetComponent<Image>().raycastTarget = true;
             tab.gameObject.AddComponent<OpenLedger>().Open = () =>
             {
@@ -74,7 +74,8 @@ namespace Steel.Presentation.UI
             else if (page == 10) DrawFinance();
             else if (page == 11) DrawCrew();
             else if (page == 12) DrawNetwork();
-            else DrawDevice();
+            else if (page == 13) DrawDevice();
+            else DrawGuide();
         }
     }
 }
