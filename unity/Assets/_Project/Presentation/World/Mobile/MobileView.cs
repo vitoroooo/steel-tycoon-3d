@@ -29,7 +29,6 @@ namespace Steel.Presentation.World.Mobile
             SceneManager.sceneLoaded -= Fit; SceneManager.sceneLoaded += Fit;
             Fit(default, default);
         }
-        public static void Unfollow() => SceneManager.sceneLoaded -= Fit;
         private static void Fit(Scene scene, LoadSceneMode mode) { if (Camera.main) Apply(Camera.main); }
     }
 }
