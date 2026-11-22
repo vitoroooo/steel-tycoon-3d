@@ -7,7 +7,7 @@ namespace Steel.Editor.Ground
     /// <summary>Scatters rain puddles over bare ground and oil stains over industrial yards. Call once the city stands.</summary>
     internal static class GroundDecals
     {
-        private const int Puddles = 46, Stains = 34, Seed = 1977, MaskCells = 1024;
+        private const int Puddles = 260, Stains = 190, Seed = 1977, MaskCells = 1024;
         private const float Lift = .03f;   // above the terrain, below every street and yard slab
 
         internal static void Create(CityLayout layout)
@@ -17,8 +17,8 @@ namespace Steel.Editor.Ground
             var random = new System.Random(Seed);
             var puddle = Material("Genangan", "puddle", new Color(.62f, .68f, .7f, .78f), .97f);
             var stain = Material("Noda oli", "oil_stain", new Color(1, 1, 1, .85f), .72f);
-            Scatter("Genangan", puddle, Puddles, 1.6f, 4.2f, zones, built, random, layout, (x, z) => 1 - GroundZones.Industry(x, z) * .6f);
-            Scatter("Noda oli", stain, Stains, .7f, 2.1f, zones, built, random, layout, GroundZones.Industry);
+            Scatter("Genangan", puddle, Puddles, 1.6f, 4.2f, zones, built, random, layout, (x, z) => 1 - zones.Industry(x, z) * .6f);
+            Scatter("Noda oli", stain, Stains, .7f, 2.1f, zones, built, random, layout, zones.Industry);
         }
 
         /// <param name="chance">Likelihood (0..1) that a spot at this position is kept.</param>

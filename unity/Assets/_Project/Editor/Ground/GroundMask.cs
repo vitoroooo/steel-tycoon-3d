@@ -18,6 +18,12 @@ namespace Steel.Editor.Ground
             covered = new bool[cells, cells];
             foreach (var renderer in Object.FindObjectsOfType<MeshRenderer>())
             {
+                if (renderer.transform.parent == Plan.Strip.Parent)
+                {
+                    // A street mesh spans a whole sector; only the ground under its own quads is covered.
+                    foreach (Bounds quad in Plan.StripMesh.Footprints(renderer.GetComponent<MeshFilter>().sharedMesh)) Mark(quad);
+                    continue;
+                }
                 Bounds bounds = renderer.bounds;
                 if (bounds.min.y > .5f) continue;                       // overhead: wires, canopies, signs
                 float area = bounds.size.x * bounds.size.z;

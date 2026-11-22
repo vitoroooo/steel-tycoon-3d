@@ -20,6 +20,7 @@ namespace Steel.Editor
             CityGeometry.Root = new GameObject("Sukabaja").transform;
             CityLighting.Create();
             var ground = Ground.GroundBuilder.Create(layout);
+            Plan.PlanBuilder.Create();
             StreetBuilder.Create();
             Map.RukoStreets.Create(); Map.KampungLane.Create(); Map.Greenery.Create(); Map.Fences.Create();
             Map.BackAlley.Create(Map.RukoStreets.AlleyX, Map.RukoStreets.AlleySouth, Map.RukoStreets.AlleyNorth, 2.6f);

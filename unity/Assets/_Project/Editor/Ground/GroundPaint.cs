@@ -30,8 +30,8 @@ namespace Steel.Editor.Ground
             float bare = 1 - grass;
             // Gravel is spread over industrial yards but wears thin in patches, showing mud underneath.
             float spread = Mathf.InverseLerp(.3f, .5f, GroundZones.Patches(x, z, 53.7f));
-            gravel = bare * GroundZones.Industry(x, z) * Mathf.Lerp(.35f, 1, spread);
-            path = bare * GroundZones.Kampung(x, z) * .85f;
+            gravel = bare * zones.Industry(x, z) * Mathf.Lerp(.35f, 1, spread);
+            path = bare * zones.Kampung(x, z) * .85f;
         }
     }
 }

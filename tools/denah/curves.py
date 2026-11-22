@@ -10,7 +10,7 @@ def _between(p0, p1, p2, p3, t):
                  for a, b, c, d in zip(p0, p1, p2, p3))
 
 
-def smooth(points, closed=False):
+def smooth(points, closed=False, steps=STEPS):
     """A dense polyline through every written point; closed joins the last point back to the first."""
     points = [tuple(p) for p in points]
     count = len(points)
@@ -22,8 +22,8 @@ def smooth(points, closed=False):
 
     line = []
     for i in range(count if closed else count - 1):
-        for step in range(STEPS):
-            line.append(_between(at(i - 1), at(i), at(i + 1), at(i + 2), step / STEPS))
+        for step in range(steps):
+            line.append(_between(at(i - 1), at(i), at(i + 1), at(i + 2), step / steps))
     line.append(at(0) if closed else points[-1])
     return line
 

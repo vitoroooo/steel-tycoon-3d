@@ -14,8 +14,7 @@ namespace Steel.Editor.Showroom
         internal ShowroomCamera(int width, int height, bool sky = false)
         {
             camera = new GameObject("Showroom Camera").AddComponent<Camera>();
-            camera.fieldOfView = 30;
-            camera.nearClipPlane = .05f;
+            camera.fieldOfView = 30; camera.farClipPlane = 1500;   // the big-map survey looks down from a kilometre up
             camera.clearFlags = sky ? CameraClearFlags.Skybox : CameraClearFlags.SolidColor;
             camera.backgroundColor = new Color(.42f, .44f, .46f);
             camera.gameObject.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing = false;
@@ -27,6 +26,7 @@ namespace Steel.Editor.Showroom
         {
             camera.transform.rotation = Quaternion.Euler(pitch, yaw + 180, 0);
             camera.transform.position = focus - camera.transform.forward * distance;
+            camera.nearClipPlane = Mathf.Max(.05f, distance * .2f);   // keeps depth precise enough to tell asphalt from ground from high up
             var large = RenderTexture.GetTemporary(tile.width * Supersample, tile.height * Supersample, 24);
             var target = RenderTexture.GetTemporary(tile.width, tile.height, 0);
             camera.targetTexture = large;

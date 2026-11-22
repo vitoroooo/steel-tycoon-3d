@@ -18,7 +18,7 @@ namespace Steel.Editor
             var concrete = CityMaterials.Surface("concrete_floor_02", new Vector2(3, 2));
             var line = CityMaterials.Plain("Marka jalan", new Color(.9f, .72f, .28f), 0, .22f);
             CityGeometry.Box("Jalan utama", new Vector3(0, -.04f, 5), new Vector3(14, .2f, 100), asphalt);
-            CityGeometry.Box("Jalan silang", new Vector3(0, -.03f, -12), new Vector3(85, .2f, 10), asphalt);
+            CityGeometry.Box("Jalan silang", new Vector3(0, -.03f, -12), new Vector3(112, .2f, 10), asphalt);   // out to where Jl. Baja Raya takes over
             Material[] kerb = { CityMaterials.Plain("Kanstin putih", ToonPalette.Cream), CityMaterials.Plain("Kanstin hitam", ToonPalette.Ink) };
             foreach (int side in new[] { -1, 1 })
             {
