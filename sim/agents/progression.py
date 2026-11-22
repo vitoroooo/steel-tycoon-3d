@@ -1,4 +1,5 @@
 """Purchases and permission/cash/reputation gates."""
+from agents.mobile import open_yard, renew
 
 
 def eligible(p, c):
@@ -17,6 +18,12 @@ def progress(p, day, c):
             p.assets += v['cost']
             p.vehicle += 1
             p.mark(v['name'], day)
+    if c.get('mobile'):
+        if p.caste == 1:
+            open_yard(p, day, c)
+            return
+        if p.caste == 2:
+            renew(p, day, c)
     if (p.caste == 2 and not p.roof
             and p.cash >= c['roof'] + c['working_reserve']):
         p.cash -= c['roof']

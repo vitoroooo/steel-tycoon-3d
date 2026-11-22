@@ -1,10 +1,12 @@
 """Analytical stress tests are separate from simulated observations."""
 from model.economics import contraband_ev, margin
+from market.quotes import npc_quote
 
 
 def diagnostics(c):
     ref = c['ibn']['base'] * c['ibn']['reference']
-    spread = margin(ref * c['prices']['npc'], ref * c['prices']['ai1'],
+    sale, freight = npc_quote(1, ref, c)
+    spread = margin(ref * c['prices']['npc'], sale, freight +
                     c['vehicles'][2]['trip_cost'] / c['vehicles'][2]['capacity'])
     x, y, z = c['ratio']
     share = z / (x * y + y + z)

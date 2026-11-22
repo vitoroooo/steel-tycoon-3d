@@ -12,7 +12,7 @@ from report.metrics import summarize
 
 def evaluate(config):
     s = summarize(run(config))
-    weekly = [w['monetary'] for w in s['weekly'] if w['day'] > 14]
+    weekly = [w['monetary'] for w in s['weekly'] if w['day'] > config['targets']['inflation_after']]
     return dict(checks=s['checks'], mix=s['mix'], profit=s['profit'], ai=s['max_ai'],
                 inflation=max(weekly), k2=s['milestones']['kasta2'], casual=s['casual'])
 
