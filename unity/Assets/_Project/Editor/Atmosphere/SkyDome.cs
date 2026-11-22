@@ -19,7 +19,7 @@ namespace Steel.Editor.Atmosphere
         {
             var sun = new GameObject("Langit / Matahari").AddComponent<Light>();
             sun.type = LightType.Directional; sun.color = new Color(1, .96f, .88f);
-            sun.intensity = 1; sun.shadows = LightShadows.Hard; sun.shadowStrength = 1;
+            sun.intensity = 1; sun.shadows = LightShadows.Soft; sun.shadowStrength = 1;
             sun.transform.rotation = Quaternion.Euler(SunPitch, SunBearing + 180, 0);
             RenderSettings.sun = sun;
             RenderSettings.skybox = Sky();

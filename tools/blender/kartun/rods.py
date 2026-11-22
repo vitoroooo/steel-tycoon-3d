@@ -27,8 +27,8 @@ def wheel(centre, radius, width, hub='yellow', spokes=0):
     """A fat tyre on the X axle with a coloured hub; spokes > 0 gives a cart wheel."""
     x, y, z = centre
     half = width / 2
-    parts = [rod('Ban', (x - half, y, z), (x + half, y, z), radius, cel('tire'), 28, .55),
-             rod('Pelek', (x - half - .012, y, z), (x + half + .012, y, z), radius * .62, cel(hub), 24, .2),
+    parts = [rod('Ban', (x - half, y, z), (x + half, y, z), radius, cel('tire'), 44, .55),   # the silhouette people look at most
+             rod('Pelek', (x - half - .012, y, z), (x + half + .012, y, z), radius * .62, cel(hub), 36, .2),
              rod('Naf', (x - half - .03, y, z), (x + half + .03, y, z), radius * .2, cel('navy'), 14, .4)]
     for i in range(spokes):
         angle = math.pi * i / spokes

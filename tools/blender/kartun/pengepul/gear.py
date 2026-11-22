@@ -26,3 +26,7 @@ def sling_bag():
         shapes.ball('Kancing', (-.315, -.06, .40), (.014, .022, .022), cel('yellow')),
         shapes.block('Gesper', (.06, -.203, .615), (.05, .02, .04), cel('yellow'), .2, .2),
     ]
+
+
+def outfit():
+    return towel() + sling_bag()

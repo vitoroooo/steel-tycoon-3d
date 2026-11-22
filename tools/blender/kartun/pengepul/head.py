@@ -1,4 +1,4 @@
-"""Head of the pengepul: bean skull, dot eyes, a lopsided grin and wind-blown hair."""
+"""The head everyone in Sukabaja shares (bean skull, dot eyes, lopsided grin) and the pengepul's hair."""
 import math
 from .. import shapes
 from ..paint import cel
@@ -7,9 +7,9 @@ from . import dims
 X, Y, Z = dims.HEAD
 
 
-def skull():
-    parts = [shapes.ball('Kepala', dims.HEAD, dims.SKULL, cel('skin'), 32)]
-    for side in (-1, 1):
+def skull(ears=True):
+    parts = [shapes.ball('Kepala', dims.HEAD, dims.SKULL, cel('skin'), 32, True)]
+    for side in (-1, 1) if ears else ():
         parts.append(shapes.ball('Telinga', (side * .325, .02, Z - .03), (.05, .035, .07), cel('skin')))
         parts.append(shapes.ball('Daun telinga', (side * .335, .0, Z - .03), (.022, .02, .04), cel('skin_dark')))
     return parts
@@ -33,7 +33,7 @@ def face():
 
 def hair():
     """A cap of hair plus tufts that lean one way, as if he has been pushing the cart all morning."""
-    parts = [shapes.ball('Rambut', (0, .035, Z + .075), (.345, .315, .27), cel('hair'), 32)]
+    parts = [shapes.ball('Rambut', (0, .035, Z + .075), (.345, .315, .27), cel('hair'), 32, True)]
     tufts = [(-.25, -.1, .13, 58, .06), (-.15, -.2, .2, 30, .07), (-.02, -.235, .235, 12, .075),
              (.12, -.215, .22, -8, .07), (.24, -.12, .15, -42, .06), (.03, -.05, .3, 20, .07)]
     for x, y, z, lean, size in tufts:

@@ -5,7 +5,7 @@ Shader "Steel/Toon"
     {
         _BaseColor ("Colour", Color) = (1, 1, 1, 1)
         _BaseMap ("Decal (optional)", 2D) = "white" {}
-        _Shade ("Shadow tone", Range(0, 1)) = .68
+        _Shade ("Shadow tone", Range(0, 1)) = .78
         [HDR] _EmissionColor ("Glow", Color) = (0, 0, 0, 1)
         [Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull", Float) = 2
         _OutlineColor ("Line colour", Color) = (.1, .11, .14, 1)
@@ -22,6 +22,7 @@ Shader "Steel/Toon"
             #pragma vertex ToonVertex
             #pragma fragment ToonFragment
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
             #pragma multi_compile_fog
             #include "ToonForward.hlsl"
             ENDHLSL

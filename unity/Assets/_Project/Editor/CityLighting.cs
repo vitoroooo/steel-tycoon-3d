@@ -29,7 +29,7 @@ namespace Steel.Editor
             var settings = new SerializedObject(pipeline);
             settings.FindProperty("m_MainLightShadowsSupported").boolValue = true;
             settings.FindProperty("m_MainLightShadowmapResolution").intValue = 2048;
-            settings.FindProperty("m_SoftShadowsSupported").boolValue = false;
+            settings.FindProperty("m_SoftShadowsSupported").boolValue = true;   // filtered edges: a clean shadow line, not stair-steps
             settings.FindProperty("m_AdditionalLightsRenderingMode").intValue = (int)LightRenderingMode.Disabled;
             settings.ApplyModifiedPropertiesWithoutUndo();
             GraphicsSettings.renderPipelineAsset = pipeline; QualitySettings.renderPipeline = pipeline;

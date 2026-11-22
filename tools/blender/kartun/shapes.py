@@ -19,10 +19,11 @@ def _object(name, bm, material, smooth=True):
     return obj
 
 
-def ball(name, centre, size, material, segments=24):
+def ball(name, centre, size, material, segments=24, crisp=False):
     """An ellipsoid; size is its three radii."""
     bm = bmesh.new()
-    bmesh.ops.create_uvsphere(bm, u_segments=count(segments), v_segments=count(segments // 2), radius=1)
+    bmesh.ops.create_uvsphere(bm, u_segments=segments if crisp else count(segments),
+                              v_segments=segments // 2 if crisp else count(segments // 2), radius=1)
     bmesh.ops.scale(bm, vec=Vector(size), verts=bm.verts)
     bmesh.ops.translate(bm, vec=Vector(centre), verts=bm.verts)
     return _object(name, bm, material)

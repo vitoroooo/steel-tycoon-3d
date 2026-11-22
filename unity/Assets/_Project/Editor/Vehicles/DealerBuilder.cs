@@ -2,25 +2,29 @@ using System.Globalization;
 using UnityEngine;
 using Steel.Services;
 
+using Steel.Editor.Toon;
+
 namespace Steel.Editor.Vehicles
 {
     /// <summary>The roadside lot where the triseda and the pikap stand for sale, each with its price board.</summary>
     internal static class DealerBuilder
     {
         private static readonly Vector3 Lot = new Vector3(16, 0, 6);
-        private static readonly Color SignText = new Color(1, .82f, .45f);
+        private static readonly Color SignText = ToonPalette.Yellow;
         private const float Width = 11, Depth = 10, WallHeight = 3.2f;
 
         internal static void Create()
         {
             var concrete = CityMaterials.Surface("concrete_floor_02", new Vector2(3, 3));
             var iron = CityMaterials.Surface("corrugated_iron", new Vector2(4, 1));
-            var dark = CityMaterials.Plain("Baja gelap", new Color(.09f, .12f, .14f), .7f, .45f);
+            var dark = CityMaterials.Plain("Dealer navy", ToonPalette.Navy);
             CityGeometry.Box("Dealer / lantai", Lot + Vector3.up * (StreetBuilder.PavementTop - .075f),
                 new Vector3(Width, .15f, Depth), concrete);
             DealerDriveway.Create(StreetBuilder.DrivewayZ, StreetBuilder.DrivewayWidth);
             CityGeometry.Box("Dealer / dinding", Lot + new Vector3(0, WallHeight / 2, Depth / 2),
                 new Vector3(Width, WallHeight, .2f), iron);
+            CityGeometry.Box("Dealer / lis", Lot + new Vector3(0, .4f, Depth / 2 - .13f), new Vector3(Width, .6f, .06f),
+                CityMaterials.Plain("Dealer lis", ToonPalette.Yellow), false);
             RoofBuilder.Create(Lot + new Vector3(0, WallHeight + .2f, 2), Width, 6, .8f);
             foreach (float x in new[] { -Width / 2 + .3f, Width / 2 - .3f })
                 CityGeometry.Box("Dealer / kolom", Lot + new Vector3(x, WallHeight / 2, -.8f),

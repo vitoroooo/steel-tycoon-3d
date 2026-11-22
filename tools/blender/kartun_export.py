@@ -1,7 +1,7 @@
 """Exports one cartoon model for Unity at phone density.
 
 Usage: blender --background --python tools/blender/kartun_export.py -- pengepul
-Assets: pengepul, gerobak, triseda (packages under kartun/unity).
+Assets: pengepul, gerobak, triseda, pikap, or warga:<name> for a citizen (modules under kartun/unity).
 """
 import importlib
 import sys
@@ -18,12 +18,12 @@ from kartun.unity import rig  # noqa: E402
 
 
 def main():
-    asset = sys.argv[sys.argv.index('--') + 1]
+    asset, _, variant = sys.argv[sys.argv.index('--') + 1].partition(':')
     detail.LEVEL = PHONE_DETAIL
     bpy.ops.wm.read_factory_settings(use_empty=True)
     module = importlib.import_module('kartun.unity.' + asset)
-    folder, name = module.TARGET
-    rig.assemble(name, module.nodes())
+    folder, name = module.target(variant) if variant else module.TARGET
+    rig.assemble(name, module.nodes(variant) if variant else module.nodes())
     target = MODELS / folder
     target.mkdir(parents=True, exist_ok=True)
     rig.export(target / (name + '.fbx'))
