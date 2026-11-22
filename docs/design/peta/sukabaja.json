@@ -1,0 +1,32 @@
+{
+  "note": "Denah Sukabaja besar. Meter; x ke timur, z ke utara. Baris sel ditulis dari utara ke selatan, kolom dari barat ke timur.",
+  "x": [-260, -210, -140, -70, 0, 70, 140, 210, 260],
+  "z": [-280, -230, -160, -90, -12, 72, 140, 210, 260],
+  "linesX": {"-210": "lingkar", "-140": "kolektor", "-70": "kolektor", "0": "arteri", "70": "kolektor", "140": "rel", "210": "lingkar"},
+  "linesZ": {"-230": "lingkar", "-160": "kolektor", "-90": "kolektor", "-12": "arteri", "72": "kolektor", "140": "kali", "210": "lingkar"},
+  "widths": {"lingkar": 18, "arteri": 14, "kolektor": 9, "rel": 8, "kali": 16},
+  "current": [-54, -72, 54, 64],
+  "roundabout": [0, 175, 16],
+  "cells": [
+    [["P", "Bukit Cadas|tambang batu"], ["P", "Perumahan|Griya Baja"], ["P", "Situ Baja|waduk & pemancingan"], ["P", "Hutan Kota|& bumi perkemahan"], ["P", "Politeknik|Baja"], ["P", "Rusun|Sukabaja"], ["P", "Gardu Induk|& menara SUTET"], ["P", "Gerbang Tol|Timur"]],
+    [["P", "Perumahan|Bukit Indah"], ["K", "Apartemen|& hotel"], ["K", "Mal Sukabaja|Square"], ["K", "Balai Kota|& alun-alun"], ["K", "Perkantoran|gedung tinggi"], ["K", "Kantor Izin|& bank"], ["I", "Gudang|logistik"], ["P", "Pangkalan|truk tol"]],
+    [["P", "Sawah|& saung"], ["R", "Kampung Rawa|bantaran kali"], ["R", "Musholla, SD|& rumah petak"], ["L", "Pecinan|toko emas & kuliner"], ["L", "RSUD|& sekolah"], ["L", "Stasiun|Sukabaja"], ["I", "Pabrik paku|& kawat"], ["P", "Pool|kontainer"]],
+    [["P", "Kebun pisang|& ayam"], ["R", "Lapangan bola|& bengkel las"], ["R", "Pasar kaget|& gang padat"], ["L", "Lapak awal|ruko & gang belakang"], ["L", "Dealer roda tiga|& deret ruko"], ["L", "Pasar Induk|& toko bangunan"], ["I", "Dealer truk|& alat berat"], ["P", "Rest area|sopir"]],
+    [["P", "Bank|sampah"], ["R", "Bengkel motor|& tambal ban"], ["R", "Sentra karoseri|& bubut"], ["L", "Proyek|bongkaran"], ["L", "Peleburan lama|& depo"], ["L", "SPBU|& ruko onderdil"], ["I", ""], ["P", "Bukit slag|& kolam endap"]],
+    [["P", "TPA|Gunung Rongsok"], ["S", "Lapak bandar|pesaing (AI)"], ["S", ""], ["S", ""], ["S", "Bongkaran besar|gedung 8 lantai"], ["S", "Perumahan|subsidi"], ["I", ""], ["P", "Rel langsir|& gudang billet"]],
+    [["P", "Sawah"], ["S", "Pasar loak|besi tua"], ["S", "Hanggar|& perluasan lapak"], ["S", "Terminal truk|& warung sopir"], ["S", "Perumahan|baru"], ["I", "Pabrik baja|ringan"], ["I", "Lahan industri|pemain (Kasta 3)"], ["P", "Gudang|sewa"]],
+    [["P", "Hutan|bambu"], ["P", "Kebun|singkong"], ["P", "Cluster|Selatan"], ["P", "Gerbang Tol|Selatan"], ["P", "Rest area|& SPBU tol"], ["P", "Kolam pancing|& saung"], ["P", "Kavling|gudang"], ["P", "Bukit|kapur"]]
+  ],
+  "merged": [
+    {"cols": [6, 6], "rows": [2, 3], "area": "I", "name": "PT BAJA|NUSANTARA|tungku listrik,|jembatan timbang,|antrean gerbang,|rel langsir"},
+    {"cols": [2, 3], "rows": [2, 2], "area": "S", "name": "LAPAK BANDAR PEMAIN (Kasta 2)|timbangan, loader, tumpukan stok,|jalur trailer dicor"}
+  ],
+  "areas": {
+    "K": ["Pusat Kota", "#AEBBD6"],
+    "L": ["Pasar Lama", "#F6DC92"],
+    "R": ["Kampung Rawa", "#A6D6CF"],
+    "I": ["Kawasan Industri", "#F2B899"],
+    "S": ["Selatan: lapak & bongkaran", "#E9CFAE"],
+    "P": ["Pinggiran (luar jalan lingkar)", "#CFE0B4"]
+  }
+}
