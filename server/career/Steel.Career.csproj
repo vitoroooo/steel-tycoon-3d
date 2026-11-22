@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>Steel.Career</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Game>../../unity/Assets/_Project</Game>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.11" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Host/**/*.cs" />
+    <Compile Include="$(Game)/Core/**/*.cs" LinkBase="Core" />
+    <Compile Include="$(Game)/Services/**/*.cs" LinkBase="Services"
+             Exclude="$(Game)/Services/Map/MapLand.cs;$(Game)/Services/Network/**;$(Game)/Services/Launch/**;$(Game)/Services/Saving/CareerFiles*.cs;$(Game)/Services/Slice/GameHost.cs" />
+  </ItemGroup>
+</Project>

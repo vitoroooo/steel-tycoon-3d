@@ -1,1 +1,3 @@
 __pycache__/
+server/career/**/bin/
+server/career/**/obj/
