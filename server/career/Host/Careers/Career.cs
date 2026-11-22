@@ -5,7 +5,7 @@ using Steel.Services.Remote;
 namespace Steel.Career.Careers
 {
     /// <summary>One account's career as the server holds it: the game's own rules, run on the server's clock.</summary>
-    public sealed class Career
+    public sealed partial class Career
     {
         private readonly IConfigSource rules;
         private LocalGameService game;
@@ -16,9 +16,6 @@ namespace Steel.Career.Careers
         public double Cash => game.WalletCash;
         public double StockKg => game.WalletStockKg;
         public int Caste => game.WalletCaste;
-        public float X => game.PresenceX;
-        public float Z => game.PresenceZ;
-        public string Vehicle => game.PresenceVehicle;
         /// <summary>What the market did to this account's purse while the career was not looking.</summary>
         public void Settle(double cash, double kg) => game.SettleMarket(cash, kg);
 

@@ -63,14 +63,14 @@ namespace Steel.Editor.Plan.Places.Builders
         }
 
         /// <summary>A name board on two posts, facing the street.</summary>
-        internal static void Board(TownKit kit, Lot lot, string text)
+        internal static TextMesh Board(TownKit kit, Lot lot, string text)
         {
             float w = lot.Width - .6f;
             foreach (int side in new[] { -1, 1 })
                 Shapes.Drum(kit.Solid, Tone.Slate, lot.Point(side * (w / 2 - .1f), Lot.Foot, 0), .08f, .08f, 3.4f, 5);
             Wall[] faces = Shapes.Box(kit.Trim, lot, Tone.Navy, new Vector3(0, 2.1f, 0), new Vector3(w, 1.3f, .14f), Tone.Yellow);
             faces[0].Panel(kit.Trim, Tone.Yellow, 0, 0, w, .12f, .02f);
-            CityGeometry.Sign(text, lot.Point(0, 2.8f, .1f), text.Length > 18 ? .26f : .34f, Tones.Colour(Tone.Cream), lot.Yaw + 180);
+            return CityGeometry.Sign(text, lot.Point(0, 2.8f, .1f), text.Length > 18 ? .26f : .34f, Tones.Colour(Tone.Cream), lot.Yaw + 180);
         }
     }
 }

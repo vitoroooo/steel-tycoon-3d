@@ -20,6 +20,7 @@ namespace Steel.Services.Remote
         public global::Steel.Services.InteractionView Nearby => game.Nearby;
         public global::Steel.Services.SellerView NearSeller => game.NearSeller;
         public double NextBikeMinutes => game.NextBikeMinutes;
+        public global::Steel.Services.PlayerYardView[] PlayerYards => game.PlayerYards;
         public global::Steel.Core.Economy.AiQuote Prices => game.Prices;
         public bool RainHere => game.RainHere;
         public bool ReadWeather => game.ReadWeather;
@@ -30,6 +31,5 @@ namespace Steel.Services.Remote
         public global::Steel.Services.SpkOfferView[] SpkBoard => game.SpkBoard;
         public bool StoredUnderRoof => game.StoredUnderRoof;
         public int Story => game.Story;
-        public bool StreetTipRead => game.StreetTipRead;
     }
 }

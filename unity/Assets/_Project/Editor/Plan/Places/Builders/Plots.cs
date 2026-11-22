@@ -26,12 +26,13 @@ namespace Steel.Editor.Plan.Places.Builders
             Yards.Fenced(kit, lot, Tone.Dirt, fence);
             Yards.Hut(kit, lot);
             bool mine = kind == PlayerPlot.Lapak && number == 1;   // the first yard lot is the local player's
-            Props.Board(kit, lot.Part(-Yards.Gate / 2 - 4, lot.Depth / 2 + .6f, 6, 1), title + number + (mine ? "\nLAPAK ANDA" : "\nDISEWAKAN"));
+            TextMesh sign = Props.Board(kit, lot.Part(-Yards.Gate / 2 - 4, lot.Depth / 2 + .6f, 6, 1), title + number + (mine ? "\nLAPAK ANDA" : "\nDISEWAKAN"));
             if (mine) Haul.YardWorksBuilder.Build(kit, lot);
             var plot = new GameObject(title + number).AddComponent<PlayerPlot>();
             plot.transform.SetParent(group, false);
             plot.transform.SetPositionAndRotation(lot.Point(0, 0, 0), Quaternion.Euler(0, lot.Yaw, 0));
             plot.Kind = kind; plot.Number = number; plot.Size = new Vector2(lot.Width, lot.Depth);
+            if (kind == PlayerPlot.Lapak && !mine) plot.gameObject.AddComponent<Presentation.World.Town.PlotBoard>().Sign = sign;
         }
     }
 }

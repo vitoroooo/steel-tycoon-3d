@@ -3,6 +3,7 @@ namespace Steel.Services.Remote
 {
     public sealed partial class RemoteGameService
     {
+        public void PostGuard(int cell, int kind) { game.PostGuard(cell, kind); Sent("PostGuard", cell, kind); }
         public global::Steel.Services.SaleView PreviewSale() { var value = game.PreviewSale(); Sent("PreviewSale"); return value; }
         public void PriceSatellite(int district, bool active) { game.PriceSatellite(district, active); Sent("PriceSatellite", district, active); }
         public void PromoteCrewForeman() { game.PromoteCrewForeman(); Sent("PromoteCrewForeman"); }
@@ -25,11 +26,10 @@ namespace Steel.Services.Remote
         public double SellLocal() { var value = game.SellLocal(); Sent("SellLocal"); return value; }
         public double SellReuseStore() { var value = game.SellReuseStore(); Sent("SellReuseStore"); return value; }
         public double SellSteel(int product) { var value = game.SellSteel(product); Sent("SellSteel", product); return value; }
+        public double SellToPlayerYard(int plot) { var value = game.SellToPlayerYard(plot); Sent("SellToPlayerYard", plot); return value; }
         public void SetBid(int grade, double price) { game.SetBid(grade, price); Sent("SetBid", grade, price); }
         public void SetPosition(float x, float z) { game.SetPosition(x, z); Moved("SetPosition", x, z); }
         public void Shelter(bool store) { game.Shelter(store); Sent("Shelter", store); }
         public double ShipGrade(int grade) { var value = game.ShipGrade(grade); Sent("ShipGrade", grade); return value; }
-        public void SortAtHome() { game.SortAtHome(); Sent("SortAtHome"); }
-        public string StartWithLegacies(string[] picks) { var value = game.StartWithLegacies(picks); Sent("StartWithLegacies", picks); return value; }
     }
 }

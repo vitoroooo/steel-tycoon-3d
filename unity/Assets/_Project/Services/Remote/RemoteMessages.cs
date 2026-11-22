@@ -38,9 +38,11 @@ namespace Steel.Services.Remote
         public long savedUtc;
         /// <summary>The other players in the city, nearest first; not part of the career, so never part of the digest.</summary>
         public RemotePlayer[] others;
-        public RemoteReply Among(RemotePlayer[] seen)
+        /// <summary>The other players' yards that buy from this one (PRD 5.2), each on its numbered plot.</summary>
+        public Steel.Core.Trade.Town.PlayerYard[] yards;
+        public RemoteReply Among(RemotePlayer[] seen, Steel.Core.Trade.Town.PlayerYard[] boards)
         {
-            var copy = (RemoteReply)MemberwiseClone(); copy.others = seen; return copy;
+            var copy = (RemoteReply)MemberwiseClone(); copy.others = seen; copy.yards = boards; return copy;
         }
         /// <summary>Unity reads a missing text as empty, the server as null: both mean no career was sent.</summary>
         public bool HasSave => !string.IsNullOrEmpty(save);

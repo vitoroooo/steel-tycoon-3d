@@ -26,6 +26,8 @@ namespace Steel.Services.Remote
             this.link = link ?? throw new ArgumentNullException(nameof(link));
             if (opened == null || !opened.HasSave) throw new FormatException("Server tidak mengirim karier.");
             game = LocalGameService.Resume(rules, opened.save, opened.savedUtc, out _);
+            Others = opened.others ?? Others;
+            game.PostYards(opened.yards);
         }
 
         public void Advance(double realSeconds)
@@ -48,8 +50,9 @@ namespace Steel.Services.Remote
             if (reply == null) return;
             refusal = reply.Refusal();
             Others = reply.others ?? new RemotePlayer[0];
-            if (!reply.HasSave) return;
+            if (!reply.HasSave) { game.PostYards(reply.yards); return; }
             game = LocalGameService.Resume(rules, reply.save, reply.savedUtc, out _);
+            game.PostYards(reply.yards);
             Corrections++;
             // what the player did since that batch left is done again on the server's career
             foreach (RemoteCall call in link.Unsent.ToArray()) RemoteRunner.Run(game, call);

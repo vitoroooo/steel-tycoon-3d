@@ -3,6 +3,7 @@ namespace Steel.Services.Remote
 {
     public sealed partial class RemoteGameService
     {
+        public bool StreetTipRead => game.StreetTipRead;
         public global::Steel.Services.VehicleView Vehicle => game.Vehicle;
         public global::Steel.Services.GameView View => game.View;
         public global::Steel.Services.HaulView YardDock => game.YardDock;
@@ -30,6 +31,5 @@ namespace Steel.Services.Remote
         public global::Steel.Services.CrewView CrewInfo() => game.CrewInfo();
         public void CycleCrewPolicy() { game.CycleCrewPolicy(); Sent("CycleCrewPolicy"); }
         public double DeliverBridgeSteel() { var value = game.DeliverBridgeSteel(); Sent("DeliverBridgeSteel"); return value; }
-        public double DeliverFlashTender() { var value = game.DeliverFlashTender(); Sent("DeliverFlashTender"); return value; }
     }
 }

@@ -9,7 +9,7 @@ namespace Steel.Services
                 return new InteractionView { Id = "gate", Title = "Pos timbang PT Baja Nusantara", Detail = "Timbang dan bongkar muatan truk" };
             if (session.Yard.bandar && session.Position.Distance(session.Haul.Yard) <= session.Haul.DeskReach)
                 return new InteractionView { Id = "yardpost", Title = "Pos muat kavling Anda", Detail = "Muat stok lapak ke truk dengan loader" };
-            return null;
+            return NearbyYard();
         }
     }
 }

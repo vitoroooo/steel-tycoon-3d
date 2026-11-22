@@ -3,6 +3,7 @@ namespace Steel.Services.Remote
 {
     public sealed partial class RemoteGameService
     {
+        public double DeliverFlashTender() { var value = game.DeliverFlashTender(); Sent("DeliverFlashTender"); return value; }
         public double DeliverReuseOrder() { var value = game.DeliverReuseOrder(); Sent("DeliverReuseOrder"); return value; }
         public void EnterVehicle(string id) { game.EnterVehicle(id); Sent("EnterVehicle", id); }
         public void ExitVehicle(float x, float z) { game.ExitVehicle(x, z); Sent("ExitVehicle", x, z); }
@@ -30,6 +31,5 @@ namespace Steel.Services.Remote
         public void OpenYard() { game.OpenYard(); Sent("OpenYard"); }
         public bool OwnScanner(bool xrf) => game.OwnScanner(xrf);
         public void PickUp(string id) { game.PickUp(id); Sent("PickUp", id); }
-        public void PostGuard(int cell, int kind) { game.PostGuard(cell, kind); Sent("PostGuard", cell, kind); }
     }
 }

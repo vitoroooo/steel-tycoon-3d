@@ -60,9 +60,12 @@ namespace Steel.Career.Tests.Support
         private RemoteReply Take(RemoteReply reply)
         {
             Last = reply; Seq = reply.seq;
-            if (!reply.HasSave) return reply;
-            Game = LocalGameService.Resume(town.Rules, reply.save, reply.savedUtc, out _);
-            Corrections++;
+            if (reply.HasSave)
+            {
+                Game = LocalGameService.Resume(town.Rules, reply.save, reply.savedUtc, out _);
+                Corrections++;
+            }
+            Game.PostYards(reply.yards);
             return reply;
         }
     }

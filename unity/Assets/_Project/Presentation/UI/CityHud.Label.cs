@@ -13,6 +13,7 @@ namespace Steel.Presentation.UI
                 case "buyer": return "PAPAN HARGA";
                 case "seller": return "TAWAR & BELI";
                 case "yardpost": return "MUAT TRUK";
+                case "playeryard": return "SETOR MUATAN";
                 case "gate": return "TIMBANG TRUK";
                 case "factory": return "LIHAT HARGA";
                 case "grant": return "AMBIL HADIAH";

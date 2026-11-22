@@ -22,6 +22,15 @@ namespace Steel.Career.Careers
             return ask.ExecuteScalar() != null;
         }
 
+        public long[] All(SqliteConnection db)
+        {
+            using SqliteCommand ask = db.CreateCommand();
+            ask.CommandText = "SELECT trader FROM careers ORDER BY trader";
+            var found = new System.Collections.Generic.List<long>();
+            using (SqliteDataReader row = ask.ExecuteReader()) while (row.Read()) found.Add(row.GetInt64(0));
+            return found.ToArray();
+        }
+
         public string Name(SqliteConnection db, long account)
         {
             using SqliteCommand ask = db.CreateCommand();

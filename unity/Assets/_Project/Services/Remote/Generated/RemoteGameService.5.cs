@@ -3,6 +3,8 @@ namespace Steel.Services.Remote
 {
     public sealed partial class RemoteGameService
     {
+        public void SortAtHome() { game.SortAtHome(); Sent("SortAtHome"); }
+        public string StartWithLegacies(string[] picks) { var value = game.StartWithLegacies(picks); Sent("StartWithLegacies", picks); return value; }
         public void StopLoading() { game.StopLoading(); Sent("StopLoading"); }
         public string TakeFlashTender() { var value = game.TakeFlashTender(); Sent("TakeFlashTender"); return value; }
         public void TakeSpk(int slot) { game.TakeSpk(slot); Sent("TakeSpk", slot); }

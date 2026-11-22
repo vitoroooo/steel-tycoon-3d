@@ -11,8 +11,17 @@ namespace Steel.Presentation.UI
         {
             if (near.Id == "seller") (doors ??= new DoorDeal(this, host.Game, input)).Open(host.Game.NearSeller.Id);
             else if (near.Id == "gate" || near.Id == "yardpost") (haul ??= new HaulDesk(this, host.Game, input)).Open(near.Id == "gate");
+            else if (near.Id == "playeryard") NoticeText.text = SellAtYard(host.Game.View);
             else return false;
             return true;
+        }
+
+        /// <summary>Sells the carried load at the other player's board the player stands at (PRD 5.2).</summary>
+        private string SellAtYard(GameView me)
+        {
+            PlayerYardView yard = System.Linq.Enumerable.First(System.Linq.Enumerable.OrderBy(host.Game.PlayerYards,
+                y => (y.X - me.PlayerX) * (y.X - me.PlayerX) + (y.Z - me.PlayerZ) * (y.Z - me.PlayerZ)));
+            return "Disetor ke lapak " + yard.Owner + ": kas bertambah " + Money(host.Game.SellToPlayerYard(yard.Plot));
         }
 
         private string lastAlarm;
