@@ -13,7 +13,8 @@ namespace Steel.Editor.Plan.Places
         private const float Gap = .3f;
         private static readonly Dictionary<string, Action<TownKit, Lot>> Builders = new Dictionary<string, Action<TownKit, Lot>>
         {
-            { MapSite.TruckDealer, Dealers.Trucks }, { MapSite.PlayerLapak, Plots.Lapak }, { MapSite.PlayerFactory, Plots.Factory }
+            { MapSite.TruckDealer, Dealers.Trucks }, { MapSite.PlayerLapak, Plots.Lapak }, { MapSite.PlayerFactory, Plots.Factory },
+            { MapSite.MillGate, Haul.MillGate.Build }
         };
 
         internal static int Create(LandGrid grid, TownKit kit)

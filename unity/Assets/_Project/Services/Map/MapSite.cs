@@ -7,7 +7,10 @@ namespace Steel.Services.Map
     [Serializable]
     public sealed class MapSite
     {
-        public const string TruckDealer = "dealer-truk", PlayerLapak = "kavling-lapak", PlayerFactory = "kavling-pabrik";
+        public const string TruckDealer = "dealer-truk", PlayerLapak = "kavling-lapak", PlayerFactory = "kavling-pabrik",
+            MillGate = "gerbang-pabrik";
+        /// <summary>Where the loading or weighing post stands on a yard or gate lot, measured from its middle.</summary>
+        public const float PostRight = -7, PostForward = 5;
 
         public string name, kind;
         /// <summary>The middle of the lot, and the compass bearing from it to its street.</summary>

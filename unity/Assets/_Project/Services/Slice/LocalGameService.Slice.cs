@@ -17,7 +17,7 @@ namespace Steel.Services
             session = new SliceSession(new SliceRules(source.Read("City")),
                 new SliceWorld(source.Read("Piles")), scrap, FleetCatalog.Create(source),
                 new Core.Fleet.CartRules(source.Read("Gerobak")));
-            CreateStreet(source);
+            CreateStreet(source); CreateHaul(source);
         }
         public GameView View => new GameView
         {
@@ -46,6 +46,8 @@ namespace Steel.Services
                         Detail = session.Bag.CarriedKg == 0 ? "Pesan rute atau ambil kiriman" : "Sortir muatan sesuai grade" };
                 if (View.FactoryDistance <= session.Rules.InteractRange)
                     return new InteractionView { Id = "factory", Title = "Pabrik AI", Detail = "Lihat harga & margin sebelum menjual" };
+                var post = NearbyPost();
+                if (post != null) return post;
                 var buyer = NearbyBuyer();
                 if (buyer != null) return buyer;
                 var door = NearSeller;

@@ -8,6 +8,7 @@
  "areas": {"pusat": ["Pusat Kota", "#AEBBDA"], "pasar": ["Pasar Lama", "#F6DC92"], "kampung": ["Kampung Rawa", "#A9D6CF"], "industri": ["Kawasan Industri", "#F2B79A"], "selatan": ["Selatan: lapak & bongkaran", "#EACDAA"], "pinggir": ["Pinggiran (luar jalan lingkar)", "#D3E0B4"]},
  "sites": [
     {"name": "Dealer truk", "kind": "dealer-truk", "x": 157.5, "z": 42.5, "yaw": 228, "width": 30, "depth": 24},
+    {"name": "Gerbang PT Baja Nusantara", "kind": "gerbang-pabrik", "x": 205.5, "z": -13.5, "yaw": 75, "width": 34, "depth": 22},
     {"name": "Kavling lapak 1", "kind": "kavling-lapak", "x": -135.5, "z": -107.5, "yaw": 0, "width": 30, "depth": 24},
     {"name": "Kavling lapak 2", "kind": "kavling-lapak", "x": -102.5, "z": -111.5, "yaw": 90, "width": 30, "depth": 24},
     {"name": "Kavling lapak 3", "kind": "kavling-lapak", "x": -51.5, "z": -100.5, "yaw": 345, "width": 22, "depth": 20},

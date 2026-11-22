@@ -1,10 +1,19 @@
+using Steel.Services;
+
 namespace Steel.Presentation.UI
 {
     public sealed partial class CityHud
     {
         private DoorDeal doors;
-        /// <summary>The dealing screen is only built the first time the player stops at a door.</summary>
-        private void OpenDoor() => (doors ??= new DoorDeal(this, host.Game, input)).Open(host.Game.NearSeller.Id);
+        private HaulDesk haul;
+        /// <summary>Places that open their own screen: a door that sells scrap, the yard's loading post, the mill's weighing post.</summary>
+        private bool ActPost(InteractionView near)
+        {
+            if (near.Id == "seller") (doors ??= new DoorDeal(this, host.Game, input)).Open(host.Game.NearSeller.Id);
+            else if (near.Id == "gate" || near.Id == "yardpost") (haul ??= new HaulDesk(this, host.Game, input)).Open(near.Id == "gate");
+            else return false;
+            return true;
+        }
 
         private void ToggleCart()
         {

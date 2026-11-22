@@ -33,6 +33,7 @@ namespace Steel.Editor.Vehicles.Trucks
             seat.Rider = player.GetComponent<Steel.Presentation.Player.PlayerMover>().Visual;
             if (spec.Towing) Couple(root, driver, rolling);
             MotorRig.Suspend(root, driver);
+            TruckBed.Attach(root, spec);
             return root.transform;
         }
 
