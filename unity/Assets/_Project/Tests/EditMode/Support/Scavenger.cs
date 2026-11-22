@@ -49,12 +49,12 @@ namespace Steel.Tests.Support
         internal string Hint => DartoDirections.Hint(Game, Game.View, Map);
         internal string Earning => IncomeHint.Text(Game.Income, Game.View, Map);
 
-        /// <summary>Walks to the site the HUD points at and loads it; false when it does not fit or none is left.</summary>
+        /// <summary>Walks to the site the HUD points at and loads what fits; false when full or no site is left.</summary>
         internal bool Gather()
         {
             TakeCart();
             var income = Game.Income;
-            if (income.StreetSites == 0 || income.SiteKg > Game.View.CapacityKg - Game.View.CarriedKg) return false;
+            if (income.StreetSites == 0 || Game.View.CarriedKg >= Game.View.CapacityKg) return false;
             Walk(income.SiteX, income.SiteZ);
             string id = Game.Nearby.Id; Game.Inspect(id); Game.PickUp(id);
             return true;

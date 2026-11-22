@@ -76,7 +76,7 @@ namespace Steel.Presentation.UI
                 else if (near.Id == "home") sorting.Open(null);
                 else if (near.Id == "factory") ShowOffer();
                 else if (!near.Inspected) sorting.Open(near.Id);
-                else { host.Game.PickUp(near.Id); NoticeText.text = PickedUp(); }
+                else NoticeText.text = PickUp(near.Id);
             });
         }
         private void ShowOffer()

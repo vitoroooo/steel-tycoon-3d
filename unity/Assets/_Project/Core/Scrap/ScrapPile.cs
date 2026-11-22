@@ -39,6 +39,15 @@ namespace Steel.Core.Scrap
 
         internal ScrapPile Fresh() => new ScrapPile(GrossKg, hiddenGrade, dirtFraction, ReuseQuality);
 
+        /// <summary>The same scrap at another weight: what was carried off a site, or what stays behind.</summary>
+        internal ScrapPile Part(double kg)
+        {
+            var part = new ScrapPile(kg, hiddenGrade, dirtFraction, ReuseQuality, AcquisitionCost * kg / GrossKg)
+                { RainHours = RainHours };
+            if (KnownGrade.HasValue) part.Inspect();
+            return part;
+        }
+
         internal LotSave Snapshot() => new LotSave { grade = (int)hiddenGrade, kg = GrossKg,
             dirt = dirtFraction, quality = ReuseQuality, cost = AcquisitionCost,
             inspected = KnownGrade.HasValue, sorted = IsSorted, rainHours = RainHours };

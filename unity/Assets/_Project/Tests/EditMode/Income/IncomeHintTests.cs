@@ -38,9 +38,11 @@ namespace Steel.Tests.Income
             var income = new IncomeView { StreetSites = 2, SiteX = map.Home.X + 30, SiteZ = map.Home.Z - 12, SiteKg = 12 };
             Assert.AreEqual("Gang 30 m T · Periksa tumpukan, lalu pungut. Sisa 2 tumpukan.", Text(income));
             income.SiteKg = 18;
-            Assert.AreEqual("Gang 30 m T · 18 kg tak muat di tas 15 kg. Dorong gerobak ke sini.", Text(income));
+            Assert.AreEqual("Gang 30 m T · Tumpukan 18 kg, muat 15 kg. Pungut sebagian, sisanya menunggu di gang.",
+                Text(income));
             income.CartAwayMinutes = 11.4;
-            Assert.AreEqual("Gang 30 m T · 18 kg tak muat di tas 15 kg. Gerobak pulang 12 menit lagi.", Text(income));
+            Assert.AreEqual("Gang 30 m T · Tumpukan 18 kg, muat 15 kg. Pungut sebagian, gerobak pulang 12 menit lagi.",
+                Text(income));
             view.CapacityKg = 50;
             Assert.AreEqual("Gang 30 m T · Periksa tumpukan, lalu pungut. Sisa 2 tumpukan.", Text(income));
         }

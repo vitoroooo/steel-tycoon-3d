@@ -44,7 +44,7 @@ namespace Steel.Tests.Income
         }
 
         [TestCase(false, 10, TestName = "ADayOfStreetPickingAloneNeverWaitsLongerThanOneRefill")]
-        [TestCase(true, 30, TestName = "ADayOfFollowingEveryHintNeverWaitsLongerThanOneCartRound")]
+        [TestCase(true, 10, TestName = "ADayOfFollowingEveryHintWithTheCartAwayNeverWaitsLongerThanOneRefill")]
         public void ADayWithoutGrant(bool rounds, double longestWait)
         {
             player.ClearTheStreet();

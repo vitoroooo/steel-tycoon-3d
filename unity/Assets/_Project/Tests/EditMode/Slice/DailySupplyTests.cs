@@ -53,5 +53,21 @@ namespace Steel.Tests.Slice
             g.Advance(600);
             Assert.AreEqual(10, g.Income.StreetSites); Assert.Zero(g.Income.RestockMinutes);
         }
+
+        [Test]
+        public void PartlyCarriedSiteKeepsItsRestAcrossResumeAndRefillsToFullOnlyOnceEmptied()
+        {
+            Take(1);   // 18 kg pile, 15 kg hand sack
+            Assert.AreEqual(15, g.View.CarriedKg); Assert.IsFalse(g.IsCollected("p1"));
+            Assert.AreEqual(10, g.Income.StreetSites); Assert.Zero(g.Income.RestockMinutes);
+            g = LocalGameService.Resume(source, g.Save(5000), 5000, out _);
+            At(1); Assert.IsTrue(g.Nearby.Inspected); StringAssert.StartsWith("3 kg", g.Nearby.Detail);
+            g.Advance(1200); StringAssert.StartsWith("3 kg", g.Nearby.Detail, "A site that still holds scrap is not topped up");
+            g.SetPosition(g.Cart.X, g.Cart.Z); g.GrabCart(); At(1); g.PickUp("p1");
+            Assert.AreEqual(18, g.View.CarriedKg, "Sack and gerobak together now hold the whole pile");
+            Assert.IsTrue(g.IsCollected("p1"));
+            g.Advance(600); Assert.IsFalse(g.IsCollected("p1"));
+            StringAssert.StartsWith("18 kg", g.Nearby.Detail, "The refill is the full pile again");
+        }
     }
 }

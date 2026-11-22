@@ -37,6 +37,7 @@ namespace Steel.Core.State.Saving
         public bool inspected, collected;
         public int rainHours;
         public long emptied;
+        public double kg;
     }
     [Serializable] public sealed class MotorSave
     {

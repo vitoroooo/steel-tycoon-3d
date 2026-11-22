@@ -28,11 +28,12 @@ namespace Steel.Presentation.UI
         private static string Street(IncomeView income, GameView view)
         {
             string site = "Gang " + Compass.To(view, income.SiteX, income.SiteZ) + " · ";
-            if (income.SiteKg <= view.CapacityKg - view.CarriedKg)
+            double room = view.CapacityKg - view.CarriedKg;
+            if (income.SiteKg <= room)
                 return site + "Periksa tumpukan, lalu pungut. Sisa " + income.StreetSites + " tumpukan.";
-            return site + income.SiteKg + " kg tak muat di tas " + view.CapacityKg + " kg. " +
-                (income.CartAwayMinutes > 0 ? "Gerobak pulang " + Minutes(income.CartAwayMinutes) + " lagi."
-                    : "Dorong gerobak ke sini.");
+            return site + "Tumpukan " + income.SiteKg + " kg, muat " + room + " kg. Pungut sebagian" +
+                (income.CartAwayMinutes > 0 ? ", gerobak pulang " + Minutes(income.CartAwayMinutes) + " lagi."
+                    : ", sisanya menunggu di gang.");
         }
 
         /// <summary>Pak Darto's answer to "the street is bare, where does money come from now?".</summary>

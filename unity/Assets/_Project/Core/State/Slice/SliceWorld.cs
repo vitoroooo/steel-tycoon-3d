@@ -33,13 +33,19 @@ namespace Steel.Core.State.Slice
         /// <summary>Game hours from the given clock reading until the next site is refilled.</summary>
         public double HoursToRestock(double gameHours) => RestockHours - gameHours % RestockHours;
 
-        internal void Empty(WorldPile pile) => pile.Empty(++emptied);
+        /// <summary>Carries off what fits in <paramref name="roomKg"/>; a site only joins the refill queue once empty.</summary>
+        internal ScrapPile Take(WorldPile pile, double roomKg)
+        {
+            var taken = pile.Take(roomKg, emptied + 1);
+            if (pile.Collected) emptied++;
+            return taken;
+        }
 
         /// <summary>Restores a saved site; sites emptied before the queue existed keep their listed order.</summary>
-        internal void Restore(WorldPile pile, bool collected, long order)
+        internal void Restore(WorldPile pile, bool collected, long order, double leftKg)
         {
             if (order < 0) throw new FormatException("Urutan tumpukan tidak valid.");
-            if (collected) pile.Empty(order); else pile.Restock();
+            if (collected) pile.Empty(order); else { pile.Restock(); pile.Leave(leftKg); }
             emptied = Math.Max(emptied, order);
         }
 
