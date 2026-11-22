@@ -6,7 +6,8 @@
     "Steel.Services",
     "Steel.UI",
     "UnityEngine.TestRunner",
-    "UnityEditor.TestRunner"
+    "UnityEditor.TestRunner",
+    "Steel.TestServers"
   ],
   "includePlatforms": [
     "Editor"

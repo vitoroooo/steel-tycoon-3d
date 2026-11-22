@@ -9,7 +9,8 @@
     "Steel.World",
     "Steel.UI",
     "Unity.ugui",
-    "Unity.InputSystem"
+    "Unity.InputSystem",
+    "Steel.TestServers"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"

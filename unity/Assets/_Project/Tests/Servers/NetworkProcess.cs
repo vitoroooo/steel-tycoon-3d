@@ -5,16 +5,16 @@ using System.IO;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Steel.Tests.Network
+namespace Steel.TestServers
 {
-    internal sealed class NetworkProcess : IDisposable
+    public sealed class NetworkProcess : IDisposable
     {
         private readonly string directory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         private readonly string root = Path.GetFullPath(Path.Combine(Application.dataPath, "../.."));
         private Process server;
-        internal int Port { get; private set; }
-        internal string Root => root;
-        internal string Database => Path.Combine(directory, "market.sqlite3");
+        public int Port { get; private set; }
+        public string Root => root;
+        public string Database => Path.Combine(directory, "market.sqlite3");
 
         private Process Launch(string command)
         {
@@ -27,7 +27,7 @@ namespace Steel.Tests.Network
             return Process.Start(start);
         }
 
-        internal void Start()
+        public void Start()
         {
             if (!File.Exists(Path.Combine(root, "server/market/__main__.py")))
                 Assert.Ignore("Uji integrasi pasar memerlukan checkout lengkap termasuk server Python.");
@@ -41,7 +41,7 @@ namespace Steel.Tests.Network
             Port = int.Parse(ready.Result.Substring(ready.Result.LastIndexOf(':') + 1));
         }
 
-        internal string IssueToken(bool seller)
+        public string IssueToken(bool seller)
         {
             using (var process = Launch(seller ? "trader Sari" : "trader Hasan"))
             {

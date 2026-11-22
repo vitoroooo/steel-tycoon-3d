@@ -1,0 +1,9 @@
+{
+  "name": "Steel.TestServers",
+  "rootNamespace": "Steel.TestServers",
+  "references": [],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

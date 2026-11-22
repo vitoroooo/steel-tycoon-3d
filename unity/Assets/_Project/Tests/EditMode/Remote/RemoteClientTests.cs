@@ -3,6 +3,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Steel.TestServers;
 using Steel.Services;
 using Steel.Services.Remote;
 using UnityEngine.TestTools;

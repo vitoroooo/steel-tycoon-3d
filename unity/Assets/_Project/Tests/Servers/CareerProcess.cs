@@ -3,20 +3,19 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using NUnit.Framework;
-using Steel.Tests.Network;
 
-namespace Steel.Tests.Remote
+namespace Steel.TestServers
 {
     /// <summary>The real career server (server/career, built beforehand) beside the real market server, for one test.</summary>
-    internal sealed class CareerProcess : IDisposable
+    public sealed class CareerProcess : IDisposable
     {
         private readonly NetworkProcess market = new NetworkProcess();
         private Process server;
-        internal int Port { get; private set; }
+        public int Port { get; private set; }
         /// <summary>An account the market issued; the career server knows it by the same token.</summary>
-        internal string Token { get; private set; }
+        public string Token { get; private set; }
 
-        internal void Start()
+        public void Start()
         {
             market.Start();
             string folder = Path.Combine(market.Root, "server/career/bin"), resources =
