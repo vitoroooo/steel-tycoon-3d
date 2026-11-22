@@ -35,7 +35,7 @@ namespace Steel.Editor.Vehicles
         }
 
         /// <summary>Where a wrist rests when the palm lies on the rubber grip of the push bar.</summary>
-        private static Transform Grip(Transform cart, float side)
+        internal static Transform Grip(Transform cart, float side)
         {
             var grip = new GameObject(side < 0 ? "Grip_L" : "Grip_R").transform;
             grip.SetParent(cart, false);

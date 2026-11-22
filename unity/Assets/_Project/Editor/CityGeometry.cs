@@ -17,7 +17,7 @@ namespace Steel.Editor
         internal static GameObject Box(string name, Vector3 point, Vector3 size, Material material, bool solid = true) =>
             Shape(name, PrimitiveType.Cube, point, size, material, solid);
         /// <summary>Painted lettering; at yaw 0 it reads from the south, like a board on a north wall.</summary>
-        internal static void Sign(string text, Vector3 point, float size, Color color, float yaw = 0)
+        internal static TextMesh Sign(string text, Vector3 point, float size, Color color, float yaw = 0)
         {
             var go = new GameObject(text); go.transform.SetParent(Root, false);
             go.transform.SetPositionAndRotation(point, Quaternion.Euler(0, yaw, 0));
@@ -25,6 +25,7 @@ namespace Steel.Editor
             mesh.anchor = TextAnchor.MiddleCenter; mesh.alignment = TextAlignment.Center; mesh.color = color;
             mesh.font = SignPaint.Font; go.GetComponent<MeshRenderer>().sharedMaterial = SignPaint.Material();
             go.AddComponent<Steel.Presentation.World.SignVisibility>();
+            return mesh;
         }
     }
 }

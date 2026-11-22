@@ -53,6 +53,17 @@ namespace Steel.Tests.Haul
         }
 
         [Test]
+        public void EveryLotTheYardBuysIsACollectorsVisitWithItsWeightAndPrice()
+        {
+            YardVisit before = g.LastVisit; double stock = g.YardInfo(0).Stock;
+            Assert.Greater(before.Serial, 0); g.Advance(4 * 600);
+            YardVisit visit = g.LastVisit;
+            Assert.AreEqual(before.Serial + 1, visit.Serial, "One grade is bid for, so one lot in four hours");
+            Assert.AreEqual(g.YardInfo(0).Stock - stock, visit.Kg, 1e-6); Assert.AreEqual(visit.Kg * 6000, visit.Paid, 1e-6);
+            Assert.AreEqual(g.YardInfo(0).Grade, visit.Grade);
+        }
+
+        [Test]
         public void TheMillWeighsUnloadsAndPaysOnceLessTheRunningCost()
         {
             Park(FleetCatalog.Engkel, g.YardPost); g.LoadTruck(0);

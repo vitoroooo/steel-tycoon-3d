@@ -34,6 +34,9 @@ namespace Steel.PlayTests.Haul
             var works = Object.FindObjectOfType<YardWorks>();
             Assert.IsFalse(works.Loader.gameObject.activeSelf, "No loader works a yard that has not opened");
             Assert.IsTrue(works.Heaps.All(heap => !heap.gameObject.activeSelf));
+            var caller = works.GetComponent<YardCaller>();
+            Assert.IsFalse(caller.Collector.gameObject.activeSelf, "Nobody brings scrap to a yard that buys nothing");
+            StringAssert.Contains("TIMBANGAN", caller.Readout.text);
         }
 
         [UnityTest] public IEnumerator TheWeighingPostOpensItsScreenAndRefusesWithoutATruck()
