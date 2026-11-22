@@ -34,8 +34,8 @@ namespace Steel.Editor
             Transform player = Characters.PlayerBuilder.Create(layout);
             Map.Livestock.Create(player);
             Vehicles.GerobakBuilder.Create(player);
+            Vehicles.DealerBuilder.Create();   // the lot floor first: vehicles park on whatever is under them
             Vehicles.TrisedaBuilder.Create(player); Vehicles.PikapBuilder.Create(player);
-            Vehicles.DealerBuilder.Create();
             var camera = new GameObject("Main Camera", typeof(Camera)); camera.tag = "MainCamera";
             camera.AddComponent<AudioListener>(); camera.GetComponent<Camera>().fieldOfView = 62;
             camera.GetComponent<Camera>().nearClipPlane = .1f; camera.GetComponent<Camera>().farClipPlane = 200;

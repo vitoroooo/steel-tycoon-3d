@@ -11,7 +11,7 @@ namespace Steel.Editor.Vehicles
     {
         private static readonly Vector3 Lot = new Vector3(16, 0, 6);
         private static readonly Color SignText = ToonPalette.Yellow;
-        private const float Width = 11, Depth = 10, WallHeight = 3.2f;
+        private const float Width = 11, Depth = 10, WallHeight = 3.2f, BoardWidth = 1.9f;
 
         internal static void Create()
         {
@@ -42,11 +42,11 @@ namespace Steel.Editor.Vehicles
         {
             Vector3 foot = new Vector3(vehicle.X + side, 0, vehicle.Z + 1.5f);   // behind the kerb side, clear of the way out
             CityGeometry.Box("Papan harga / tiang", foot + Vector3.up * .5f, new Vector3(.06f, 1, .06f), frame);
-            CityGeometry.Box("Papan harga", foot + Vector3.up * 1.25f, new Vector3(1.5f, .62f, .06f), frame, false);
+            CityGeometry.Box("Papan harga", foot + Vector3.up * 1.25f, new Vector3(BoardWidth, .62f, .06f), frame, false);
             string price = (vehicle.Price / 1e6).ToString("0.#", CultureInfo.GetCultureInfo("id-ID"));
             CityGeometry.Sign(vehicle.Label.ToUpperInvariant() + "  Rp " + price + " JUTA\n" +
                 VehicleText.Load(vehicle.CapacityKg).ToUpperInvariant(),
-                foot + new Vector3(0, 1.25f, -.05f), .1f, SignText);
+                foot + new Vector3(0, 1.25f, -.05f), .08f, SignText);
         }
     }
 }

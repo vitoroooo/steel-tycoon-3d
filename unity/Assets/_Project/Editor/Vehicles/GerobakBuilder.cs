@@ -18,7 +18,7 @@ namespace Steel.Editor.Vehicles
             CartView cart = new LocalGameService(new ResourceConfigSource()).Cart;
             GameObject root = AuthoredModel.Create("Vehicles/GerobakKartun", _ => ToonCast.Material);
             root.name = "Gerobak dorong";
-            root.transform.position = new Vector3(cart.X, player.position.y, cart.Z);
+            root.transform.position = ParkingSpot.On(cart.X, cart.Z);
             foreach (Transform part in root.GetComponentsInChildren<Transform>())
                 part.gameObject.layer = IgnoreRaycastLayer;
             var box = root.AddComponent<BoxCollider>();

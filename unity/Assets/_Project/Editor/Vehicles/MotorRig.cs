@@ -20,7 +20,7 @@ namespace Steel.Editor.Vehicles
             var source = new ResourceConfigSource();
             VehicleView view = new LocalGameService(source).VehicleOf(id);
             var layout = new CityLayout(source);
-            root.transform.SetPositionAndRotation(new Vector3(view.X, 0, view.Z), Quaternion.Euler(0, DealerYaw, 0));
+            root.transform.SetPositionAndRotation(ParkingSpot.On(view.X, view.Z), Quaternion.Euler(0, DealerYaw, 0));
             foreach (Transform part in root.GetComponentsInChildren<Transform>())
             {
                 part.gameObject.layer = IgnoreRaycastLayer;
