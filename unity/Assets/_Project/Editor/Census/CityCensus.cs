@@ -31,16 +31,30 @@ namespace Steel.Editor.Census
                 Debug.Log("CENSUS root " + group.Key + ": " + group.Count() + " renderers, " + group.Sum(Triangles) + " triangles");
             var eye = new GameObject("Census eye").AddComponent<Camera>();
             eye.farClipPlane = PhoneFarClip; eye.fieldOfView = FieldOfView; eye.aspect = Aspect;
+            // Counted as the phone draws it: the Android build moves small things to layers the camera drops with distance.
+            Performance.MobileDetailLayers.Apply(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+            Steel.Presentation.World.Mobile.MobileView.Apply(eye);
+            MeshRenderer[] worst = new MeshRenderer[0];
             foreach (Vector3 spot in Viewpoints)
                 for (int turn = 0; turn < 4; turn++)
                 {
                     eye.transform.SetPositionAndRotation(spot, Quaternion.Euler(8, turn * 90, 0));
                     Plane[] planes = GeometryUtility.CalculateFrustumPlanes(eye);
-                    MeshRenderer[] seen = renderers.Where(r => GeometryUtility.TestPlanesAABB(planes, r.bounds)).ToArray();
+                    MeshRenderer[] seen = renderers.Where(r => GeometryUtility.TestPlanesAABB(planes, r.bounds) && Near(eye, r)).ToArray();
+                    if (seen.Sum(Triangles) > worst.Sum(Triangles)) worst = seen;
                     Debug.Log("CENSUS view " + spot.ToString("F0") + " yaw " + turn * 90 + ": " + seen.Length + " renderers, "
                         + seen.Sum(Triangles) + " triangles, " + seen.Select(r => r.sharedMaterial).Distinct().Count() + " materials");
                 }
+            foreach (var group in worst.GroupBy(Group).OrderByDescending(g => g.Sum(Triangles)).Take(Groups))
+                Debug.Log("CENSUS worst view " + group.Key + ": " + group.Count() + " renderers, " + group.Sum(Triangles) + " triangles");
             Object.DestroyImmediate(eye.gameObject);
+        }
+
+        /// <summary>Whether the camera still draws this layer at the renderer's distance; 0 means only the far plane limits it.</summary>
+        private static bool Near(Camera eye, MeshRenderer renderer)
+        {
+            float limit = eye.layerCullDistances[renderer.gameObject.layer];
+            return limit <= 0 || Vector3.Distance(eye.transform.position, renderer.bounds.center) <= limit;
         }
 
         /// <summary>The top-level object and, inside the city, the mesh a renderer draws: what to lighten first.</summary>

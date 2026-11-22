@@ -9,7 +9,7 @@ namespace Steel.Editor.Map
     {
         private static readonly Dictionary<string, Action<Transform, float>> Builders = new Dictionary<string, Action<Transform, float>>
         {
-            { "street_lamp_01", Lamp }, { "potted_plant_04", Plant }, { "fern_02", Plant }
+            { "street_lamp_01", Lamp }, { "potted_plant_04", Plant }, { "fern_02", Plant }, { "wooden_crate_01", Crate }
         };
 
         internal static bool Has(string name) => Builders.ContainsKey(name);
@@ -43,6 +43,16 @@ namespace Steel.Editor.Map
                 CityMaterials.Plain("Pot tanah liat", new Color(.76f, .4f, .26f)), true);
             Part(at, PrimitiveType.Sphere, new Vector3(0, pot * .7f + crown / 2, 0), new Vector3(crown * .95f, crown, crown * .95f),
                 CityMaterials.Plain("Daun pot", new Color(.3f, .62f, .32f)), false);
+        }
+
+        /// <summary>A plank crate: a wooden box with two darker battens around it.</summary>
+        private static void Crate(Transform at, float height)
+        {
+            Part(at, PrimitiveType.Cube, new Vector3(0, height / 2, 0), Vector3.one * height,
+                CityMaterials.Plain("Peti kayu", new Color(.69f, .48f, .29f)), true);
+            foreach (float band in new[] { .22f, .78f })
+                Part(at, PrimitiveType.Cube, new Vector3(0, height * band, 0), new Vector3(height * 1.04f, height * .1f, height * 1.04f),
+                    CityMaterials.Plain("Bilah peti", new Color(.48f, .3f, .18f)), false);
         }
 
         private static void Part(Transform at, PrimitiveType type, Vector3 local, Vector3 size, Material material, bool solid)
