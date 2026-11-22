@@ -6,7 +6,7 @@ PALETTE = {
     'cream': 'F4EBDD', 'skin': 'C98A5E', 'skin_dark': 'A96F48', 'hair': '23252E',
     'grey': '6E737C', 'light': 'C9CDD2', 'white': 'FAF6EE', 'ink': '1A1C24',
     'red': 'C8402F', 'rust': '9A5230', 'wood': 'B07B4A', 'blue': '3F7FB5',
-    'blush': 'E58A6E', 'green': '5E9C4B', 'tire': '2B2D33', 'steel': '8D949B',
+    'blush': 'E58A6E', 'glass': 'A9D6E5', 'green': '5E9C4B', 'tire': '2B2D33', 'steel': '8D949B',
 }
 
 

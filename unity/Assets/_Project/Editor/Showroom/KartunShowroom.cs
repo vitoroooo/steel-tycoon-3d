@@ -22,6 +22,19 @@ namespace Steel.Editor.Showroom
             camera.Save(ShowroomStage.SheetPath("kartun"));
         }
 
+        [MenuItem("Steel/Showroom/Kartun pikap")]
+        public static void Pikap()
+        {
+            EditorSceneManager.OpenScene("Assets/_Project/Scenes/City.unity");
+            int w = ShowroomStage.Width, h = ShowroomStage.Height, tw = w / 2;
+            var camera = new ShowroomCamera(w, h, true);
+            Vector3 truck = Stand("Pikap bekas", .9f);
+            camera.Shoot(truck, 140, 10, 9, new RectInt(0, 0, 1, 1));   // first frame warms up shaders
+            camera.Shoot(truck, 140, 10, 9, new RectInt(0, 0, tw, h));
+            camera.Shoot(truck, 215, 14, 9, new RectInt(tw, 0, tw, h));
+            camera.Save(ShowroomStage.SheetPath("kartun-pikap"));
+        }
+
         private static Vector3 Stand(string name, float height) =>
             GameObject.Find(name).transform.position + Vector3.up * height;
     }
