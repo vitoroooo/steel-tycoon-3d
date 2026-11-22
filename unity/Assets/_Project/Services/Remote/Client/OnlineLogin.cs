@@ -22,7 +22,7 @@ namespace Steel.Services.Remote
 
         public OnlineLogin(OnlineAccount saved, Func<OnlineAccount, Task<OnlineCareer>> signIn)
         {
-            Account = saved ?? new OnlineAccount();
+            Account = saved != null && saved.Known ? saved : new OnlineAccount { origin = CareerEndpoint.Public };
             this.signIn = signIn ?? throw new ArgumentNullException(nameof(signIn));
         }
 

@@ -8,6 +8,8 @@ namespace Steel.Services.Remote
     public static class CareerEndpoint
     {
         public const int LocalPort = 8766;
+        /// <summary>The game's own server; the sign-in form starts with it and the player may type another.</summary>
+        public const string Public = "https://steel.vitooel.com";
 
         public static Uri ForHost(string origin) => string.IsNullOrWhiteSpace(origin)
             ? Local(LocalPort)

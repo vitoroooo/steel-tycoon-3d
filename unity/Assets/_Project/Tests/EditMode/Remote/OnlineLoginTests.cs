@@ -10,6 +10,7 @@ namespace Steel.Tests.Remote
         [Test] public void AFailedSignInReturnsToTheFormWithTheReason()
         {
             var login = new OnlineLogin(null, _ => Task.FromException<OnlineCareer>(new InvalidOperationException("Token salah.")));
+            Assert.AreEqual(CareerEndpoint.Public, login.Account.origin, "A first sign-in starts on the game's own server");
             login.Show();
             login.Submit(" https://pasar.example ", " abc ");
             Assert.AreEqual(LoginStage.Connecting, login.Stage);
