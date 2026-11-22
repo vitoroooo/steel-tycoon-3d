@@ -34,6 +34,12 @@ namespace Steel.Core.Scrap
             Revision++;
         }
         public void Clear() { items.Clear(); CarriedKg = 0; Revision++; }
+        internal void RemoveWhere(Predicate<ScrapPile> accepted)
+        {
+            items.RemoveAll(accepted);
+            CarriedKg = items.Sum(p => p.GrossKg);
+            Revision++;
+        }
         internal LotSave[] Snapshot() => items.Select(p => p.Snapshot()).ToArray();
         internal void Load(LotSave[] lots)
         {

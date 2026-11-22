@@ -13,6 +13,7 @@ namespace Steel.Services
         private void CreateSession(IConfigSource source)
         {
             safety = new WorldSafety(source.Read("City"));
+            CreateBuyers(source);
             session = new SliceSession(new SliceRules(source.Read("City")),
                 new SliceWorld(source.Read("Piles")), scrap, FleetCatalog.Create(source),
                 new Core.Fleet.CartRules(source.Read("Gerobak")));
@@ -44,6 +45,8 @@ namespace Steel.Services
                         Detail = session.Bag.CarriedKg == 0 ? "Pesan rute atau ambil kiriman" : "Sortir muatan sesuai grade" };
                 if (View.FactoryDistance <= session.Rules.InteractRange)
                     return new InteractionView { Id = "factory", Title = "Pabrik AI", Detail = "Lihat harga & margin sebelum menjual" };
+                var buyer = NearbyBuyer();
+                if (buyer != null) return buyer;
                 if (session.GrantReady && session.Fleet.Find(FleetCatalog.Triseda).InReach(session.Position))
                     return new InteractionView { Id = "grant", Title = "Hadiah Pak Darto",
                         Detail = "Setoran pertama lunas. Ambil modal motor roda tiga." };
@@ -63,6 +66,7 @@ namespace Steel.Services
         public bool IsCollected(string id) => session.World.Find(id).Collected;
         public SaleView PreviewSale()
         {
+            invoice = null;
             pending = session.Preview(Prices);
             return new SaleView { Kilograms = pending.Kilograms, Revenue = pending.Revenue, Profit = pending.Profit };
         }
