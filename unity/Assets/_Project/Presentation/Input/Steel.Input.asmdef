@@ -2,6 +2,6 @@
   "name": "Steel.Input",
   "rootNamespace": "Steel.Presentation.Input",
   "references": [
-    "Steel.Services"
+    "Steel.Services", "Unity.InputSystem"
   ]
 }

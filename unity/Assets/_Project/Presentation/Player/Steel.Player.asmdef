@@ -2,6 +2,6 @@
   "name": "Steel.Player",
   "rootNamespace": "Steel.Presentation.Player",
   "references": [
-    "Steel.Services"
+    "Steel.Services", "Steel.Input"
   ]
 }

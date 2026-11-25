@@ -3,7 +3,7 @@ using Steel.Core.Scrap;
 
 namespace Steel.Services
 {
-    public interface IGameService
+    public partial interface IGameService
     {
         double GameHours { get; }
         AiQuote Prices { get; }

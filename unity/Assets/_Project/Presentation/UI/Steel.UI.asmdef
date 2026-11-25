@@ -2,6 +2,6 @@
   "name": "Steel.UI",
   "rootNamespace": "Steel.Presentation.UI",
   "references": [
-    "Steel.Services"
+    "Steel.Services", "Steel.Input", "Unity.InputSystem", "Unity.ugui"
   ]
 }
