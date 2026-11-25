@@ -47,10 +47,10 @@ namespace Steel.Core.State.Slice
         {
             RequireNear(Rules.Factory);
             if (!Bag.IsSorted) throw new InvalidOperationException("Sortir muatan di lapak dahulu.");
-            double revenue = Bag.Items.Sum(p => pricing.Quote(p,
-                p.KnownGrade == ScrapGrade.Reuse ? prices.ScrapReference : prices.BuyFromK1));
-            return new SaleOffer(Bag.Items.Sum(p => p.SaleWeightKg), revenue,
-                prices.RefreshedAtRealSeconds, Bag.Revision, Bag.Items.Sum(p => p.AcquisitionCost));
+            var lots = Bag.Items.Where(p => p.KnownGrade != ScrapGrade.Reuse).ToArray();
+            if (lots.Length == 0) throw new InvalidOperationException("Jual barang layak pakai ke Toko Bangunan.");
+            return new SaleOffer(lots.Sum(p => p.SaleWeightKg), lots.Sum(p => pricing.Quote(p, prices.BuyFromK1)),
+                prices.RefreshedAtRealSeconds, Bag.Revision, lots.Sum(p => p.AcquisitionCost));
         }
         public double Confirm(SaleOffer offer, AiQuote prices)
         {
@@ -59,8 +59,8 @@ namespace Steel.Core.State.Slice
             if (offer.InventoryRevision != current.InventoryRevision || offer.QuoteTime != current.QuoteTime)
                 throw new InvalidOperationException("Penawaran berubah. Lihat harga terbaru dahulu.");
             Cash += current.Revenue;
-            if (current.Revenue > 0) FirstSaleMade = true;
-            Bag.Clear(); return current.Revenue;
+            if (current.Revenue > 0) CreditSale(current.Kilograms);
+            Bag.RemoveWhere(p => p.KnownGrade != ScrapGrade.Reuse); return current.Revenue;
         }
     }
 }

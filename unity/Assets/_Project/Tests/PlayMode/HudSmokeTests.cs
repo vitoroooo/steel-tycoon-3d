@@ -59,7 +59,8 @@ namespace Steel.PlayTests
             yield return Load();
             var pile = host.Layout.Piles[0]; PutActor(pile.Position.X, pile.Position.Z); yield return null;
             AssertOneContext(); Assert.AreEqual("PERIKSA", hud.ActionText.text);
-            hud.Act(); yield return null; Assert.AreEqual("PUNGUT", hud.ActionText.text);
+            hud.Act(); SortGesture.Drop(hud, "Campur"); Assert.IsFalse(host.Game.Nearby.Inspected);
+            SortGesture.Drop(hud, "HMS 1"); yield return null; Assert.AreEqual("PUNGUT", hud.ActionText.text);
             Canvas.ForceUpdateCanvases();
             var info = RectTransformUtility.CalculateRelativeRectTransformBounds(hud.SafeRoot, hud.SafeRoot.Find("Petunjuk"));
             var help = RectTransformUtility.CalculateRelativeRectTransformBounds(hud.SafeRoot, hud.RouteText.rectTransform);

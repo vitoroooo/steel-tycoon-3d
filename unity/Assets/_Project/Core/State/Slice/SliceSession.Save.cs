@@ -8,6 +8,7 @@ namespace Steel.Core.State.Slice
     {
         public CareerSave Snapshot(int districts) => new CareerSave {
             version = 1, cash = Cash, x = Position.X, z = Position.Z, cartX = Cart.Position.X, cartZ = Cart.Position.Z,
+            magnet = Magnet, xrf = Xrf, yard = Yard,
             firstSale = FirstSaleMade, grant = GrantCollected, cartHeld = Cart.Held,
             bag = backpack.Snapshot(), cart = Cart.Cargo.Snapshot(),
             motors = Fleet.All.Select(m => m.Snapshot()).ToArray(),
@@ -22,6 +23,7 @@ namespace Steel.Core.State.Slice
                 s.motors.Length != Fleet.All.Count || s.motors.Select(m => m.id).Distinct().Count() != s.motors.Length ||
                 s.motors.Count(m => m.occupied) + (s.cartHeld ? 1 : 0) > 1) throw new FormatException("Karier tidak valid");
             Cash = NumberRules.NonNegative(s.cash, "cash"); FirstSaleMade = s.firstSale; GrantCollected = s.grant;
+            Magnet = s.magnet; Xrf = s.xrf; Yard = YardSave.Restore(s.yard);
             Position = new WorldPoint(s.x, s.z); Cart.Restore(new WorldPoint(s.cartX, s.cartZ), s.cartHeld);
             backpack.Load(s.bag); Cart.Cargo.Load(s.cart);
             foreach (var motor in s.motors) Fleet.Find(motor.id).Load(motor);

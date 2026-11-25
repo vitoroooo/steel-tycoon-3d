@@ -17,7 +17,9 @@ namespace Steel.Core.Scrap
             if (pile == null) throw new ArgumentNullException(nameof(pile));
             NumberRules.NonNegative(referencePerKg, nameof(referencePerKg));
             ScrapGrade grade = pile.IsSorted ? pile.KnownGrade.Value : ScrapGrade.Mixed;
-            return pile.SaleWeightKg * referencePerKg * config.Factor(grade, pile.ReuseQuality);
+            return pile.SaleWeightKg * UnitRate(grade, pile.ReuseQuality, referencePerKg);
         }
+        public double UnitRate(ScrapGrade grade, double quality, double referencePerKg) =>
+            referencePerKg * config.Factor(grade, quality);
     }
 }

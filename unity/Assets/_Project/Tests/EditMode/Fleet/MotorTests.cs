@@ -72,7 +72,11 @@ namespace Steel.Tests.Fleet
             game.ReportVehicle(Id, layout.Home.X, layout.Home.Z, 0); game.SortAtHome();
             game.ReportVehicle(Id, layout.Factory.X, layout.Factory.Z, 0);
             double cash = game.View.Cash; game.PreviewSale(); game.ConfirmSale();
-            Assert.Greater(game.View.Cash, cash); Assert.AreEqual(0, Car(game).CargoKg);
+            Assert.Greater(game.View.Cash, cash); Assert.AreEqual(24, Car(game).CargoKg);
+            game.ReportVehicle(Id, layout.Home.X, layout.Home.Z, 0);
+            var reuse = game.InspectBid(2);
+            Assert.Greater(reuse.Freight, 0); Assert.AreEqual(reuse.Net, game.SellLocal());
+            Assert.AreEqual(0, Car(game).CargoKg);
             game.ExitVehicle(Car(game).X + 2, Car(game).Z); Assert.AreEqual(15, game.View.CapacityKg);
         }
     }

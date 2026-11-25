@@ -17,6 +17,9 @@ namespace Steel.Presentation.UI
         private GameHost host;
         private SliceInput input;
         private RouteDesk routes;
+        private MarketBoard board;
+        private SortingDesk sorting;
+        internal void RefreshNow() => nextReadout = 0;
         private string lastSaveNotice;
         private readonly CultureInfo culture = CultureInfo.GetCultureInfo("id-ID");
         private string Money(double value) => "Rp " + value.ToString("N0", culture);
@@ -24,7 +27,10 @@ namespace Steel.Presentation.UI
         {
             host = FindObjectOfType<GameHost>(); input = FindObjectOfType<SliceInput>(); HudLayout.Build(this, input);
             drivers = FindObjectsOfType<MotorDriver>();
-            routes = new RouteDesk(this, host.Game, input);
+            board = new MarketBoard(this, host.Game, input);
+            sorting = new SortingDesk(this, host.Game, input);
+            new YardDesk(this, host.Game, input);
+            routes = new RouteDesk(this, host.Game, input, board.Open);
             NoticeText.text = lastSaveNotice = host.SaveNotice;
         }
         private void Update()
@@ -36,15 +42,12 @@ namespace Steel.Presentation.UI
             if (lastSaveNotice != host.SaveNotice && (lastSaveNotice = host.SaveNotice) != null)
                 NoticeText.text = lastSaveNotice;
             CashText.text = Money(v.Cash);
-            LoadText.text = "Kasta " + v.Caste + "     " + v.CarriedKg + " / " + v.CapacityKg + " kg";
+            LoadText.text = "Buku usaha ›    K" + v.Caste + "    " + v.CarriedKg + " / " + v.CapacityKg + " kg";
             MarketText.text = "IBN  " + Money(v.Ibn) + "/kg\nHari " +
                 (1 + Math.Floor(v.GameHours / 24)) + "   " + ((int)v.GameHours % 24).ToString("00") + ":" +
                 ((int)(v.GameHours % 1 * 60)).ToString("00");
             RouteText.text = DartoDirections.Hint(host.Game, v);
-            string action = near == null ? "CARI RONGSOK" : near.Id == "home" ? (v.CarriedKg == 0 ? "BUKA ARMADA" : "SORTIR") :
-                near.Id == "factory" ? "LIHAT HARGA" : near.Id == "grant" ? "AMBIL HADIAH" :
-                near.Id == "cart" ? (host.Game.Cart.Held ? "LEPAS GEROBAK" : "DORONG GEROBAK") : near.Id == "vehicle" ?
-                VehicleText.Action(host.Game.Vehicle) : near.Inspected ? "PUNGUT" : "PERIKSA";
+            string action = ActionLabel(near, v);
             ActionText.text = action;
             ActionPad.blocksRaycasts = near != null; ActionPad.alpha = near != null ? 1 : 0;
             VehicleHud.Refresh(this, host.Game.Vehicle);
@@ -58,7 +61,7 @@ namespace Steel.Presentation.UI
         }
         public void Act()
         {
-            if (SalePanel.activeSelf || routes.Opened) return;
+            if (input.IsBlocked) return;
             nextReadout = 0;
             Run(() =>
             {
@@ -69,9 +72,10 @@ namespace Steel.Presentation.UI
                 else if (near.Id == "grant")
                     NoticeText.text = "Hadiah Pak Darto: " + Money(host.Game.ClaimDealerGrant()) + ". Pilih BELI TRISEDA.";
                 else if (near.Id == "home" && host.Game.View.CarriedKg == 0) routes.Open();
-                else if (near.Id == "home") { host.Game.SortAtHome(); NoticeText.text = "Muatan tersortir. Bawa ke Pabrik AI."; }
+                else if (near.Id == "buyer" || near.Id == "home" && host.Game.View.LoadSorted) board.Open();
+                else if (near.Id == "home") sorting.Open(null);
                 else if (near.Id == "factory") ShowOffer();
-                else if (!near.Inspected) { host.Game.Inspect(near.Id); NoticeText.text = "Grade terungkap. Tekan lagi untuk pungut."; }
+                else if (!near.Inspected) sorting.Open(near.Id);
                 else { host.Game.PickUp(near.Id); NoticeText.text = "Rongsok dipungut. Sortir di lapak Anda."; }
             });
         }

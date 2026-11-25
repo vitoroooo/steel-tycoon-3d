@@ -13,6 +13,8 @@ namespace Steel.Core.State.Saving
         public MotorSave[] motors;
         public OrderSave[] routes;
         public double[] quota;
+        public bool magnet, xrf;
+        public YardSave yard;
     }
     [Serializable] public sealed class LotSave
     {

@@ -8,6 +8,8 @@ namespace Steel.Core.Scrap
     {
         private readonly ScrapGrade hiddenGrade;
         private readonly double dirtFraction;
+        internal ScrapGrade Material => hiddenGrade;
+        public double WasteKg => GrossKg * dirtFraction;
         public double GrossKg { get; }
         public double AcquisitionCost { get; }
         public double ReuseQuality { get; }

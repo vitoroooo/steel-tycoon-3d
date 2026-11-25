@@ -18,6 +18,7 @@ namespace Steel.Services
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             var time = new TimeConfig(source.Read("Time"));
+            business = new Core.State.ConfigValues(source.Read("Business"));
             queueLimit = time.OfflineCapRealSeconds;
             routeConfig = new Core.State.ConfigValues(source.Read("Routes"));
             var economy = new EconomyConfig(source.Read("Economy"));
@@ -32,6 +33,7 @@ namespace Steel.Services
             clock.HourTick += hour => market.RefreshBucket(hour, economy.SupplyTargetKg);
             clock.HourTick += session.World.OnHour;
             clock.HourTick += session.Routes.OnHour;
+            clock.HourTick += SupplierHour;
         }
 
         public ScrapPile CreatePile(double kilograms, ScrapGrade grade) => new ScrapPile(kilograms, grade);

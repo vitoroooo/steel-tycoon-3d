@@ -1,0 +1,7 @@
+{
+  "magnet": 500000, "xrf": 350000000,
+  "permit": 15000000, "rent": 20000000, "scale": 25000000, "loader": 150000000,
+  "minimumCash": 250000000, "minimumReputation": 30, "capacityKg": 60000,
+  "npcLotKg": 250, "shipFee": 3000000, "minShipmentKg": 15000,
+  "permitHours": 24, "leaseHours": 720
+}

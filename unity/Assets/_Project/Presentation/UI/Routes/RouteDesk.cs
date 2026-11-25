@@ -23,11 +23,13 @@ namespace Steel.Presentation.UI
         private static string Rp(double v) => "Rp" + v.ToString("N0", CultureInfo.GetCultureInfo("id-ID"));
         internal bool Opened => panel.gameObject.activeSelf;
 
-        internal RouteDesk(CityHud hud, IGameService service, SliceInput controls)
+        internal RouteDesk(CityHud hud, IGameService service, SliceInput controls, Action openMarket)
         {
             game = service; input = controls;
             panel = UiFactory.Panel("Meja rute", hud.SafeRoot, new Vector2(.5f, .5f), new Vector2(680, 360), Vector2.zero);
             title = Line(145, 23); title.text = "LAPAK  /  Jadwal pengumpulan";
+            UiFactory.Button(panel, "PAPAN HARGA", new Vector2(164, 46), new Vector2(227, 139),
+                () => { Close(); openMarket(); });
             quote = Line(73, 18); status = Line(-44, 16);
             for (int i = 0; i < 3; i++)
             {
