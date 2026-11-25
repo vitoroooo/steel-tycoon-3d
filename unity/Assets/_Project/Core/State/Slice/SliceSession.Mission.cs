@@ -14,7 +14,7 @@ namespace Steel.Core.State.Slice
             if (!Fleet.Find(starterVehicle).InReach(Position))
                 throw new InvalidOperationException("Ambil hadiah Pak Darto di samping motor bak di dealer.");
             GrantCollected = true;
-            Cash += Rules.FirstSaleGrant;
+            CreditCash(Rules.FirstSaleGrant);
             return Rules.FirstSaleGrant;
         }
     }

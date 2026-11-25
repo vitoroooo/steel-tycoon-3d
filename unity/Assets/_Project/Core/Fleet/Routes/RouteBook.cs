@@ -39,6 +39,9 @@ namespace Steel.Core.Fleet.Routes
             reserved[district] = Reserved(district) + kg;
         }
 
+        internal void CancelInTransit(string carrier) => orders.RemoveAll(o => o.Carrier == carrier && o.SecondsLeft > 0);
+        internal void ForfeitOrders() => orders.Clear();
+
         public void OnHour(long hour)
         {
             if (hour / 24 == day) return;

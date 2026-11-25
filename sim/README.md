@@ -6,12 +6,15 @@ Python 3.10+, tanpa dependency eksternal. Dari root repository:
 cd sim
 python -m unittest discover -s tests
 python main.py
+python tools/mobile_calibration.py
 ```
 
 Hasil deterministik seed 73: `output/report.md`, `summary.json`, serta
-`{baseline,fixed,stress}_{daily,weekly}.csv`. Semua output dibuat ulang.
+`{baseline,fixed,stress,mobile}_{daily,weekly}.csv`. Profil `mobile` membaca
+harga dan syarat pembukaan dari Resources Unity. Jalankan dari checkout lengkap.
 `fixed` dikalibrasi untuk target revisi Putaran 2, bukan K3 H45–55.
-Kelulusan satu seed bukan validasi rilis; lihat uji 10 seed di ECONOMY_SPEC.
+Kalibrasi mobile memisahkan enam seed latih dan sepuluh seed uji.
+Parameter, kegagalan dan keterbatasannya ada di [spesifikasi](../docs/ECONOMY_SPEC.md).
 
 ## Struktur dan konfigurasi
 
@@ -28,7 +31,7 @@ Kelulusan satu seed bukan validasi rilis; lihat uji 10 seed di ECONOMY_SPEC.
 Ubah JSON lalu jalankan ulang. Tidak ada dependency numpy. Semua berkas
 Python di bawah 100 baris. `main.py` dapat dijalankan dari direktori mana pun.
 
-## Asumsi yang tidak ditetapkan PRD
+## Asumsi skenario historis baseline, fixed dan stress
 
 1. Modal Rp1 juta + hadiah tutorial Rp12 juta; hadiah ini sengaja ditandai
    asumsi, karena PRD tidak menetapkan nominal hadiah. Kedua skenario sama.
@@ -38,7 +41,7 @@ Python di bawah 100 baris. `main.py` dapat dijalankan dari direktori mana pun.
    1.000 pemain serentak: batas kota PRD dan target retensi perlu klarifikasi.
 3. Sesi tersebar merata, antrean maksimal 8 jam/sesi: aktif dan sedang
    maksimal 24 jam/hari, santai 8. Armada awal satu, trip berjalan otomatis.
-   Fraksi barang gratis, kecepatannya dan reputasi per setoran adalah asumsi.
+   Fraksi barang gratis, kecepatannya dan reputasi per setoran adalah asumsi Putaran 2.
 4. Semua barang HMS1; campuran gratis/NPC dihitung sebagai rata-rata biaya.
    Tidak ada event cuaca, reuse, K3 safety, pelindung barang gelap atau veteran.
    Barang gelap diuji sebagai EV terpisah, bukan kebijakan agen utama.

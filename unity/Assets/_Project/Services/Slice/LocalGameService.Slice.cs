@@ -21,7 +21,7 @@ namespace Steel.Services
         public GameView View => new GameView
         {
             Cash = session.Cash, CarriedKg = session.Bag.CarriedKg, CapacityKg = session.Bag.CapacityKg,
-            Ibn = Prices.Ibn, GameHours = GameHours, Caste = session.Yard.bandar ? 2 : 1,
+            Ibn = Prices.Ibn, GameHours = GameHours, Caste = session.Caste,
             HomeDistance = session.Position.Distance(session.Rules.Home),
             FactoryDistance = session.Position.Distance(session.Rules.Factory),
             GrantReady = session.GrantReady, GrantCollected = session.GrantCollected, LoadSorted = session.Bag.IsSorted,

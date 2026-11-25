@@ -1,0 +1,8 @@
+{
+  "initialCash": 200000,
+  "initialStockKg": 20,
+  "collectionKgPerGameHour": 1,
+  "minReferencePercent": 50,
+  "maxReferencePercent": 130,
+  "maxLotKg": 5000
+}

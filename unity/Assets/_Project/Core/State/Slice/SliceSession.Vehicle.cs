@@ -32,6 +32,7 @@ namespace Steel.Core.State.Slice
             if (motor.Cargo.CarriedKg + backpack.CarriedKg > motor.Rules.CapacityKg)
                 throw new InvalidOperationException("Bak " + motor.Rules.Label + " penuh.");
             motor.Enter(Position);
+            UseAsset(id);
             foreach (var pile in backpack.Items) motor.Cargo.Add(pile);
             backpack.Clear(); Position = motor.Position;
         }

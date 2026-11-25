@@ -33,6 +33,19 @@ namespace Steel.PlayTests
                 .onClick.Invoke();
             Assert.IsTrue(host.Game.StoredUnderRoof); Assert.AreEqual(12,host.Game.Weather(0).CoveredKg);
             Assert.Zero(host.Game.View.CarriedKg);
+            book.Find("DAFTAR ISI").GetComponent<Button>().onClick.Invoke();
+            var index = book.Find("Daftar halaman"); Assert.IsTrue(index.gameObject.activeSelf);
+            index.Find("Pabrik baja").GetComponent<Button>().onClick.Invoke();
+            Assert.IsFalse(index.gameObject.activeSelf);
+            Assert.IsTrue(book.GetComponentsInChildren<Text>().Any(t => t.text.Contains("AMDAL aktif")));
+            foreach (var section in new[] {"Perawatan alat","Keuangan","Regu & warga","Pasar jaringan"})
+            {
+                book.Find("DAFTAR ISI").GetComponent<Button>().onClick.Invoke();
+                if (!index.Find(section).gameObject.activeInHierarchy)
+                    index.Find("HALAMAN LAIN").GetComponent<Button>().onClick.Invoke();
+                index.Find(section).GetComponent<Button>().onClick.Invoke();
+                Assert.IsTrue(book.GetComponentsInChildren<Text>().Any(t => t.text.EndsWith("/   "+section)));
+            }
         }
     }
 }

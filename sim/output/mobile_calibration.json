@@ -1,0 +1,1307 @@
+{
+  "winner": "policy-18",
+  "targets": {
+    "k2_share": [
+      0.15,
+      0.25
+    ],
+    "k3_share": [
+      0.03,
+      0.07
+    ],
+    "active_k2": [
+      10,
+      14
+    ],
+    "casual_k2": [
+      40,
+      50
+    ],
+    "inflation": 0.05,
+    "inflation_after": 14,
+    "ai_limit": 0.5,
+    "ai_until": 60
+  },
+  "train": [
+    {
+      "policy": "control",
+      "knobs": {},
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        9
+      ]
+    },
+    {
+      "policy": "policy-01",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-02",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-03",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-04",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-05",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-06",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-07",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-08",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-09",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-10",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-11",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-12",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-13",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        10
+      ]
+    },
+    {
+      "policy": "policy-14",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        12
+      ]
+    },
+    {
+      "policy": "policy-15",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        11
+      ]
+    },
+    {
+      "policy": "policy-16",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        14
+      ]
+    },
+    {
+      "policy": "policy-17",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-18",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        10
+      ]
+    },
+    {
+      "policy": "policy-19",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        0,
+        7
+      ]
+    },
+    {
+      "policy": "policy-20",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        0,
+        7
+      ]
+    },
+    {
+      "policy": "policy-21",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 5,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        5,
+        12
+      ]
+    },
+    {
+      "policy": "policy-22",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 5,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        5,
+        16
+      ]
+    },
+    {
+      "policy": "policy-23",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        7
+      ]
+    },
+    {
+      "policy": "policy-24",
+      "knobs": {
+        "bandar_bid": 0.83,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        12
+      ]
+    },
+    {
+      "policy": "policy-25",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-26",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-27",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-28",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-29",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-30",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-31",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-32",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 8000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-33",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-34",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-35",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-36",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-37",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-38",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-39",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-40",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 32000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-41",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-42",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 6,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        12,
+        9
+      ]
+    },
+    {
+      "policy": "policy-43",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        0,
+        6
+      ]
+    },
+    {
+      "policy": "policy-44",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.3,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 0,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        0,
+        6
+      ]
+    },
+    {
+      "policy": "policy-45",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        9
+      ]
+    },
+    {
+      "policy": "policy-46",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 0,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        9
+      ]
+    },
+    {
+      "policy": "policy-47",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.08,
+          0.12
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    },
+    {
+      "policy": "policy-48",
+      "knobs": {
+        "bandar_bid": 0.86,
+        "late_k1_cap_kg": 64000,
+        "late_free_trips": 0.8,
+        "extra_liquidity": 25000000,
+        "service_rates": [
+          0.01,
+          0.03,
+          0.07
+        ]
+      },
+      "passes": {
+        "profit": 0,
+        "ai": 6,
+        "inflation": 0,
+        "progression": 0,
+        "joint": 0
+      },
+      "score": [
+        0,
+        6,
+        6
+      ]
+    }
+  ],
+  "holdout": {
+    "control": {
+      "profit": 0,
+      "ai": 0,
+      "inflation": 10,
+      "progression": 0,
+      "joint": 0
+    },
+    "policy-18": {
+      "profit": 1,
+      "ai": 7,
+      "inflation": 6,
+      "progression": 0,
+      "joint": 0
+    }
+  }
+}

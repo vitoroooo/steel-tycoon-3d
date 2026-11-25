@@ -49,7 +49,7 @@ namespace Steel.Tests.Weather
         {
             var g = Loaded(false);
             var s = JsonUtility.FromJson<CareerSave>(g.Save(1000));
-            s.cash = 500000000; s.seconds = 7*600; var y = s.yard;
+            s.cash = 500000000; s.finance.seconds = s.seconds = 7*600; var y = s.yard;
             y.bandar = y.leased = y.applied = true; y.leaseUntil = 1000; y.stock[1] = 15000; y.entries = 3;
             g = LocalGameService.Resume(src,JsonUtility.ToJson(s),1000,out _);
             Assert.Throws<InvalidOperationException>(() => g.ShipGrade(1)); Assert.IsTrue(g.Weather(0).Stuck);

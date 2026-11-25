@@ -26,13 +26,13 @@ namespace Steel.Services
         {
             if (!session.Yard.bandar) return;
             int grade = (int)(hour % 4);
-            session.Receive(grade, CounterRate(grade), business.Positive("npcLotKg"),
-                business.Positive("capacityKg"), hour);
+            session.CrewReceive(grade, CounterRate(grade), business.Positive("npcLotKg"),
+                business.Positive("capacityKg"), hour, session.Yard.Machine(false,hour).condition, session.Caste);
         }
         public YardView YardInfo(int grade)
         {
             var y = session.Yard;
-            return new YardView { Rep = y.reputation, Caste = y.bandar ? 2 : 1, Cash = session.Cash,
+            return new YardView { Rep = y.reputation, Caste = session.Caste, Cash = session.Cash,
                 PermitFiled = y.applied, PermitHours = Math.Max(0,y.permitHour - GameHours),
                 Leased = y.leaseUntil > GameHours, LeaseHours = Math.Max(0,y.leaseUntil - GameHours),
                 Stock = y.stock[grade], Bid = y.bids[grade], Floor = CounterRate(grade),
@@ -43,7 +43,8 @@ namespace Steel.Services
         public void Lease() => session.Lease(business, GameHours);
         public void OpenYard() => session.OpenYard(business, GameHours);
         public void SetBid(int grade, double price) => session.SetBid(grade, price, GameHours);
-        public double ShipGrade(int grade) => session.ShipGrade(grade, business,
-            scrap.UnitRate((ScrapGrade)grade, 0, Prices.BuyFromK2),GameHours,YardSoil);
+        public double ShipGrade(int grade) => session.CrewShipGrade(grade, business,
+            scrap.UnitRate((ScrapGrade)grade, 0, Prices.BuyFromK2),GameHours,YardSoil,
+            session.Yard.Machine(true,GameHours).condition,session.Caste);
     }
 }

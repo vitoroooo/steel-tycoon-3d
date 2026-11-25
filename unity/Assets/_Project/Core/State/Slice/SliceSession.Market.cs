@@ -29,7 +29,7 @@ namespace Steel.Core.State.Slice
             var next = Bid(old.Buyer, prices, freightRate);
             if (old.Bag != Bag || old.Stamp != next.Stamp || old.Revision != next.Revision || old.Shipped != next.Shipped)
                 throw new InvalidOperationException("Nota berubah. Periksa harga, muatan dan ongkir lagi.");
-            Cash += next.Net;
+            CreditProceeds(next.Net, next.Margin);
             if (next.Net > 0) CreditSale(next.Kg);
             Bag.RemoveWhere(p => old.Buyer.Accepts(p.KnownGrade.Value));
             return next.Net;

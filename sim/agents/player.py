@@ -26,6 +26,8 @@ class Player:
     milestones: dict = field(default_factory=dict)
     goal: int = 3
     turnover: float = 0
+    sold_kg: float = 0
+    lease_until: float = 0
 
     def mark(self, name, day):
         self.milestones.setdefault(name, day - self.born + 1)

@@ -15,6 +15,9 @@ def merge(base, overrides):
 
 
 def load(name="baseline"):
+    if name == 'mobile':
+        from config.mobile import apply_mobile
+        return apply_mobile(load('fixed'))
     config = {}
     for path in sorted(ROOT.glob('baseline_*.json')):
         config.update(json.loads(path.read_text()))
