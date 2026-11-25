@@ -38,5 +38,12 @@ namespace Steel.Core.Time
             Advance(applied);
             return applied;
         }
+
+        public void Restore(double seconds)
+        {
+            NumberRules.NonNegative(seconds, nameof(seconds));
+            if (seconds / config.RealSecondsPerGameHour >= long.MaxValue) throw new ArgumentOutOfRangeException();
+            RealSeconds = seconds;
+        }
     }
 }

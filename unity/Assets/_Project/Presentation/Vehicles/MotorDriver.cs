@@ -32,12 +32,18 @@ namespace Steel.Presentation.Vehicles
             if (MoveInput == null) MoveInput = input;
             body = GetComponent<Rigidbody>(); body.isKinematic = true;
             box = GetComponent<BoxCollider>();
+            if (host.Restored)
+            {
+                var saved = View;
+                body.position = new Vector3(saved.X, body.position.y, saved.Z);
+                if (saved.Heading.HasValue) body.rotation = Quaternion.Euler(0, saved.Heading.Value, 0);
+            }
             body.interpolation = RigidbodyInterpolation.Interpolate;
             GetComponent<FallRecovery>().Recovered += ResetMotion; ResetMotion();
         }
 
-        private void Report(Vector3 p, float metresPerSecond) =>
-            host.Game.ReportVehicle(VehicleId, p.x, p.z, metresPerSecond);
+        private void Report(Vector3 p, float metresPerSecond, float? heading = null) =>
+            host.Game.ReportVehicle(VehicleId, p.x, p.z, metresPerSecond, heading ?? body.rotation.eulerAngles.y);
 
         private void ResetMotion()
         {
@@ -63,7 +69,7 @@ namespace Steel.Presentation.Vehicles
             if (MotorPhysics.Blocked(body, box, rotation, delta)) { delta = Vector3.zero; speed = 0; }
             Vector3 position = MotorPhysics.OnGround(body.position + delta, RideHeight);
             body.MovePosition(position); body.MoveRotation(rotation);
-            Report(position, speed);
+            Report(position, speed, rotation.eulerAngles.y);
         }
 
         /// <summary>The one context action: buy it, get on, or get off where there is room.</summary>

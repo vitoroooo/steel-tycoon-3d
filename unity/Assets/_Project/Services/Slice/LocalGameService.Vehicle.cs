@@ -17,7 +17,7 @@ namespace Steel.Services
             {
                 Id = rules.Id, Label = rules.Label, Owned = car.Owned, Price = rules.Price,
                 Occupied = car.Occupied, Nearby = car.InReach(session.Position),
-                X = (float)car.Position.X, Z = (float)car.Position.Z, Speed = (float)car.Speed,
+                X = (float)car.Position.X, Z = (float)car.Position.Z, Speed = (float)car.Speed, Heading = (float?)car.Heading,
                 MaxSpeed = (float)rules.MaxSpeed, ReverseSpeed = (float)rules.ReverseSpeed,
                 Acceleration = (float)rules.Acceleration, Braking = (float)rules.Braking,
                 TurnDegrees = (float)rules.TurnDegrees, CargoKg = car.Cargo.CarriedKg,
@@ -29,7 +29,7 @@ namespace Steel.Services
         public void EnterVehicle(string id) { session.EnterMotor(id); pending = null; }
         public void ExitVehicle(float x, float z)
         { session.ExitMotor(new WorldPoint(x, z)); pending = null; }
-        public void ReportVehicle(string id, float x, float z, float speed) =>
-            session.ReportMotor(id, new WorldPoint(x, z), speed);
+        public void ReportVehicle(string id, float x, float z, float speed, float? heading = null) =>
+            session.ReportMotor(id, new WorldPoint(x, z), speed, heading);
     }
 }

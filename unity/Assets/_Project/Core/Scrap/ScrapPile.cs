@@ -1,5 +1,6 @@
 using System;
 using Steel.Core.State;
+using Steel.Core.State.Saving;
 
 namespace Steel.Core.Scrap
 {
@@ -8,15 +9,17 @@ namespace Steel.Core.Scrap
         private readonly ScrapGrade hiddenGrade;
         private readonly double dirtFraction;
         public double GrossKg { get; }
+        public double AcquisitionCost { get; }
         public double ReuseQuality { get; }
         public ScrapGrade? KnownGrade { get; private set; }
         public bool IsSorted { get; private set; }
         public double SaleWeightKg => IsSorted ? GrossKg * (1 - dirtFraction) : GrossKg;
 
         public ScrapPile(double grossKg, ScrapGrade hiddenGrade, double dirtFraction = 0,
-            double reuseQuality = 0)
+            double reuseQuality = 0, double acquisitionCost = 0)
         {
             GrossKg = NumberRules.NonNegative(grossKg, nameof(grossKg));
+            AcquisitionCost = NumberRules.NonNegative(acquisitionCost, nameof(acquisitionCost));
             if (!Enum.IsDefined(typeof(ScrapGrade), hiddenGrade))
                 throw new ArgumentOutOfRangeException(nameof(hiddenGrade));
             this.hiddenGrade = hiddenGrade;
@@ -26,6 +29,18 @@ namespace Steel.Core.Scrap
         }
 
         internal ScrapPile Fresh() => new ScrapPile(GrossKg, hiddenGrade, dirtFraction, ReuseQuality);
+
+        internal LotSave Snapshot() => new LotSave { grade = (int)hiddenGrade, kg = GrossKg,
+            dirt = dirtFraction, quality = ReuseQuality, cost = AcquisitionCost,
+            inspected = KnownGrade.HasValue, sorted = IsSorted };
+
+        internal static ScrapPile Load(LotSave dto)
+        {
+            var p = new ScrapPile(dto.kg, (ScrapGrade)dto.grade, dto.dirt, dto.quality, dto.cost);
+            if (dto.inspected) p.Inspect();
+            if (dto.sorted) p.Sort();
+            return p;
+        }
 
         public ScrapGrade Inspect()
         {

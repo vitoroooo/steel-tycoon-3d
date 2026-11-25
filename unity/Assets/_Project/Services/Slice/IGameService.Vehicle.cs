@@ -8,6 +8,6 @@ namespace Steel.Services
         void BuyVehicle(string id);
         void EnterVehicle(string id);
         void ExitVehicle(float x, float z);
-        void ReportVehicle(string id, float x, float z, float speed);
+        void ReportVehicle(string id, float x, float z, float speed, float? heading = null);
     }
 }

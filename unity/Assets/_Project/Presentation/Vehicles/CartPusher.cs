@@ -26,6 +26,7 @@ namespace Steel.Presentation.Vehicles
             parkedCollider = GetComponent<Collider>();
             arms = PlayerVisual.GetComponent<ArmReach>();
             yaw = transform.eulerAngles.y;
+            if (host.Restored) transform.position = new Vector3(host.Game.Cart.X, transform.position.y, host.Game.Cart.Z);
             transform.position = OnGround(transform.position);
         }
 

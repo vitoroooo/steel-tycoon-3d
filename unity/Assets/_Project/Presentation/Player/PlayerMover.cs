@@ -20,6 +20,13 @@ namespace Steel.Presentation.Player
         {
             controller = GetComponent<CharacterController>();
             host = FindObjectOfType<GameHost>(); input = FindObjectOfType<SliceInput>();
+            if (host.Restored)
+            {
+                controller.enabled = false;
+                var v = host.Game.View;
+                transform.position = new Vector3(v.PlayerX, host.Layout.SpawnY, v.PlayerZ);
+                controller.enabled = true;
+            }
         }
         private void Update()
         {
