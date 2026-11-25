@@ -34,3 +34,12 @@ CREATE TABLE IF NOT EXISTS requests (
     receipt TEXT NOT NULL,
     PRIMARY KEY (trader, key)
 );
+CREATE TABLE IF NOT EXISTS suspensions (
+    trader INTEGER PRIMARY KEY REFERENCES traders
+);
+CREATE TABLE IF NOT EXISTS moderator_events (
+    id INTEGER PRIMARY KEY,
+    trader INTEGER NOT NULL REFERENCES traders,
+    operation TEXT NOT NULL CHECK(operation IN ('suspend','restore')),
+    recorded_at INTEGER NOT NULL
+);

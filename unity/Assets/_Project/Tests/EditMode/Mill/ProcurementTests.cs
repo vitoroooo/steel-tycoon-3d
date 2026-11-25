@@ -15,6 +15,7 @@ namespace Steel.Tests.Mill
             var s = JsonUtility.FromJson<CareerSave>(new LocalGameService(src).Save(1000));
             s.cash = 2000000000; s.mill.opened = s.mill.filed = s.mill.rolling = true;
             s.finance.level = 40;
+            s.mill.safetyReady = 1;
             s.mill.goods[1] = 320000;
             s.yard.applied = s.yard.leased = s.yard.bandar = true; s.yard.leaseUntil = 1000; s.yard.reputation = 100;
             var f = new CityLayout(src).Factory; s.x = f.X; s.z = f.Z;
@@ -22,7 +23,7 @@ namespace Steel.Tests.Mill
         }
         [Test] public void ClosedBidAwardsOnceAndLocksTheActualHBeamQuantity()
         {
-            var start = g.GovernmentOrder(0); g.OfferBridgeSteel(0);
+            g.Advance(600); var start = g.GovernmentOrder(0); g.OfferBridgeSteel(0);
             Assert.Throws<InvalidOperationException>(() => g.OfferBridgeSteel(1));
             Assert.Throws<InvalidOperationException>(() => g.DeliverBridgeSteel());
             g = LocalGameService.Resume(src,g.Save(1000),1000+600*24,out _);
@@ -35,7 +36,8 @@ namespace Steel.Tests.Mill
         }
         [Test] public void MissingTheDeadlineClosesTheAwardWithoutMintingPayment()
         {
-            double cash = g.View.Cash, payroll = g.CrewInfo().Wage; g.OfferBridgeSteel(0); g.Advance(241*600);
+            g.Advance(600); double cash = g.View.Cash, payroll = g.CrewInfo().Wage;
+            g.OfferBridgeSteel(0); g.Advance(240*600);
             Assert.IsFalse(g.GovernmentOrder(0).Awarded);
             Assert.AreEqual(95,g.YardInfo(0).Rep); Assert.AreEqual(cash-10*payroll,g.View.Cash);
         }

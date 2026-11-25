@@ -7,7 +7,7 @@ namespace Steel.Presentation.UI
     internal sealed partial class YardDesk
     {
         private enum NetworkTab { Account, Lots, Sell, Settings }
-        private readonly NetworkMarket network = new NetworkMarket();
+        private NetworkMarket network = new NetworkMarket();
         private NetworkTab networkTab;
         private int networkLot, networkRate = 100;
         private bool networkBusy;
@@ -16,18 +16,22 @@ namespace Steel.Presentation.UI
         private void DrawNetwork()
         {
             feedback.text = networkMessage;
-            if (networkBusy) { detail.text = "Menunggu jawaban pasar lokal…"; return; }
+            if (networkBusy) { detail.text = "Menunggu jawaban " + network.Host + "…"; return; }
             var account = network.Board;
             if (account == null)
             {
-                detail.text = "Pasar lokal HMS 1 · Terputus\nKas dan stok pasar dikelola server. " +
-                    "Hubungkan akun pasar untuk berdagang.";
+                detail.text = "Pasar HMS 1 · " + network.Host + "\n" +
+                    "Punya undangan? Pilih alamat HTTPS pengelola sebelum memasukkan token.";
                 if (network.HasSession)
                 {
                     Key(0,"Sambung ulang",() => NetworkRun(network.Refresh));
                     Key(2,"Lepas akun",NetworkLogout);
                 }
-                else Key(0,"Hubungkan akun",NetworkLogin);
+                else
+                {
+                    Key(0,"Hubungkan akun",NetworkLogin);
+                    Key(1,"Alamat pasar",NetworkAddress);
+                }
                 return;
             }
             if (network.HasPending)
@@ -40,7 +44,8 @@ namespace Steel.Presentation.UI
             if (networkTab == NetworkTab.Sell) { DrawNetworkSale(account); return; }
             detail.text = account.name + "   ·   Kas pasar " + Rp(account.cash) + "   ·   HMS 1 " + account.stock +
                 " kg\nIBN " + Rp(account.ibn) + "/kg   ·   Acuan " + Rp(account.reference) +
-                "/kg   ·   Jam kota " + account.gameHour + "\n" + account.lots.Length + " lot aktif   ·   Pajak penjual 2%";
+                "/kg   ·   Jam kota " + account.gameHour + "\n" + account.lots.Length + " lot · " +
+                account.buyers + " pelanggan berbeda · Pajak 2%";
             if (networkTab == NetworkTab.Settings)
             {
                 Key(0,"Muat ulang",() => NetworkRun(network.Refresh));

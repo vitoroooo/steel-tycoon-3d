@@ -38,7 +38,7 @@ namespace Steel.PlayTests
             index.Find("Pabrik baja").GetComponent<Button>().onClick.Invoke();
             Assert.IsFalse(index.gameObject.activeSelf);
             Assert.IsTrue(book.GetComponentsInChildren<Text>().Any(t => t.text.Contains("AMDAL aktif")));
-            foreach (var section in new[] {"Perawatan alat","Keuangan","Regu & warga","Pasar jaringan"})
+            foreach (var section in new[] {"Perawatan alat","Keuangan","Regu & warga","Pasar jaringan","Uji performa HP"})
             {
                 book.Find("DAFTAR ISI").GetComponent<Button>().onClick.Invoke();
                 if (!index.Find(section).gameObject.activeInHierarchy)
@@ -46,6 +46,8 @@ namespace Steel.PlayTests
                 index.Find(section).GetComponent<Button>().onClick.Invoke();
                 Assert.IsTrue(book.GetComponentsInChildren<Text>().Any(t => t.text.EndsWith("/   "+section)));
             }
+            book.Find("Pilihan 0").GetComponent<Button>().onClick.Invoke();
+            Assert.IsFalse(book.gameObject.activeSelf);
         }
     }
 }

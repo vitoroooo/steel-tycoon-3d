@@ -6,7 +6,7 @@ namespace Steel.Services
     public sealed class NetworkBoard
     {
         public long id, cash, stock, gameHour;
-        public int ibn, minimum, maximum, reference;
+        public int ibn, minimum, maximum, reference, buyers;
         public string name;
         public NetworkLot[] lots;
     }

@@ -18,12 +18,13 @@ namespace Steel.Presentation.UI
         private int page, grade, district;
         private static readonly string[] Pages = {"Izin & lahan","Alat sortir","Papan setoran","Cuaca",
             "Lahan & angkutan","Pabrik baja","Lini produksi","Tender pemerintah","Lapak satelit",
-            "Perawatan alat","Keuangan","Regu & warga","Pasar jaringan"};
+            "Perawatan alat","Keuangan","Regu & warga","Pasar jaringan","Uji performa HP"};
         private bool forms;
         private static string Rp(double n) => "Rp" + n.ToString("N0", CultureInfo.GetCultureInfo("id-ID"));
         internal YardDesk(CityHud hud, IGameService game, SliceInput input)
         {
             this.game = game; this.input = input;
+            trial = hud.gameObject.AddComponent<DeviceTrial>();
             panel = UiFactory.Panel("Buku usaha", hud.SafeRoot, Vector2.one * .5f, new Vector2(812,430), Vector2.zero);
             title = Line(24, 170, 50); detail = Line(20, 76, 122); feedback = Line(17, -83, 50);
             for (int i = 0; i < keys.Length; i++)
@@ -72,7 +73,8 @@ namespace Steel.Presentation.UI
             else if (page == 9) DrawMaintenance();
             else if (page == 10) DrawFinance();
             else if (page == 11) DrawCrew();
-            else DrawNetwork();
+            else if (page == 12) DrawNetwork();
+            else DrawDevice();
         }
     }
 }
