@@ -1,4 +1,4 @@
-# Steel Tycoon 3D — first playable slice
+# Steel Tycoon 3D — HD city + pikap slice
 
 Unity **2022.3.62f1**, Test Framework 1.1.33, Input System 1.7.0.
 URP manifest14.0.11 resolves to14.0.12 in this editor (packages-lock.json).
@@ -26,7 +26,9 @@ WASD / on-screen joystick walks; hold mouse-right / drag upper-right screen to o
 E / bottom-right touch button: inspect, then pick up. Return to lapak to sort.
 Walk to Pabrik AI, preview price/margin, then confirm the sale (or cancel).
 All HUD/dialog text is Indonesian. Cash, carried kg, IBN and game clock are live.
-No vehicles, Android build, save/load, weather or caste progression in this slice.
+Near the pikap: E / MASUK PIKAP enters; WASD / joystick drives; release to brake.
+E and the single context button share priority: pile/station first, then enter/exit pikap.
+No Android build, save/load, weather or caste progression in this slice.
 
 Menu: Steel > Generate City. Headless: use the Docker prefix above, replace
 the test arguments (after -projectPath /repo/unity) with:
@@ -38,17 +40,22 @@ the test arguments (after -projectPath /repo/unity) with:
 These are three separate invocations. Generation replaces City deterministically.
 If the image lacks /root/.cache, mount a writable cache there (not the license directory).
 Linux build: unity/Build/Linux/SteelTycoon.x86_64 (generated, ignored).
-Run with DISPLAY=:0 and optional -screenshot /home/ubuntu/shots/slice-city.png.
+Run with DISPLAY=:0 and optional -screenshot /home/ubuntu/shots/hd-walking.png.
 The screenshot argument captures the actual player after four seconds.
 See Assets/ThirdParty/PolyHaven/LICENSES.md for CC0 sources and checksum provenance.
 Downloads are1K diffuse/normal/roughness + HDRI, 11.76MB (<150MB).
+Poly Haven model refresh: python unity/Tools/download_models.py from the repo root (~30MB).
+Combined new source downloads, including the Quaternius archive/pikap, total78.67MB.
+See ThirdParty/PolyHavenModels/LICENSES.md and ThirdParty/Quaternius/LICENSES.md for
+CC0 models and SHA256 manifests. glTFast6.11 imports glTF; the worker uses FBX idle/walk clips.
+The generator adds gabled roofs, corrugated awnings, scanned shutters, fences and cables.
 
 ## Boundaries
 - Steel.Core: pure C#, no engine references, deterministic elapsed-time APIs.
 - Services: resource loading and local composition behind IGameService/IConfigSource.
 - Presentation → Services → Core; no presentation assembly references Steel.Core.
-- UI/World/Player/Input are active. Vehicles remains an asmdef placeholder.
-- Fleet/World/Equipment/Progression folders are reserved, not implemented.
+- UI/World/Player/Input/Vehicles are active; Core/Fleet owns pikap capacity and trip time.
+- Core/World/Equipment/Progression folders remain reserved.
 - Editor scripts generate the detailed block, textured PBR, HDRI, shadows, ACES, bloom and SSAO.
 - CharacterController movement and orbit collision are presentation; interaction range,
   capacity, inspection, sorting, cash and confirmed sales live in Core/Services.
@@ -67,6 +74,12 @@ AI buy/sell names are from the AI's perspective. Config uses the Phase0 fixed co
 City.json configures start cash13m, carry cap50kg, interaction3.5m, stations and controls.
 It also configures invisible city boundaries, spawnY and respawnBelowY (-15).
 FallRecovery returns characters or rigidbodies to spawn without changing cash/inventory.
+Vehicle.json: 1000kg, 3600-real-second city trip, PRD price Rp85m; physical arcade speed
+12m/s (reverse4m/s) is a prototype scale choice, not a speed specified in the PRD.
+The demo provides a loaner, not ownership/purchase or a cash grant. Entering transfers
+the backpack into its cargo; exit leaves cargo in the pikap. Sorting/sales use the
+active container. Trip time counts occupied time, pauses outside, and clamps at zero;
+the next entry after completion begins another trip. No automated delivery reward exists.
 Piles.json configures eight finite world piles; no replenishment/faucet or NPC stock purchases.
 Factory prices apply K1 AI buy spread and grade factors; reuse uses its reference multiplier.
 Free collection costs Rp0; margin equals proceeds. NPC sales have no player transaction tax.
@@ -76,5 +89,5 @@ Scrap starts uninspected. Factory sales require inspected, collected and sorted 
 Inspection is free and reveals grade; Sort is the successful sorting outcome, not a minigame.
 Sorting applies §6.1 multipliers and removes dirt weight once; reuse quality interpolates
 160–250%. Legacy Quote uses reference price before buyer spread, not a completed sale.
-Weather/rust (§6.4), vehicles (§5.1), persistence and other MVP criteria are intentionally
+Weather/rust (§6.4), vehicle purchases, persistence and other MVP criteria are intentionally
 outside this handoff. No Phase0 all-seed balance claim is made.

@@ -26,7 +26,8 @@ namespace Steel.Presentation.World
                 if (!body.isKinematic) { body.velocity = Vector3.zero; body.angularVelocity = Vector3.zero; }
             }
             if (controller != null) controller.enabled = enabled;
-            host.Game.SetPosition(p.x, p.z); Recovered?.Invoke();
+            if (controller != null) host.Game.SetPosition(p.x, p.z);
+            Recovered?.Invoke();
         }
     }
 }

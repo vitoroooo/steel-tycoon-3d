@@ -12,6 +12,7 @@ namespace Steel.Presentation.Player
         private GameHost host;
         private SliceInput input;
         private float verticalSpeed;
+        private bool wasDriving;
         private void Start()
         {
             controller = GetComponent<CharacterController>();
@@ -19,6 +20,17 @@ namespace Steel.Presentation.Player
         }
         private void Update()
         {
+            bool driving = host.Game.Vehicle.Occupied;
+            if (driving || wasDriving)
+            {
+                controller.enabled = false;
+                var view = host.Game.View;
+                transform.position = new Vector3(view.PlayerX, .3f, view.PlayerZ);
+                Visual.gameObject.SetActive(!driving);
+                controller.enabled = !driving; wasDriving = driving;
+                if (driving) return;
+                verticalSpeed = 0;
+            }
             Vector2 axis = Vector2.ClampMagnitude(input.Move, 1);
             float yaw = Camera.main.transform.eulerAngles.y;
             Vector3 direction = Quaternion.Euler(0, yaw, 0) * new Vector3(axis.x, 0, axis.y);

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Steel.Services;
 using Steel.Presentation.Input;
+using Steel.Presentation.Vehicles;
 
 namespace Steel.Presentation.UI
 {
@@ -11,6 +12,8 @@ namespace Steel.Presentation.UI
     {
         public Text CashText, LoadText, MarketText, PromptText, ActionText, RouteText, NoticeText, SaleText;
         public GameObject SalePanel;
+        public RectTransform SafeRoot;
+        private PickupDriver pickup;
         private GameHost host;
         private SliceInput input;
         private readonly CultureInfo culture = CultureInfo.GetCultureInfo("id-ID");
@@ -18,6 +21,7 @@ namespace Steel.Presentation.UI
         private void Start()
         {
             host = FindObjectOfType<GameHost>(); input = FindObjectOfType<SliceInput>(); HudLayout.Build(this);
+            pickup = FindObjectOfType<PickupDriver>();
         }
         private void Update()
         {
@@ -30,8 +34,10 @@ namespace Steel.Presentation.UI
             RouteText.text = "WASD / joystick: jalan  ·  Seret kanan / mouse kanan: kamera  ·  E: interaksi" +
                 "\nLapak " + v.HomeDistance.ToString("N0") + " m    /    Pabrik AI " + v.FactoryDistance.ToString("N0") + " m";
             string action = near == null ? "CARI RONGSOK" : near.Id == "home" ? "SORTIR" :
-                near.Id == "factory" ? "LIHAT HARGA" : near.Inspected ? "PUNGUT" : "PERIKSA";
+                near.Id == "factory" ? "LIHAT HARGA" : near.Id == "vehicle" ?
+                (host.Game.Vehicle.Occupied ? "KELUAR PIKAP" : "MASUK PIKAP") : near.Inspected ? "PUNGUT" : "PERIKSA";
             ActionText.text = action;
+            VehicleHud.Refresh(this, host.Game.Vehicle);
             PromptText.text = near == null ? "Jelajahi kawasan industri\nCari tumpukan rongsok di tepi jalan" :
                 near.Title + "  ·  " + near.Detail + "\n[E] " + action +
                 (near.Id.StartsWith("p") && near.Id != "factory" ? "   /   Periksa → Pungut" : "");
@@ -49,7 +55,8 @@ namespace Steel.Presentation.UI
             {
                 var near = host.Game.Nearby;
                 if (near == null) return;
-                if (near.Id == "home") { host.Game.SortAtHome(); NoticeText.text = "Muatan tersortir. Bawa ke Pabrik AI."; }
+                if (near.Id == "vehicle") pickup.Toggle();
+                else if (near.Id == "home") { host.Game.SortAtHome(); NoticeText.text = "Muatan tersortir. Bawa ke Pabrik AI."; }
                 else if (near.Id == "factory") ShowOffer();
                 else if (!near.Inspected) { host.Game.Inspect(near.Id); NoticeText.text = "Grade terungkap. Tekan lagi untuk pungut."; }
                 else { host.Game.PickUp(near.Id); NoticeText.text = "Rongsok dipungut. Sortir di lapak Anda."; }

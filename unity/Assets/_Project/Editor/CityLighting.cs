@@ -49,10 +49,10 @@ namespace Steel.Editor
             var sky = AssetDatabase.LoadAssetAtPath<Material>(path + "Langit.mat");
             if (!sky) { sky = new Material(Shader.Find("Skybox/Panoramic")); AssetDatabase.CreateAsset(sky, path + "Langit.mat"); }
             sky.SetTexture("_MainTex", AssetDatabase.LoadAssetAtPath<Texture>("Assets/ThirdParty/PolyHaven/sky.hdr"));
-            sky.SetFloat("_Exposure", .85f); sky.SetFloat("_Rotation", 125);
+            sky.SetFloat("_Exposure", .5f); sky.SetFloat("_Rotation", 125);
             RenderSettings.skybox = sky; RenderSettings.ambientMode = AmbientMode.Trilight;
             RenderSettings.ambientSkyColor = new Color(.34f, .44f, .58f);
-            RenderSettings.ambientEquatorColor = new Color(.25f, .28f, .32f);
+            RenderSettings.ambientEquatorColor = new Color(.36f, .38f, .42f);
             RenderSettings.ambientGroundColor = new Color(.12f, .12f, .12f);
             RenderSettings.fog = true; RenderSettings.fogColor = new Color(.65f, .66f, .66f);
             RenderSettings.fogMode = FogMode.Exponential; RenderSettings.fogDensity = .004f;

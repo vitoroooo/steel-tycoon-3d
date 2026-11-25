@@ -4,6 +4,7 @@
   "references": [
     "Steel.Core",
     "Steel.Services",
+    "Steel.UI",
     "UnityEngine.TestRunner",
     "UnityEditor.TestRunner"
   ],

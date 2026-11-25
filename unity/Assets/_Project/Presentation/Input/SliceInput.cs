@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace Steel.Presentation.Input
 {
-    public sealed class SliceInput : MonoBehaviour
+    public sealed class SliceInput : MonoBehaviour, IMoveInput
     {
         private InputAction move, look, interact;
         public bool IsBlocked { get; set; }

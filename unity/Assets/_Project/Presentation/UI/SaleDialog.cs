@@ -7,7 +7,7 @@ namespace Steel.Presentation.UI
     {
         public static void Build(CityHud hud)
         {
-            var panel = UiFactory.Panel("Konfirmasi Jual", hud.transform, new Vector2(.5f, 0),
+            var panel = UiFactory.Panel("Konfirmasi Jual", hud.SafeRoot, new Vector2(.5f, 0),
                 new Vector2(580, 300), new Vector2(0, 205));
             hud.SalePanel = panel.gameObject;
             hud.SaleText = UiFactory.Text(panel, "", 21, new Vector2(520, 190), new Vector2(0, 42));

@@ -10,8 +10,10 @@ namespace Steel.Editor
             var metal = CityMaterials.Surface("corrugated_iron", new Vector2(3, 1));
             var frame = CityMaterials.Plain("Baja gelap", new Color(.09f, .12f, .14f), .7f, .45f);
             var glass = CityMaterials.Plain("Kaca biru", new Color(.1f, .2f, .25f), .65f, .92f);
-            var warm = CityMaterials.Glow("Kaca hangat", new Color(.65f, .36f, .12f));
+            var warm = CityMaterials.Plain("Kaca hangat", new Color(.26f, .22f, .17f), .25f, .7f);
+            warm.DisableKeyword("_EMISSION"); warm.SetColor("_EmissionColor", Color.black);
             float height = floors * 3.1f;
+            FacadeDetails.Create(x, z, height);
             CityGeometry.Box(sign, new Vector3(x, height / 2, z), new Vector3(11, height, 9), wall);
             for (int f = 0; f < floors; f++)
             {

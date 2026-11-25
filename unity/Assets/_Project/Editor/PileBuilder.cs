@@ -8,28 +8,22 @@ namespace Steel.Editor
     {
         internal static void Create(CityLayout layout)
         {
-            var rust = CityMaterials.Surface("rusty_metal_04", new Vector2(2, 1));
-            var iron = CityMaterials.Surface("corrugated_iron", new Vector2(4, 2));
             foreach (var pile in layout.Piles)
             {
                 var root = new GameObject(pile.Id); root.transform.SetParent(CityGeometry.Root);
-                root.transform.position = new Vector3(pile.Position.X, 0, pile.Position.Z);
+                Vector3 p = new Vector3(pile.Position.X, .15f, pile.Position.Z);
                 root.AddComponent<PileMarker>().Id = pile.Id;
-                var label = new GameObject("Rongsok"); label.transform.SetParent(root.transform, false);
-                label.transform.localPosition = Vector3.up * 1.1f;
-                var text = label.AddComponent<TextMesh>(); text.text = "RONGSOK";
-                text.anchor = TextAnchor.MiddleCenter; text.fontSize = 64; text.characterSize = .09f;
-                text.color = new Color(1, .8f, .4f); label.AddComponent<WorldLabel>();
-                var random = new System.Random(71 + int.Parse(pile.Id.Substring(1)));
-                for (int i = 0; i < 18; i++)
+                ModelLibrary.Place("barrel_03", p + new Vector3(-.5f, 0, -.15f), .95f, 15, root.transform);
+                ModelLibrary.Place("old_tyre", p + new Vector3(.65f, 0, -.1f), .32f, 20, root.transform);
+                ModelLibrary.Place("wooden_crate_01", p + new Vector3(-.3f, 0, .8f), .65f, -12, root.transform);
+                for (int i = 0; i < 3; i++)
                 {
-                    Vector3 p = root.transform.position + new Vector3((float)random.NextDouble() * 1.5f - .75f,
-                        .2f + i * .018f, (float)random.NextDouble() - .5f);
-                    var go = CityGeometry.Box("Potongan baja", p,
-                        new Vector3(.15f + (float)random.NextDouble() * .3f, .06f, .6f + (float)random.NextDouble()),
-                        i % 3 == 0 ? iron : rust, false);
-                    go.transform.rotation = Quaternion.Euler(i * 13, i * 71, i * 5);
-                    go.transform.SetParent(root.transform);
+                    var pipe = ModelLibrary.Place("modular_industrial_pipes_01",
+                        p + new Vector3(.25f + i * .25f, .1f + i * .08f, .4f), .24f, i * 17, root.transform,
+                        "modular_industrial_pipes_01_pipe0" + (i + 1));
+                    pipe.transform.Rotate(0, 0, i * 5);
+                    SheetMesh.Place(p + new Vector3(.15f, .12f + i * .14f, -.3f),
+                        new Vector3(1.15f, 1, .8f), Quaternion.Euler(i * 8, i * 53, 8), root.transform);
                 }
             }
         }

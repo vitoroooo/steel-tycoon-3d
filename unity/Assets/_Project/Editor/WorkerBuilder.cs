@@ -1,3 +1,7 @@
+using System;
+using System.Linq;
+using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 using Steel.Services;
 using Steel.Presentation.Player;
@@ -6,45 +10,68 @@ namespace Steel.Editor
 {
     internal static class WorkerBuilder
     {
-        private static Transform Part(Transform parent, string name, PrimitiveType type, Vector3 p, Vector3 scale, Material mat)
+        private const string Path = "Assets/ThirdParty/Quaternius/Worker_Male.fbx";
+        private static RuntimeAnimatorController Controller()
         {
-            var go = CityGeometry.Shape(name, type, Vector3.zero, scale, mat, false);
-            go.isStatic = false; go.transform.SetParent(parent, false); go.transform.localPosition = p; go.layer = 2;
-            return go.transform;
+            const string path = "Assets/_Project/Generated/Worker.controller";
+            var controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(path);
+            var clips = AssetDatabase.LoadAllAssetsAtPath(Path).OfType<AnimationClip>()
+                .Where(c => !c.name.StartsWith("__preview__")).ToArray();
+            Debug.Log("WORKER_CLIPS: " + string.Join(", ", clips.Select(c => c.name)));
+            AnimationClip Find(string word) => clips.First(c => c.name.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0);
+            if (controller != null)
+            {
+                foreach (var state in controller.layers[0].stateMachine.states) state.state.motion = Find(state.state.name);
+                return controller;
+            }
+            controller = AnimatorController.CreateAnimatorControllerAtPath(path);
+            controller.AddParameter("Speed", AnimatorControllerParameterType.Float);
+            var machine = controller.layers[0].stateMachine;
+            var idle = machine.AddState("Idle"); idle.motion = Find("Idle"); machine.defaultState = idle;
+            var walk = machine.AddState("Walk"); walk.motion = Find("Walk");
+            var move = idle.AddTransition(walk); move.hasExitTime = false; move.duration = .15f;
+            move.AddCondition(AnimatorConditionMode.Greater, .2f, "Speed");
+            var stop = walk.AddTransition(idle); stop.hasExitTime = false; stop.duration = .15f;
+            stop.AddCondition(AnimatorConditionMode.Less, .15f, "Speed"); return controller;
         }
         internal static Transform Create(CityLayout layout)
         {
+            var importer = (ModelImporter)AssetImporter.GetAtPath(Path);
+            importer.animationType = ModelImporterAnimationType.Generic; importer.importAnimation = true;
+            importer.avatarSetup = ModelImporterAvatarSetup.CreateFromThisModel;
+            importer.importNormals = ModelImporterNormals.Calculate; importer.normalSmoothingAngle = 100;
+            var clips = importer.defaultClipAnimations;
+            foreach (var clip in clips)
+            { clip.loopTime = true; clip.lockRootRotation = true; clip.lockRootHeightY = true; clip.lockRootPositionXZ = true; }
+            importer.clipAnimations = clips; importer.SaveAndReimport();
             var root = new GameObject("Pekerja"); root.layer = 2;
             root.AddComponent<Steel.Presentation.World.FallRecovery>();
-            root.transform.position = new Vector3(layout.Spawn.X, .25f, layout.Spawn.Z);
-            var controller = root.AddComponent<CharacterController>(); controller.height = 1.8f;
-            controller.center = Vector3.up * .9f; controller.radius = .3f; controller.stepOffset = .3f;
-            var mover = root.AddComponent<PlayerMover>();
-            var visual = new GameObject("Seragam").transform; visual.SetParent(root.transform, false); mover.Visual = visual;
-            var vest = CityMaterials.Plain("Rompi keselamatan", new Color(1, .3f, .045f), .1f, .35f);
-            var cloth = CityMaterials.Plain("Seragam pekerja", new Color(.055f, .12f, .16f), 0, .3f);
-            var skin = CityMaterials.Plain("Kulit", new Color(.45f, .27f, .16f), 0, .3f);
-            var helmet = CityMaterials.Plain("Helm keselamatan", new Color(.95f, .67f, .08f), .15f, .6f);
-            var reflective = CityMaterials.Plain("Strip reflektif", new Color(.8f, .85f, .68f), .5f, .7f);
-            Part(visual, "Badan", PrimitiveType.Capsule, new Vector3(0, 1.12f, 0), new Vector3(.48f, .38f, .3f), vest);
-            Part(visual, "Kepala", PrimitiveType.Sphere, new Vector3(0, 1.63f, 0), new Vector3(.28f, .32f, .28f), skin);
-            Part(visual, "Helm", PrimitiveType.Sphere, new Vector3(0, 1.79f, 0), new Vector3(.36f, .18f, .36f), helmet);
-            Part(visual, "Pinggir helm", PrimitiveType.Cylinder, new Vector3(0, 1.75f, 0), new Vector3(.4f, .018f, .4f), helmet);
-            for (int side = -1; side <= 1; side += 2)
-                Part(visual, "Reflektor", PrimitiveType.Cube, new Vector3(side * .13f, 1.18f, -.154f),
-                    new Vector3(.045f, .38f, .015f), reflective);
-            var gait = visual.gameObject.AddComponent<WorkerGait>();
-            gait.LeftArm = Limb(visual, new Vector3(-.31f, 1.32f, 0), cloth);
-            gait.RightArm = Limb(visual, new Vector3(.31f, 1.32f, 0), cloth);
-            gait.LeftLeg = Limb(visual, new Vector3(-.13f, .73f, 0), cloth);
-            gait.RightLeg = Limb(visual, new Vector3(.13f, .73f, 0), cloth);
-            return root.transform;
+            root.transform.position = new Vector3(layout.Spawn.X, layout.SpawnY, layout.Spawn.Z);
+            var controller = root.AddComponent<CharacterController>(); controller.height = 1.85f;
+            controller.center = Vector3.up * .925f; controller.radius = .3f; controller.stepOffset = .3f;
+            var visual = UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(Path));
+            visual.name = "Pekerja / Quaternius"; visual.transform.SetParent(root.transform, false);
+            var b = WorkerBounds.Get(visual);
+            Debug.Log("WORKER_BOUNDS: bind=" + b + " animated=" + ModelLibrary.BoundsOf(visual));
+            visual.transform.localScale *= 1.8f / b.size.y;
+            b = WorkerBounds.Get(visual); visual.transform.position += root.transform.position -
+                new Vector3(b.center.x, b.min.y, b.center.z);
+            foreach (var renderer in visual.GetComponentsInChildren<Renderer>())
+                renderer.sharedMaterials = renderer.sharedMaterials.Select(WorkerMaterial).ToArray();
+            var animator = visual.GetComponent<Animator>() ?? visual.AddComponent<Animator>();
+            animator.avatar = AssetDatabase.LoadAllAssetsAtPath(Path).OfType<Avatar>().FirstOrDefault();
+            animator.runtimeAnimatorController = Controller();
+            animator.applyRootMotion = false; visual.AddComponent<WorkerAnimation>();
+            foreach (Transform t in visual.GetComponentsInChildren<Transform>()) t.gameObject.layer = 2;
+            root.AddComponent<PlayerMover>().Visual = visual.transform; return root.transform;
         }
-        private static Transform Limb(Transform parent, Vector3 position, Material mat)
+        private static Material WorkerMaterial(Material source)
         {
-            var pivot = new GameObject("Sendi").transform; pivot.SetParent(parent, false); pivot.localPosition = position;
-            Part(pivot, "Anggota badan", PrimitiveType.Capsule, Vector3.down * .25f, new Vector3(.17f, .3f, .17f), mat);
-            return pivot;
+            Color color = source.HasProperty("_Color") ? source.GetColor("_Color") : Color.gray;
+            if (source.name == "Skin") color = new Color(.4f, .24f, .16f);
+            var material = CityMaterials.Plain("Worker " + source.name, color, 0, .28f);
+            if (source.HasProperty("_MainTex")) material.mainTexture = source.GetTexture("_MainTex");
+            return material;
         }
     }
 }

@@ -14,14 +14,15 @@ namespace Steel.Services
         {
             safety = new WorldSafety(source.Read("City"));
             session = new SliceSession(new SliceRules(source.Read("City")),
-                new SliceWorld(source.Read("Piles")), scrap);
+                new SliceWorld(source.Read("Piles")), scrap, new Core.Fleet.PickupRules(source.Read("Vehicle")));
         }
         public GameView View => new GameView
         {
             Cash = session.Cash, CarriedKg = session.Bag.CarriedKg, CapacityKg = session.Bag.CapacityKg,
             Ibn = Prices.Ibn, GameHours = GameHours, Caste = 1,
             HomeDistance = session.Position.Distance(session.Rules.Home),
-            FactoryDistance = session.Position.Distance(session.Rules.Factory)
+            FactoryDistance = session.Position.Distance(session.Rules.Factory),
+            PlayerX = (float)session.Position.X, PlayerZ = (float)session.Position.Z
         };
         public InteractionView Nearby
         {
@@ -40,6 +41,9 @@ namespace Steel.Services
                     return new InteractionView { Id = "home", Title = "Lapak Anda", Detail = "Sortir muatan sesuai grade" };
                 if (View.FactoryDistance <= session.Rules.InteractRange)
                     return new InteractionView { Id = "factory", Title = "Pabrik AI", Detail = "Lihat harga & margin sebelum menjual" };
+                if (Vehicle.Occupied || Vehicle.Nearby)
+                    return new InteractionView { Id = "vehicle", Title = "Pikap bekas",
+                        Detail = Vehicle.Occupied ? "Berhenti lalu keluar" : "Pikap pinjaman · kapasitas 1 ton" };
                 return null;
             }
         }

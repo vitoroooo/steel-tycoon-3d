@@ -29,8 +29,13 @@ namespace Steel.Services
         }
 
         public ScrapPile CreatePile(double kilograms, ScrapGrade grade) => new ScrapPile(kilograms, grade);
-        public void Advance(double realSeconds) => clock.Advance(realSeconds);
-        public double CatchUp(double elapsedRealSeconds) => clock.CatchUp(elapsedRealSeconds);
+        public void Advance(double realSeconds)
+        { clock.Advance(realSeconds); session.Pickup.AdvanceTrip(realSeconds); }
+        public double CatchUp(double elapsedRealSeconds)
+        {
+            double applied = clock.CatchUp(elapsedRealSeconds);
+            session.Pickup.AdvanceTrip(applied); return applied;
+        }
         public double Quote(ScrapPile pile) => scrap.Quote(pile, Prices.ScrapReference);
     }
 }
