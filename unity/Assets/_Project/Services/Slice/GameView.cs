@@ -5,6 +5,7 @@ namespace Steel.Services
         public double Cash, CarriedKg, CapacityKg, Ibn, GameHours, HomeDistance, FactoryDistance;
         public int Caste;
         public float PlayerX, PlayerZ;
+        public bool GrantReady, GrantCollected, LoadSorted;
     }
     public sealed class InteractionView
     {

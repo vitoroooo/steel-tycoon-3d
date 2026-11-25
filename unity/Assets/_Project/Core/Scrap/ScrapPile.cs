@@ -25,6 +25,8 @@ namespace Steel.Core.Scrap
             if (dirtFraction > 1 || reuseQuality > 1) throw new ArgumentOutOfRangeException();
         }
 
+        internal ScrapPile Fresh() => new ScrapPile(GrossKg, hiddenGrade, dirtFraction, ReuseQuality);
+
         public ScrapGrade Inspect()
         {
             KnownGrade = hiddenGrade;

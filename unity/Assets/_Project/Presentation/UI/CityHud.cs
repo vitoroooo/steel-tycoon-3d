@@ -31,10 +31,10 @@ namespace Steel.Presentation.UI
             MarketText.text = "IBN  " + Money(v.Ibn) + " / kg\nACUAN PASAR · 10 MENIT\nHari " +
                 (1 + Math.Floor(v.GameHours / 24)) + "   " + ((int)v.GameHours % 24).ToString("00") + ":" +
                 ((int)(v.GameHours % 1 * 60)).ToString("00");
-            RouteText.text = "WASD / joystick: jalan  ·  Seret kanan / mouse kanan: kamera  ·  E: interaksi" +
+            RouteText.text = DartoDirections.Hint(host.Game, v) +
                 "\nLapak " + v.HomeDistance.ToString("N0") + " m    /    Pabrik AI " + v.FactoryDistance.ToString("N0") + " m";
             string action = near == null ? "CARI RONGSOK" : near.Id == "home" ? "SORTIR" :
-                near.Id == "factory" ? "LIHAT HARGA" :
+                near.Id == "factory" ? "LIHAT HARGA" : near.Id == "grant" ? "AMBIL HADIAH" :
                 near.Id == "cart" ? (host.Game.Cart.Held ? "LEPAS GEROBAK" : "DORONG GEROBAK") : near.Id == "vehicle" ?
                 VehicleText.Action(host.Game.Vehicle) : near.Inspected ? "PUNGUT" : "PERIKSA";
             ActionText.text = action;
@@ -58,6 +58,8 @@ namespace Steel.Presentation.UI
                 if (near == null) return;
                 if (near.Id == "vehicle") NoticeText.text = VehicleHud.Toggle(drivers, host.Game.Vehicle);
                 else if (near.Id == "cart") ToggleCart();
+                else if (near.Id == "grant")
+                    NoticeText.text = "Hadiah Pak Darto: " + Money(host.Game.ClaimDealerGrant()) + ". Pilih BELI TRISEDA.";
                 else if (near.Id == "home") { host.Game.SortAtHome(); NoticeText.text = "Muatan tersortir. Bawa ke Pabrik AI."; }
                 else if (near.Id == "factory") ShowOffer();
                 else if (!near.Inspected) { host.Game.Inspect(near.Id); NoticeText.text = "Grade terungkap. Tekan lagi untuk pungut."; }

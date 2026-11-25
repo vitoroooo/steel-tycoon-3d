@@ -26,6 +26,7 @@ namespace Steel.Services
             CreateSession(source);
             market.Refresh(0, economy.SupplyTargetKg);
             clock.HourTick += hour => market.RefreshBucket(hour, economy.SupplyTargetKg);
+            clock.HourTick += session.World.OnHour;
         }
 
         public ScrapPile CreatePile(double kilograms, ScrapGrade grade) => new ScrapPile(kilograms, grade);

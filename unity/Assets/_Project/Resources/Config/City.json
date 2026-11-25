@@ -1,5 +1,6 @@
 {
   "startCash": 500000,
+  "firstSaleGrant": 12000000,
   "spawnY": 0.3,
   "respawnBelowY": -15,
   "boundaryHalfWidth": 54,

@@ -12,5 +12,6 @@ namespace Steel.Services
         bool IsCollected(string id);
         SaleView PreviewSale();
         double ConfirmSale();
+        double ClaimDealerGrant();
     }
 }
