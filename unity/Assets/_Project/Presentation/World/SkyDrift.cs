@@ -15,6 +15,7 @@ namespace Steel.Presentation.World
 
         private void Start()
         {
+            gameObject.AddComponent<LocalRain>();
             if (RenderSettings.skybox == null) { enabled = false; return; }
             sky = new Material(RenderSettings.skybox);   // a copy, so play mode never edits the asset
             RenderSettings.skybox = sky;

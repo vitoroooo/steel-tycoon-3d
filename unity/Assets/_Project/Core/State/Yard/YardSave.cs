@@ -3,7 +3,7 @@ using Steel.Core.State;
 
 namespace Steel.Core.State.Saving
 {
-    [Serializable] public sealed class YardSave
+    [Serializable] public sealed partial class YardSave
     {
         public int reputation;
         public bool bandar, applied, leased;
@@ -19,7 +19,7 @@ namespace Steel.Core.State.Saving
             foreach (double x in saved.bids) NumberRules.NonNegative(x,"bid");
             foreach (double x in saved.stock) NumberRules.NonNegative(x,"stock");
             NumberRules.NonNegative(saved.permitHour,"permit"); NumberRules.NonNegative(saved.leaseUntil,"lease");
-            NumberRules.NonNegative(saved.soldKg,"sold"); return saved;
+            NumberRules.NonNegative(saved.soldKg,"sold"); saved.RestoreWeather(); return saved;
         }
     }
 }

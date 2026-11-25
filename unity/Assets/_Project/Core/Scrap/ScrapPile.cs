@@ -10,6 +10,13 @@ namespace Steel.Core.Scrap
         private readonly double dirtFraction;
         internal ScrapGrade Material => hiddenGrade;
         public double WasteKg => GrossKg * dirtFraction;
+        internal int RainHours { get; private set; }
+        public double RustFactor => Weather.DistrictWeather.ValueFactor(RainHours);
+        internal void WetHour()
+        {
+            if (Material == ScrapGrade.Hms1 || Material == ScrapGrade.Reuse) RainHours++;
+        }
+        internal void RestoreRain(int h) { if (h < 0) throw new FormatException("Karat tidak valid."); RainHours = h; }
         public double GrossKg { get; }
         public double AcquisitionCost { get; }
         public double ReuseQuality { get; }
@@ -34,11 +41,12 @@ namespace Steel.Core.Scrap
 
         internal LotSave Snapshot() => new LotSave { grade = (int)hiddenGrade, kg = GrossKg,
             dirt = dirtFraction, quality = ReuseQuality, cost = AcquisitionCost,
-            inspected = KnownGrade.HasValue, sorted = IsSorted };
+            inspected = KnownGrade.HasValue, sorted = IsSorted, rainHours = RainHours };
 
         internal static ScrapPile Load(LotSave dto)
         {
             var p = new ScrapPile(dto.kg, (ScrapGrade)dto.grade, dto.dirt, dto.quality, dto.cost);
+            p.RestoreRain(dto.rainHours);
             if (dto.inspected) p.Inspect();
             if (dto.sorted) p.Sort();
             return p;

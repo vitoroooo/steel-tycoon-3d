@@ -48,15 +48,20 @@ namespace Steel.Core.State.Slice
             double price = Yard.bids[grade] * kg;
             if (Cash < price || Yard.stock.Sum() + kg > capacity) return;
             Pay(price); Yard.stock[grade] += kg;
+            if (grade == 0) Yard.exposed.Add(new Saving.SteelBatch { kg = kg });
         }
-        public double ShipGrade(int grade, ConfigValues v, double price)
+        public double ShipGrade(int grade, ConfigValues v, double price, double hour, int soil)
         {
             RequireNear(Rules.Home);
             double kg = v.Positive("minShipmentKg"), freight = v.Positive("shipFee");
             if (!Yard.bandar || Yard.stock[grade] < kg) throw new InvalidOperationException("Perlu 15 ton satu grade.");
-            if (kg * price <= freight) throw new InvalidOperationException("Nilai kiriman tidak menutup ongkos.");
-            Yard.stock[grade] -= kg; double net = kg * price - freight;
-            Cash += net; CreditSale(kg); return net;
+            if (Yard.payout > 0) throw new InvalidOperationException("Trailer sebelumnya masih bongkar muat.");
+            double net = Yard.InvoiceWeight(grade,kg,false)*price - freight;
+            if (net <= 0) throw new InvalidOperationException("Nilai kiriman tidak menutup ongkos.");
+            AdmitTrailer(hour,soil); Yard.stock[grade] -= kg; Yard.InvoiceWeight(grade,kg,true);
+            Yard.payout = net; Yard.dispatchedKg = kg;
+            Yard.unloadHour = hour + kg/10000 * (soil != 0 && !Yard.paved ? 1.3 : 1);
+            return net;
         }
     }
 }

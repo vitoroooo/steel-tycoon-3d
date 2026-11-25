@@ -3,5 +3,6 @@
   "permit": 15000000, "rent": 20000000, "scale": 25000000, "loader": 150000000,
   "minimumCash": 250000000, "minimumReputation": 30, "capacityKg": 60000,
   "npcLotKg": 250, "shipFee": 3000000, "minShipmentKg": 15000,
-  "permitHours": 24, "leaseHours": 720
+  "permitHours": 24, "leaseHours": 720,
+  "roof": 120000000, "pave": 140000000, "tow": 2500000
 }

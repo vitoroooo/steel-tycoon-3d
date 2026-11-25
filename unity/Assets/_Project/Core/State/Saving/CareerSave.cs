@@ -15,10 +15,14 @@ namespace Steel.Core.State.Saving
         public double[] quota;
         public bool magnet, xrf;
         public YardSave yard;
+        public LotSave[] covered;
+        public int story;
+        public bool motorRoute, readForecast, sheltered;
     }
     [Serializable] public sealed class LotSave
     {
         public int grade;
+        public int rainHours;
         public double kg, dirt, quality, cost;
         public bool inspected, sorted;
     }
@@ -26,6 +30,7 @@ namespace Steel.Core.State.Saving
     {
         public string id;
         public bool inspected, collected;
+        public int rainHours;
     }
     [Serializable] public sealed class MotorSave
     {

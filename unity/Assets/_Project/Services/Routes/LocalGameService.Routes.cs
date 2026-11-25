@@ -44,6 +44,7 @@ namespace Steel.Services
             if (current.Kg != preview.Kg || current.Goods != preview.Goods || current.Travel != preview.Travel)
                 throw new InvalidOperationException("Penawaran berubah. Periksa biaya terbaru.");
             session.Dispatch(current, queueLimit);
+            if (current.Carrier == FleetCatalog.Triseda) MotorRoute = true;
         }
         public double CollectRoute() => session.CollectRoute();
     }

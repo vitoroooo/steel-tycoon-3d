@@ -9,6 +9,7 @@ namespace Steel.Services
         public string Save(long now)
         {
             var state = session.Snapshot(Areas.Length);
+            SaveGuide(state);
             state.seconds = clock.RealSeconds; state.savedUtc = now;
             return JsonUtility.ToJson(state);
         }
@@ -23,6 +24,7 @@ namespace Steel.Services
             game.clock.Restore(s.seconds);
             game.market.Refresh(s.seconds, game.supplyTargetKg);
             game.session.Load(s, Areas.Length, (long)Math.Floor(game.GameHours / 24));
+            game.LoadGuide(s);
             elapsed = game.CatchUp(Math.Max(0d, (double)now - s.savedUtc));
             return game;
         }
