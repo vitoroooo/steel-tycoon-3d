@@ -18,13 +18,31 @@ namespace Steel.Editor.Packaging
         [MenuItem("Steel/Build/Android APK")]
         public static void Android()
         {
+            Performance.MobilePipeline.Install();
+            PlayerSettings.Android.optimizedFramePacing = true;
             PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, AndroidId);
             PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
             PlayerSettings.Android.minSdkVersion = OldestAndroid;
             PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
             EditorUserBuildSettings.buildAppBundle = false;
-            Build("Android", "Build/Android/SteelTycoon.apk", BuildTarget.Android);
+            bool playtest = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-mobilePlaytest") >= 0;
+            var name = PlayerSettings.productName;
+            try
+            {
+                if (playtest)
+                {
+                    PlayerSettings.productName = "Sukabaja Uji";
+                    PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, AndroidId + ".playtest");
+                }
+                Build("Android", playtest ? "Build/Android/Sukabaja-Lanskap.apk" : "Build/Android/SteelTycoon.apk",
+                    BuildTarget.Android);
+            }
+            finally
+            {
+                PlayerSettings.productName = name;
+                PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, AndroidId);
+            }
         }
 
         private static void Build(string label, string path, BuildTarget target)

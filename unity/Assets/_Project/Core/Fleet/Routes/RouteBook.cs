@@ -11,6 +11,7 @@ namespace Steel.Core.Fleet.Routes
     {
         private readonly List<RouteOrder> orders = new List<RouteOrder>();
         private readonly Dictionary<int, double> reserved = new Dictionary<int, double>();
+        private readonly Dictionary<string, double> consumed = new Dictionary<string, double>();
         private long day;
         public IReadOnlyList<RouteOrder> Orders => orders;
         public double Reserved(int district) => reserved.TryGetValue(district, out var kg) ? kg : 0;
@@ -46,7 +47,8 @@ namespace Steel.Core.Fleet.Routes
 
         public void Advance(double seconds)
         {
-            var consumed = new Dictionary<string, double>();
+            if (orders.Count == 0) return;
+            consumed.Clear();
             foreach (var order in orders)
             {
                 if (order.SecondsLeft <= 0) continue;

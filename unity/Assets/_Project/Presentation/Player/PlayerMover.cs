@@ -14,7 +14,7 @@ namespace Steel.Presentation.Player
         private float verticalSpeed;
         private bool wasDriving;
         /// <summary>Metres per second squared: feet get up to speed and settle, never snap.</summary>
-        private const float Acceleration = 14, Braking = 18;
+        private const float Acceleration = 36, Braking = 42;
         private Vector3 planar;
         private void Start()
         {

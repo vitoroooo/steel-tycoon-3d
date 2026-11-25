@@ -5,6 +5,16 @@ namespace Steel.Presentation.Player
     public static class CameraCollision
     {
         private const int Mask = Physics.DefaultRaycastLayers;
+        public static Vector3 AlongSwipe(Vector3 focus, Vector3 desired, ref float boom, float dt)
+        {
+            float length = desired.magnitude;
+            if (Physics.SphereCast(focus, .34f, desired.normalized, out var hit, length, Mask, QueryTriggerInteraction.Ignore))
+                length = Mathf.Max(.08f, hit.distance - .08f);
+            if (Physics.Raycast(focus, desired.normalized, out var wall, length, Mask, QueryTriggerInteraction.Ignore))
+                length = Mathf.Max(.08f, wall.distance - .08f);
+            boom = boom <= 0 ? length : Mathf.Min(length, boom + 12 * dt);
+            return focus + desired.normalized * boom;
+        }
         private static float Clearance(Vector3 focus, Vector3 offset)
         {
             float length = offset.magnitude, clear = length; Vector3 direction = offset.normalized;

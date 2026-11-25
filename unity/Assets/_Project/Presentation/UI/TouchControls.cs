@@ -1,35 +1,42 @@
+using Steel.Presentation.Input;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem.OnScreen;
 
 namespace Steel.Presentation.UI
 {
     public static class TouchControls
     {
-        private static Sprite Circle()
+        private static RectTransform Zone(Transform root, string name, Vector2 min, Vector2 max)
         {
-            var tex = new Texture2D(64, 64);
-            for (int y = 0; y < 64; y++)
-                for (int x = 0; x < 64; x++)
-                    tex.SetPixel(x, y, Vector2.Distance(new Vector2(x, y), new Vector2(31.5f, 31.5f)) < 31
-                        ? Color.white : Color.clear);
-            tex.Apply(); return Sprite.Create(tex, new Rect(0, 0, 64, 64), new Vector2(.5f, .5f));
+            var area = UiFactory.Rect(name, root, min, Vector2.zero, Vector2.zero);
+            area.anchorMax = max; area.offsetMin = area.offsetMax = Vector2.zero;
+            area.gameObject.AddComponent<Image>().color = Color.clear;
+            return area;
         }
-        public static Text Build(Transform canvas)
+        public static Text Build(CityHud hud, SliceInput controls)
         {
-            var background = UiFactory.Panel("Joystick", canvas, Vector2.zero, new Vector2(170, 170), new Vector2(125, 125));
-            background.GetComponent<Image>().sprite = Circle();
-            background.GetComponent<Image>().color = new Color(.05f, .08f, .1f, .65f);
-            var handle = UiFactory.Panel("Gerak", background, new Vector2(.5f, .5f), new Vector2(78, 78), Vector2.zero);
-            handle.GetComponent<Image>().sprite = Circle(); handle.GetComponent<Image>().color = new Color(.9f, .85f, .68f, .8f);
-            var stick = handle.gameObject.AddComponent<OnScreenStick>();
-            stick.controlPath = "<Gamepad>/leftStick"; stick.movementRange = 55;
-            UiFactory.Text(background, "JALAN", 13, new Vector2(160, 24), new Vector2(0, -100), TextAnchor.MiddleCenter);
-            var button = UiFactory.Panel("Interaksi", canvas, new Vector2(1, 0), new Vector2(180, 70), new Vector2(-130, 105));
-            button.GetComponent<Image>().color = UiFactory.Gold;
-            var press = button.gameObject.AddComponent<OnScreenButton>(); press.controlPath = "<Gamepad>/buttonSouth";
-            var text = UiFactory.Text(button, "INTERAKSI", 18, new Vector2(180, 70), Vector2.zero, TextAnchor.MiddleCenter);
-            text.color = UiFactory.Ink; text.fontStyle = FontStyle.Bold; return text;
+            var root = hud.SafeRoot;
+            var sweep = Zone(root,"Usap kamera",new Vector2(.44f,0),Vector2.one);
+            sweep.gameObject.AddComponent<OrbitSurface>().Bind(controls);
+            var area = Zone(root,"Area gerak",Vector2.zero,new Vector2(.44f,.70f));
+            var stick = area.gameObject.AddComponent<FloatingStick>();
+            stick.Ring = PadArt.Disc("Pangkal",area,Vector2.zero,144,new Vector2(122,104),true).rectTransform;
+            stick.Thumb = PadArt.Disc("Pegangan",stick.Ring,new Vector2(.5f,.5f),57,Vector2.zero,false).rectTransform;
+            stick.Bind(controls);
+
+            var anchor = new Vector2(1,0);
+            var hit = UiFactory.Panel("Interaksi",root,anchor,new Vector2(140,140),new Vector2(-109,101));
+            var mask = hit.GetComponent<Image>(); mask.color = Color.clear;
+            hud.ActionPad = hit.gameObject.AddComponent<CanvasGroup>();
+            var face = PadArt.Disc("Aksi",hit,new Vector2(.5f,.5f),124,Vector2.zero,false);
+            var button = hit.gameObject.AddComponent<Button>(); button.targetGraphic = face;
+            var colors = button.colors; colors.pressedColor = new Color(1,.77f,.37f); button.colors = colors;
+            button.onClick.AddListener(hud.Act);
+            hit.gameObject.AddComponent<ThumbPress>().Face = face.rectTransform;
+            var label = UiFactory.Text(face.transform,"",17,new Vector2(112,64),Vector2.zero,TextAnchor.MiddleCenter);
+            label.resizeTextForBestFit = true; label.resizeTextMinSize = 13; label.resizeTextMaxSize = 19;
+            label.fontStyle = FontStyle.Bold; label.color = new Color(1,.87f,.55f);
+            return label;
         }
     }
 }

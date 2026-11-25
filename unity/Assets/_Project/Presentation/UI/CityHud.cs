@@ -8,7 +8,7 @@ using Steel.Presentation.Vehicles;
 
 namespace Steel.Presentation.UI
 {
-    public sealed class CityHud : MonoBehaviour
+    public sealed partial class CityHud : MonoBehaviour
     {
         public Text CashText, LoadText, MarketText, PromptText, ActionText, RouteText, NoticeText, SaleText;
         public GameObject SalePanel;
@@ -22,34 +22,34 @@ namespace Steel.Presentation.UI
         private string Money(double value) => "Rp " + value.ToString("N0", culture);
         private void Start()
         {
-            host = FindObjectOfType<GameHost>(); input = FindObjectOfType<SliceInput>(); HudLayout.Build(this);
+            host = FindObjectOfType<GameHost>(); input = FindObjectOfType<SliceInput>(); HudLayout.Build(this, input);
             drivers = FindObjectsOfType<MotorDriver>();
             routes = new RouteDesk(this, host.Game, input);
             NoticeText.text = lastSaveNotice = host.SaveNotice;
         }
         private void Update()
         {
-            var v = host.Game.View; var near = host.Game.Nearby;
             routes.Tick();
+            if (input.Interact) Act();
+            if (!DisplayDue()) return;
+            var v = host.Game.View; var near = host.Game.Nearby;
             if (lastSaveNotice != host.SaveNotice && (lastSaveNotice = host.SaveNotice) != null)
                 NoticeText.text = lastSaveNotice;
             CashText.text = Money(v.Cash);
-            LoadText.text = "KASTA " + v.Caste + "   /   Muatan " + v.CarriedKg + " / " + v.CapacityKg + " kg";
-            MarketText.text = "IBN  " + Money(v.Ibn) + " / kg\nACUAN PASAR · 10 MENIT\nHari " +
+            LoadText.text = "Kasta " + v.Caste + "     " + v.CarriedKg + " / " + v.CapacityKg + " kg";
+            MarketText.text = "IBN  " + Money(v.Ibn) + "/kg\nHari " +
                 (1 + Math.Floor(v.GameHours / 24)) + "   " + ((int)v.GameHours % 24).ToString("00") + ":" +
                 ((int)(v.GameHours % 1 * 60)).ToString("00");
-            RouteText.text = DartoDirections.Hint(host.Game, v) +
-                "\nLapak " + v.HomeDistance.ToString("N0") + " m    /    Pabrik AI " + v.FactoryDistance.ToString("N0") + " m";
+            RouteText.text = DartoDirections.Hint(host.Game, v);
             string action = near == null ? "CARI RONGSOK" : near.Id == "home" ? (v.CarriedKg == 0 ? "BUKA ARMADA" : "SORTIR") :
                 near.Id == "factory" ? "LIHAT HARGA" : near.Id == "grant" ? "AMBIL HADIAH" :
                 near.Id == "cart" ? (host.Game.Cart.Held ? "LEPAS GEROBAK" : "DORONG GEROBAK") : near.Id == "vehicle" ?
                 VehicleText.Action(host.Game.Vehicle) : near.Inspected ? "PUNGUT" : "PERIKSA";
             ActionText.text = action;
+            ActionPad.blocksRaycasts = near != null; ActionPad.alpha = near != null ? 1 : 0;
             VehicleHud.Refresh(this, host.Game.Vehicle);
-            PromptText.text = near == null ? "Jelajahi kawasan industri\nCari tumpukan rongsok di tepi jalan" :
-                near.Title + "  ·  " + near.Detail + "\n[E] " + action +
-                (near.Id.StartsWith("p") ? "   /   Periksa → Pungut" : "");
-            if (input.Interact) Act();
+            PromptText.text = near == null ? "Geser kiri untuk bergerak · Usap kanan untuk melihat" :
+                near.Title + "\n" + near.Detail;
         }
         private void Run(Action action)
         {
@@ -59,6 +59,7 @@ namespace Steel.Presentation.UI
         public void Act()
         {
             if (SalePanel.activeSelf || routes.Opened) return;
+            nextReadout = 0;
             Run(() =>
             {
                 var near = host.Game.Nearby;

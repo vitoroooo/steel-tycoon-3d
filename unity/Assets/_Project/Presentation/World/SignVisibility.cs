@@ -6,13 +6,16 @@ namespace Steel.Presentation.World
     public sealed class SignVisibility : MonoBehaviour
     {
         private Renderer mesh;
+        private Camera eye;
+        private float nextCheck;
         private void Awake() => mesh = GetComponent<Renderer>();
         private void LateUpdate()
         {
-            var camera = Camera.main;
-            if (camera == null) return;
-            Vector3 p = camera.WorldToViewportPoint(transform.position);
-            Vector3 span = camera.WorldToViewportPoint(transform.position + mesh.bounds.extents);
+            if (Time.unscaledTime < nextCheck) return;
+            nextCheck = Time.unscaledTime + .075f;
+            if (!eye && !(eye = Camera.main)) return;
+            Vector3 p = eye.WorldToViewportPoint(transform.position);
+            Vector3 span = eye.WorldToViewportPoint(transform.position + mesh.bounds.extents);
             float halfWidth = Mathf.Abs(span.x - p.x), halfHeight = Mathf.Abs(span.y - p.y);
             var rect = Rect.MinMaxRect(p.x - halfWidth, p.y - halfHeight, p.x + halfWidth, p.y + halfHeight);
             bool overlap = rect.Overlaps(new Rect(0, .76f, .44f, .24f)) ||
