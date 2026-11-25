@@ -32,6 +32,7 @@ namespace Steel.Editor
             var host = new GameObject("Game Services"); host.AddComponent<GameHost>();
             host.AddComponent<SliceInput>(); host.AddComponent<ScreenshotCapture>();
             Transform player = Characters.PlayerBuilder.Create(layout);
+            Map.Livestock.Create(player);
             Vehicles.GerobakBuilder.Create(player);
             Vehicles.TrisedaBuilder.Create(player); Vehicles.PikapBuilder.Create(player);
             Vehicles.DealerBuilder.Create();
