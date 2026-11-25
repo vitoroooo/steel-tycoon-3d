@@ -23,8 +23,6 @@ namespace Steel.Editor.Map
             RukoRow.Create(new Vector3(47, 0, -1.7f), 180, ShopNames.Bengkel, 1);
             // D: north of the factory, facing the main road.
             RukoRow.Create(new Vector3(16.3f, 0, 40.5f), 270, ShopNames.Industri, 4);
-            // The far side of the northern ring road closes the view up the main road.
-            RukoRow.Create(new Vector3(52.5f, 0, 69.8f), 180, ShopNames.JalanRaya, 2);
             MarketLane();
         }
 

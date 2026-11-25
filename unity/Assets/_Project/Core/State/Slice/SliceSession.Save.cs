@@ -13,15 +13,16 @@ namespace Steel.Core.State.Slice
             firstSale = FirstSaleMade, grant = GrantCollected, cartHeld = Cart.Held,
             bag = backpack.Snapshot(), cart = Cart.Cargo.Snapshot(),
             motors = Fleet.All.Select(m => m.Snapshot()).ToArray(),
-            sites = World.Piles.Select(w => new SiteSave { id = w.Id, collected = w.Collected,
-                inspected = w.Scrap.KnownGrade.HasValue, rainHours = w.Scrap.RainHours }).ToArray(),
-            routes = Routes.Snapshot(), quota = Enumerable.Range(0, districts).Select(Routes.Reserved).ToArray()
+            sites = World.Piles.Select(w => new SiteSave { id = w.Id, collected = w.Collected, emptied = w.EmptiedOrder,
+                kg = w.Collected ? 0 : w.Scrap.GrossKg, inspected = w.Scrap.KnownGrade.HasValue, rainHours = w.Scrap.RainHours }).ToArray(),
+            sellers = Street?.Snapshot(), loads = SaveLoads(), spk = Spk, risk = Risk, events = Events, legacies = Legacies, routes = Routes.Snapshot(), quota = Enumerable.Range(0, districts).Select(Routes.Reserved).ToArray()
         };
 
         public void Load(CareerSave s, int districts, long day)
         {
             if (s.version != 1 || s.grant && !s.firstSale || s.quota.Length != districts ||
-                s.motors.Length != Fleet.All.Count || s.motors.Select(m => m.id).Distinct().Count() != s.motors.Length ||
+                s.motors.Any(m => Fleet.All.All(f => f.Rules.Id != m.id)) ||   // a career saved before a vehicle existed still loads
+                s.motors.Select(m => m.id).Distinct().Count() != s.motors.Length ||
                 s.motors.Count(m => m.occupied) + (s.cartHeld ? 1 : 0) > 1) throw new FormatException("Karier tidak valid");
             Cash = NumberRules.NonNegative(s.cash, "cash"); FirstSaleMade = s.firstSale; GrantCollected = s.grant;
             Magnet = s.magnet; Xrf = s.xrf; Yard = YardSave.Restore(s.yard);
@@ -36,11 +37,15 @@ namespace Steel.Core.State.Slice
             foreach (var site in s.sites)
             {
                 var w = World.Find(site.id);
+                World.Restore(w, site.collected, site.emptied, site.kg);
                 w.Scrap.RestoreRain(site.rainHours);
                 if (site.inspected) w.Scrap.Inspect();
-                w.Collected = site.collected;
             }
             Routes.Load(s.routes, s.quota, day);
+            Street?.Load(s.sellers); RestoreLoads(s.loads); Spk = Trade.Spk.SpkSave.Restore(s.spk);
+            RestoreRisk(s.risk);
+            RestoreEvents(s.events);
+            RestoreLegacies(s.legacies);
         }
     }
 }

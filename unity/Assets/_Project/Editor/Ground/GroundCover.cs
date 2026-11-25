@@ -21,8 +21,8 @@ namespace Steel.Editor.Ground
             data.SetDetailScatterMode(DetailScatterMode.InstanceCountMode);
             data.detailPrototypes = new[]
             {
-                Tuft("grass_tuft", .45f, .8f, new Color(.64f, .68f, .52f), new Color(.52f, .56f, .42f)),
-                Tuft("grass_tuft_dry", .35f, .6f, new Color(.66f, .64f, .54f), new Color(.54f, .52f, .42f)),
+                Tuft("grass_tuft", .45f, .8f, new Color(.5f, .72f, .3f), new Color(.42f, .62f, .26f)),
+                Tuft("grass_tuft_dry", .35f, .6f, new Color(.72f, .72f, .36f), new Color(.62f, .6f, .3f)),
             };
             data.wavingGrassStrength = .45f; data.wavingGrassSpeed = .35f; data.wavingGrassAmount = .28f;
             data.wavingGrassTint = new Color(.93f, .9f, .78f);

@@ -13,6 +13,7 @@ namespace Steel.Core.State.Slice
         public string CrewStopReason(double hour, double toolCondition)
         {
             if (hour < Crew.investigateUntil) return "Lapak ditutup untuk investigasi K3.";
+            if (hour < Risk.seizedUntil) return "Operasional disita setelah razia.";
             if (hour < Crew.blockadeUntil) return "Akses jalan lapak sedang diblokade warga.";
             if (Crew.morale < Rule("strikeThreshold")) return "Regu mogok. Tunggu pemulihan atau naikkan gaji.";
             if (Crew.policy == ShiftPolicy.Hemat && !CrewSave.IsDay(hour)) return "Shift hemat hanya bekerja siang.";

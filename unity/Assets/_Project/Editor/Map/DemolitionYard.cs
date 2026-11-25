@@ -1,8 +1,9 @@
 using UnityEngine;
 using Steel.Editor.Buildings;
-using Steel.Editor.Characters;
+using Steel.Editor.Characters.Toon;
 using Steel.Editor.Models;
 using Steel.Editor.Npc;
+using Steel.Presentation.Characters.Toon;
 
 namespace Steel.Editor.Map
 {
@@ -20,9 +21,9 @@ namespace Steel.Editor.Map
             var bars = AuthoredModel.Create("Props/TumpukanSkrap", SmelterMaterials.Paint);   // reinforcement already pulled out
             Solid.Stand(bars, new Vector3(-46, 0, -36), 70, .55f);
             Solid.Box(bars, Vector3.up, new Vector3(7, 2, 5));
-            NpcBuilder.Idler("Kuli besi beton", CharacterCatalog.Worker, "m_work_mid", new Vector3(-43.6f, 0, -38.2f), 300, .15f);
-            NpcBuilder.Idler("Kuli istirahat", CharacterCatalog.Neighbour, "m_crouch_idle", new Vector3(-21.5f, 0, -35), 200, .6f);
-            NpcBuilder.Idler("Mandor bongkaran", CharacterCatalog.Worker, "m_idle_look_around_01", new Vector3(-15.5f, 0, -38.5f), 215, .35f);
+            NpcBuilder.Idler("Kuli besi beton", ToonCitizen.Worker, Stance.Work, new Vector3(-43.6f, 0, -38.2f), 300, .15f);
+            NpcBuilder.Idler("Kuli istirahat", ToonCitizen.Neighbour, Stance.Squat, new Vector3(-21.5f, 0, -35), 200, .6f);
+            NpcBuilder.Idler("Mandor bongkaran", ToonCitizen.Worker, Stance.Stand, new Vector3(-15.5f, 0, -38.5f), 215, .35f);
         }
 
         private static void Excavator(Vector3 at, float yaw)

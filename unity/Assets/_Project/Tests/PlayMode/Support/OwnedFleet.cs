@@ -10,9 +10,9 @@ namespace Steel.PlayTests.Support
     /// <summary>Loads the city with enough cash to buy a vehicle, so tests can get straight to driving.</summary>
     internal static class OwnedFleet
     {
-        internal static IEnumerator LoadWealthyCity()
+        internal static IEnumerator LoadWealthyCity(double cash = 200000000)
         {
-            GameHost.Source = new OverrideConfigSource(new ResourceConfigSource(), "City", "startCash", 200000000);
+            GameHost.Source = new OverrideConfigSource(new ResourceConfigSource(), "City", "startCash", cash);
             yield return SceneManager.LoadSceneAsync("City");
             GameHost.Source = null;
             yield return null;

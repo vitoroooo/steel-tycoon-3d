@@ -36,6 +36,7 @@ namespace Steel.Core.State.Slice
         {
             NumberRules.NonNegative(netCash, nameof(netCash));
             RecordOperatingProfit(realizedMargin);
+            Risk.turnover += netCash;
             CreditCash(netCash);
         }
 

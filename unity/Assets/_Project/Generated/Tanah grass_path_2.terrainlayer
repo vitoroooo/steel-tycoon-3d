@@ -7,16 +7,16 @@ TerrainLayer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Tanah grass_path_2
-  m_DiffuseTexture: {fileID: 2800000, guid: cded3073b47f85d1f9777331b58c33f7, type: 3}
-  m_NormalMapTexture: {fileID: 2800000, guid: e3a57cbeb50bd7dd6a698fb5393d1afb, type: 3}
+  m_DiffuseTexture: {fileID: 2800000, guid: b3da59d9c6a958777b0d7e07f403c071, type: 3}
+  m_NormalMapTexture: {fileID: 0}
   m_MaskMapTexture: {fileID: 0}
-  m_TileSize: {x: 4, y: 4}
+  m_TileSize: {x: 5, y: 5}
   m_TileOffset: {x: 0, y: 0}
   m_Specular: {r: 0, g: 0, b: 0, a: 0}
   m_Metallic: 0
-  m_Smoothness: 0.12
+  m_Smoothness: 0
   m_NormalScale: 1.1
   m_DiffuseRemapMin: {x: 0, y: 0, z: 0, w: 0}
-  m_DiffuseRemapMax: {x: 0.8, y: 0.76, z: 0.68, w: 1}
+  m_DiffuseRemapMax: {x: 1, y: 1, z: 1, w: 1}
   m_MaskMapRemapMin: {x: 0, y: 0, z: 0, w: 0}
   m_MaskMapRemapMax: {x: 1, y: 1, z: 1, w: 1}

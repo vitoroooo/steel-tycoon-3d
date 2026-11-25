@@ -1,0 +1,12 @@
+{
+  "truckKg": 8000,
+  "craneKgPerHour": 25000,
+  "yardReach": 20,
+  "gateReach": 14,
+  "deskReach": 6,
+  "engkelRun": 900000,
+  "trontonRun": 1800000,
+  "trailerRun": 3000000,
+  "gatePerHour": 6,
+  "queueMost": 3
+}

@@ -20,12 +20,7 @@ namespace Steel.Editor.Showroom
             Transform visual = seat.Rider, bike = seat.transform;
             visual.SetParent(seat.Mount, false);
             visual.localPosition = Vector3.zero; visual.localRotation = Quaternion.identity;
-            foreach (var skin in visual.GetComponentsInChildren<SkinnedMeshRenderer>())
-                skin.forceMatrixRecalculationPerRender = true;
-            var animator = visual.GetComponent<Animator>();
-            animator.Rebind();
-            animator.Update(0);
-            visual.GetComponent<HipsAnchor>().Apply();
+            visual.GetComponent<Steel.Presentation.Characters.Toon.ToonGait>().Joints.Rest();
             var pose = visual.GetComponent<SeatedPose>();
             pose.Sit(seat.Hips, seat.FootLeft, seat.FootRight);
             pose.Apply();

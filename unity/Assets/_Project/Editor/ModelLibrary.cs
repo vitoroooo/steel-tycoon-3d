@@ -10,6 +10,7 @@ namespace Steel.Editor
         internal static GameObject Place(string name, Vector3 position, float height, float yaw = 0,
             Transform parent = null, string part = null)
         {
+            if (part == null && Map.LightProps.Has(name)) return Map.LightProps.Place(name, position, height, yaw, parent);
             string path = name == "Pickup" ? "Assets/ThirdParty/Quaternius/Pickup.glb" :
                 "Assets/ThirdParty/PolyHavenModels/" + name + "/" + name + ".gltf";
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
@@ -22,6 +23,7 @@ namespace Steel.Editor
             Bounds bounds = BoundsOf(go); go.transform.localScale *= height / Mathf.Max(.001f, bounds.size.y);
             bounds = BoundsOf(go);
             go.transform.position += position - new Vector3(bounds.center.x, bounds.min.y, bounds.center.z);
+            Toon.ModelPaint.Apply(go, name);
             foreach (Transform t in go.GetComponentsInChildren<Transform>()) t.gameObject.isStatic = true;
             foreach (var filter in go.GetComponentsInChildren<MeshFilter>())
                 filter.gameObject.AddComponent<MeshCollider>().sharedMesh = filter.sharedMesh;

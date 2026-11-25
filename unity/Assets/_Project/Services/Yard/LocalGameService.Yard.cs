@@ -26,8 +26,13 @@ namespace Steel.Services
         {
             if (!session.Yard.bandar) return;
             int grade = (int)(hour % 4);
-            session.CrewReceive(grade, CounterRate(grade), business.Positive("npcLotKg"),
+            // a collectors' strike halves what arrives; a dirty load waits on the scale for the owner's answer
+            double kg = business.Positive("npcLotKg") * session.EventTerms.Supply(Core.Trade.Spk.SpkRules.Day(hour));
+            if (session.HoldDeposit(grade, kg, CounterRate(grade), business.Positive("capacityKg"), hour)) return;
+            double before = session.Yard.stock[grade];
+            session.CrewReceive(grade, CounterRate(grade), kg,
                 business.Positive("capacityKg"), hour, session.Yard.Machine(false,hour).condition, session.Caste);
+            session.SortDeposit(grade, session.Yard.stock[grade] - before, hour);
         }
         public YardView YardInfo(int grade)
         {

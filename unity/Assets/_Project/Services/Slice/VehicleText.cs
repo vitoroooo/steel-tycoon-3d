@@ -7,7 +7,11 @@ namespace Steel.Services
     {
         private static readonly CultureInfo Culture = CultureInfo.GetCultureInfo("id-ID");
 
-        public static string Name(VehicleView v) => v.Id == FleetCatalog.Triseda ? "Triseda (motor bak roda tiga)" : "Pikap bekas";
+        public static string Name(VehicleView v) =>
+            v.Id == FleetCatalog.Triseda ? "Triseda (motor bak roda tiga)" :
+            v.Id == FleetCatalog.Pikap ? "Pikap bekas" :
+            v.Id == FleetCatalog.Engkel ? "Truk engkel" :
+            v.Id == FleetCatalog.Tronton ? "Tronton tiga sumbu" : "Trailer flat-deck 20 kaki";
 
         public static string Load(double kilograms) =>
             kilograms >= 1000 ? (kilograms / 1000).ToString("0.#", Culture) + " ton" : kilograms.ToString("N0", Culture) + " kg";

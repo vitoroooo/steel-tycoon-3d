@@ -11,6 +11,10 @@ namespace Steel.Presentation.UI
             {
                 case "home": return v.CarriedKg == 0 ? "BUKA ARMADA" : v.LoadSorted ? "PAPAN HARGA" : "SORTIR";
                 case "buyer": return "PAPAN HARGA";
+                case "seller": return "TAWAR & BELI";
+                case "yardpost": return "MUAT TRUK";
+                case "playeryard": return "SETOR MUATAN";
+                case "gate": return "TIMBANG TRUK";
                 case "factory": return "LIHAT HARGA";
                 case "grant": return "AMBIL HADIAH";
                 case "cart": return host.Game.Cart.Held ? "LEPAS GEROBAK" : "DORONG GEROBAK";

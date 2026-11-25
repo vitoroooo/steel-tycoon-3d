@@ -41,6 +41,8 @@ namespace Steel.Core.State.Slice
             if (!Yard.bandar || hour >= Yard.leaseUntil) throw new InvalidOperationException("Lapak belum aktif.");
             Yard.bids[grade] = NumberRules.NonNegative(price, nameof(price));
         }
+        /// <summary>What the yard's scale last weighed in, for the collector the city shows walking up to it.</summary>
+        public Trade.Haul.YardReceipt LastReceipt { get; private set; }
         public void Receive(int grade, double floorRate, double kg, double capacity, long hour)
         {
             if (!HasScale || hour >= Yard.leaseUntil || Yard.bids[grade] < floorRate) return;
@@ -50,6 +52,7 @@ namespace Steel.Core.State.Slice
                 kg / Maintenance.ScaleCapacity) != WorkResult.Completed) return;
             Pay(price); Yard.stock[grade] += kg;
             RecordStockPurchase(grade,kg,price);
+            LastReceipt = new Trade.Haul.YardReceipt(LastReceipt.Serial + 1, grade, kg, price);
             if (grade == 0) Yard.exposed.Add(new Saving.SteelBatch { kg = kg });
         }
         public double ShipGrade(int grade, ConfigValues v, double price, double hour, int soil)

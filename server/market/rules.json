@@ -4,5 +4,79 @@
   "collectionKgPerGameHour": 1,
   "minReferencePercent": 50,
   "maxReferencePercent": 130,
-  "maxLotKg": 5000
+  "maxLotKg": 5000,
+  "contractMinDays": 3,
+  "contractMaxDays": 10,
+  "contractPenaltyPercent": 10,
+  "contractsShown": 8,
+  "partnersShown": 20,
+  "associationMax": 10,
+  "associationsShown": 12,
+  "chatMaxLength": 120,
+  "chatShown": 20,
+  "bannedWords": [
+    "anjing",
+    "bangsat",
+    "bajingan",
+    "kontol",
+    "memek",
+    "ngentot",
+    "goblok",
+    "tolol",
+    "babi"
+  ],
+  "promoteCost": [
+    250000000,
+    2950000000
+  ],
+  "blockadeCost": 500000000,
+  "blockadeHours": 24,
+  "blockadeCooldownHours": 72,
+  "casteThreeProtectionRealDays": 7,
+  "escortCost": 50000000,
+  "seasonRealDays": 90,
+  "closingDay": 76,
+  "cities": [
+    "Sukabaja",
+    "Tanjung Karat",
+    "Baja Agung",
+    "Kali Besi"
+  ],
+  "valuePerGroupPoint": 1000000,
+  "groupLevelPoints": [
+    100,
+    400,
+    1000,
+    2500
+  ],
+  "legacyPicks": 3,
+  "legacyQueueHours": 2,
+  "catchUpPercent": 50,
+  "legacies": [
+    {
+      "id": "triseda",
+      "name": "Mulai dengan triseda",
+      "level": 1
+    },
+    {
+      "id": "reputasi",
+      "name": "Reputasi awal 15",
+      "level": 1
+    },
+    {
+      "id": "sortir",
+      "name": "Sortir 10% lebih cepat",
+      "level": 1
+    },
+    {
+      "id": "antrean",
+      "name": "Antrean offline +2 jam",
+      "level": 2
+    },
+    {
+      "id": "pt",
+      "name": "PT sudah terdaftar",
+      "level": 3
+    }
+  ]
 }

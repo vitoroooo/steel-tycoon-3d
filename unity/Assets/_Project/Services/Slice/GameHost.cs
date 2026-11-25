@@ -9,7 +9,15 @@ namespace Steel.Services
         public IGameService Game { get; private set; }
         public CityLayout Layout { get; private set; }
         public bool Restored { get; private set; }
-        public string SaveNotice => files?.Notice ?? offlineNotice;
+        public string SaveNotice => remote?.Notice ?? files?.Notice ?? offlineNotice;
+        /// <summary>True when the career is the server's and this phone only shows it (PRD 12).</summary>
+        public bool Online => remote != null;
+        /// <summary>Online, the market between players is the same account as the career: one purse.</summary>
+        public NetworkMarket Market { get; private set; }
+        /// <summary>The other players in the shared city; none while playing offline.</summary>
+        public Remote.RemotePlayer[] Others => remote != null ? remote.Others : NoOne;
+        private static readonly Remote.RemotePlayer[] NoOne = new Remote.RemotePlayer[0];
+        private Remote.RemoteGameService remote;
         private CareerFiles files;
         private LocalGameService local;
         private float checkpoint;
@@ -23,17 +31,21 @@ namespace Steel.Services
         {
             var source = Source ?? new ResourceConfigSource();
             Layout = new CityLayout(source);
-            if (Source != null || Application.isBatchMode) local = new LocalGameService(source);
+            bool fresh = CareerLaunch.TakeFresh(), replaced = false;
+            Remote.OnlineCareer online = CareerLaunch.TakeOnline();
+            if (online != null) { Game = remote = online.Play(source); Market = online.Client.Market(); return; }
+            if (!CareerLaunch.UsesDisk) local = new LocalGameService(source);
             else
             {
-                files = new CareerFiles(Application.persistentDataPath);
-                local = files.Open(source, Now, out double elapsed);
+                var start = CareerStart.Open(Application.persistentDataPath, source, Now, fresh);
+                files = start.Files; local = start.Game; replaced = start.Replaced;
                 latest = files.LastUtc;
                 Restored = files.HasCareer;
-                if (Restored) Report(elapsed);
+                if (Restored) Report(start.Elapsed);
+                offlineNotice = start.Notice ?? offlineNotice;
             }
             Game = local;
-            if (Restored) Save();
+            if (Restored || replaced) Save();
         }
         private void Update()
         {

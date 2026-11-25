@@ -10,6 +10,12 @@ namespace Steel.Core.State.Saving
         public bool firstSale, grant, cartHeld;
         public LotSave[] bag, cart;
         public SiteSave[] sites;
+        public SellerSave[] sellers;
+        public Steel.Core.Trade.Haul.TruckLoad[] loads;
+        public Steel.Core.Trade.Spk.SpkSave spk;
+        public Steel.Core.Risk.RiskSave risk;
+        public Steel.Core.Events.EventSave events;
+        public string[] legacies;
         public MotorSave[] motors;
         public OrderSave[] routes;
         public double[] quota;
@@ -22,7 +28,15 @@ namespace Steel.Core.State.Saving
         public Steel.Core.Crew.CrewSave crew;
         public LotSave[] covered;
         public int story;
-        public bool motorRoute, readForecast, sheltered;
+        public bool motorRoute, readForecast, sheltered, streetTip, guideRead;
+    }
+    [Serializable] public sealed class SellerSave
+    {
+        public string id;
+        public long round;
+        public double kg, claimed, ask;
+        public int patience;
+        public bool weighed, agreed, inspected;
     }
     [Serializable] public sealed class LotSave
     {
@@ -36,6 +50,8 @@ namespace Steel.Core.State.Saving
         public string id;
         public bool inspected, collected;
         public int rainHours;
+        public long emptied;
+        public double kg;
     }
     [Serializable] public sealed class MotorSave
     {

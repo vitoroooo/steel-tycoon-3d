@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Steel.TestServers;
 using Steel.Services;
 using UnityEngine.TestTools;
 
@@ -46,6 +47,8 @@ namespace Steel.Tests.Network
             Assert.AreEqual(before.stock - 5, seller.Board.stock);
             Assert.AreEqual(wallet.stock + 5, buyer.Board.stock);
             Assert.AreEqual(0, buyer.Board.lots.Length);
+            await ContractFlow.Run(seller, buyer);
+            await GuildFlow.Run(seller, buyer);
             buyer.Disconnect();
             Assert.IsFalse(buyer.HasSession);
             Assert.IsNull(buyer.Board);

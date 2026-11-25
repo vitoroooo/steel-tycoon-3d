@@ -1,0 +1,20 @@
+[Unit]
+Description=Sukabaja: server karier (kas, lapak, pabrik, truk, risiko)
+After=network.target sukabaja-market.service
+Wants=sukabaja-market.service
+
+[Service]
+User=sukabaja
+WorkingDirectory=/opt/sukabaja/career
+ExecStart=/opt/sukabaja/career/Steel.Career /var/lib/sukabaja/pasar.sqlite3 /opt/sukabaja/unity/Assets/_Project/Resources 8766
+Restart=always
+RestartSec=3
+LimitCORE=0
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/sukabaja
+
+[Install]
+WantedBy=multi-user.target

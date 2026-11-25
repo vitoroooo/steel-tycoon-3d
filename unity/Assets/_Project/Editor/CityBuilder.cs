@@ -20,6 +20,7 @@ namespace Steel.Editor
             CityGeometry.Root = new GameObject("Sukabaja").transform;
             CityLighting.Create();
             var ground = Ground.GroundBuilder.Create(layout);
+            Plan.PlanBuilder.Create();
             StreetBuilder.Create();
             Map.RukoStreets.Create(); Map.KampungLane.Create(); Map.Greenery.Create(); Map.Fences.Create();
             Map.BackAlley.Create(Map.RukoStreets.AlleyX, Map.RukoStreets.AlleySouth, Map.RukoStreets.AlleyNorth, 2.6f);
@@ -34,13 +35,13 @@ namespace Steel.Editor
             Transform player = Characters.PlayerBuilder.Create(layout);
             Map.Livestock.Create(player);
             Vehicles.GerobakBuilder.Create(player);
+            Vehicles.DealerBuilder.Create();   // the lot floor first: vehicles park on whatever is under them
             Vehicles.TrisedaBuilder.Create(player); Vehicles.PikapBuilder.Create(player);
-            Vehicles.DealerBuilder.Create();
+            Vehicles.Trucks.TruckPool.Create(player);
             var camera = new GameObject("Main Camera", typeof(Camera)); camera.tag = "MainCamera";
             camera.AddComponent<AudioListener>(); camera.GetComponent<Camera>().fieldOfView = 62;
             camera.GetComponent<Camera>().nearClipPlane = .1f; camera.GetComponent<Camera>().farClipPlane = 200;
-            var data = camera.AddComponent<UniversalAdditionalCameraData>(); data.renderPostProcessing = true;
-            data.antialiasing = AntialiasingMode.FastApproximateAntialiasing;
+            var data = camera.AddComponent<UniversalAdditionalCameraData>(); data.renderPostProcessing = false;
             var orbit = camera.AddComponent<OrbitCamera>(); orbit.Target = player;
             new GameObject("HUD").AddComponent<CityHud>();
             var settings = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset")[0]);
@@ -48,10 +49,10 @@ namespace Steel.Editor
             PlayerSettings.productName = "Steel Tycoon 3D";
             PlayerSettings.defaultScreenWidth = 1280; PlayerSettings.defaultScreenHeight = 720;
             PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
-            EditorSceneManager.SaveScene(scene, "Assets/_Project/Scenes/City.unity");
-            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene("Assets/_Project/Scenes/City.unity", true) };
+            EditorSceneManager.SaveScene(scene, Packaging.BuildScenes.City);
+            Packaging.BuildScenes.Register();
             AssetDatabase.SaveAssets();
-            Debug.Log("CITY_GENERATED: " + layout.Piles.Length + " piles, lapak, smelter, URP PBR + ACES + bloom + SSAO");
+            Debug.Log("CITY_GENERATED: " + layout.Piles.Length + " piles, lapak, smelter, toon, flat sky, no post-processing");
         }
     }
 }

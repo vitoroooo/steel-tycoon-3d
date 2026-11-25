@@ -2,9 +2,12 @@ import json
 import re
 import time
 
+from . import contracts, guild, season
 from .clock import advance, prices
 from .orders import MarketError, require, settle
 from .storage import digest, transaction
+
+ACTIONS = {**contracts.ACTIONS, **guild.ACTIONS, **season.ACTIONS}
 
 
 def board(db, trader, quote):
@@ -13,7 +16,9 @@ def board(db, trader, quote):
                          JOIN traders t ON t.id=l.seller WHERE l.status='open' ORDER BY l.id""")
     buyers = db.execute("""SELECT COUNT(DISTINCT buyer) FROM trades JOIN lots ON trades.lot=lots.id
                            WHERE seller=?""", (trader,)).fetchone()[0]
-    return {**quote, **dict(account), "buyers": buyers, "lots": [dict(row) for row in lots]}
+    return {**quote, **dict(account), "buyers": buyers, "lots": [dict(row) for row in lots],
+            "contracts": contracts.listing(db, trader), "traders": contracts.partners(db, trader),
+            **guild.summary(db, trader, quote["gameHour"]), **season.summary(db, trader, quote)}
 
 
 def order(db, trader, body, quote):
@@ -29,7 +34,8 @@ def order(db, trader, body, quote):
 
     db.execute("SAVEPOINT settlement")
     try:
-        result = settle(db, trader, command, quote)
+        guild.gate(db, trader, command, quote["gameHour"])
+        result = ACTIONS.get(command.get("action"), settle)(db, trader, command, quote)
         status = 200
     except MarketError as error:
         db.execute("ROLLBACK TO settlement")
@@ -48,7 +54,10 @@ def dispatch(path, token, body, is_order, clock=time.time):
         require(trader, 401, "Token pedagang tidak sah.")
         suspended = db.execute("SELECT 1 FROM suspensions WHERE trader=?", (trader["id"],)).fetchone()
         require(not suspended, 403, "Akun ditangguhkan. Hubungi pengelola pasar.")
-        quote = prices(advance(db, trader, int(clock())))
+        now = int(clock())
+        quote = prices(advance(db, trader, now))
+        quote.update(season.roll(db, quote))
+        contracts.run(db, quote["gameHour"], now)
         if is_order:
             return order(db, trader["id"], body, quote)
         return 200, board(db, trader["id"], quote)

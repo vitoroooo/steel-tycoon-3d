@@ -8,7 +8,7 @@ namespace Steel.Editor.Map
     internal static class DemolitionSite
     {
         private static readonly Vector3 Building = new Vector3(-30, 0, -42);
-        private const float West = -53, North = -19.5f, South = -71, GateWest = -24, GateEast = -18, SmelterWall = 12.5f;
+        private const float West = -53, North = -19.5f, South = -71, GateWest = -24, GateEast = -18, RoadGap = 11.5f;
         private const float BayX = 4.5f, BayY = 5, Storey = 3.2f, Column = .4f;   // as in tools/blender/bongkaran/dims.py
 
         internal static void Create()
@@ -28,7 +28,7 @@ namespace Steel.Editor.Map
             SengFence.Run(new Vector3(West, 0, South), new Vector3(West, 0, North));
             SengFence.Run(new Vector3(West, 0, North), new Vector3(GateWest, 0, North));
             SengFence.Run(new Vector3(GateEast, 0, North), new Vector3(-9, 0, North));
-            SengFence.Run(new Vector3(SmelterWall, 0, South), new Vector3(West, 0, South));
+            SengFence.Run(new Vector3(-RoadGap, 0, South), new Vector3(West, 0, South));   // Jl. Raya runs on south
         }
 
         private static void Gate()

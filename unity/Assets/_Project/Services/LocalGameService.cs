@@ -20,7 +20,7 @@ namespace Steel.Services
             var time = new TimeConfig(source.Read("Time"));
             business = new Core.State.ConfigValues(source.Read("Business"));
             millRules = new Core.State.ConfigValues(source.Read("Mill"));
-            queueLimit = time.OfflineCapRealSeconds;
+            queueLimit = time.OfflineCapRealSeconds; hourSeconds = time.RealSecondsPerGameHour;
             routeConfig = new Core.State.ConfigValues(source.Read("Routes"));
             var economy = new EconomyConfig(source.Read("Economy"));
             supplyTargetKg = economy.SupplyTargetKg;
@@ -37,7 +37,6 @@ namespace Steel.Services
             session.RepairPaid += cost => session.RecordOperatingProfit(-cost);
             market.Refresh(0, economy.SupplyTargetKg);
             clock.HourTick += hour => market.RefreshBucket(hour, economy.SupplyTargetKg);
-            clock.HourTick += session.World.OnHour;
             clock.HourTick += session.Routes.OnHour;
             clock.HourTick += _ => FinanceTime();
             clock.HourTick += hour => session.CrewHour(hour, 0, session.Mill.shredder && session.Mill.pendingKg > 0 &&
@@ -46,6 +45,8 @@ namespace Steel.Services
             clock.HourTick += SupplierHour;
             clock.HourTick += TenderHour;
             clock.HourTick += SiteHour;
+            clock.HourTick += hour => session.AdvanceRisk(hour);
+            clock.HourTick += EventHour;
         }
 
         public ScrapPile CreatePile(double kilograms, ScrapGrade grade) => new ScrapPile(kilograms, grade);
@@ -53,7 +54,8 @@ namespace Steel.Services
         { clock.Advance(realSeconds); FinishTime(realSeconds); }
         private void FinishTime(double elapsed)
         {
-            session.Fleet.AdvanceTrip(elapsed); session.Routes.Advance(elapsed);
+            session.Fleet.AdvanceTrip(elapsed); session.Routes.Advance(elapsed); session.World.Advance(GameHours);
+            AdvanceTrade();
             FinanceTime();
             session.PayShipment(GameHours); session.FinishHeat(GameHours);
         }

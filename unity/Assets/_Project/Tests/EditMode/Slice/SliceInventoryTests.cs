@@ -27,12 +27,15 @@ namespace Steel.Tests.Slice
             Assert.Throws<InvalidOperationException>(() => game.Inspect("p0"));
         }
         [Test]
-        public void CarryCapRejectsWholePileWithoutLosingIt()
+        public void HandSackTakesWhatFitsAndLeavesTheRestAtTheSite()
         {
             AtPile(0); game.Inspect("p0"); game.PickUp("p0");
-            AtPile(1); game.Inspect("p1");   // 12 kg + 18 kg is more than one hand-carried sack (15 kg)
-            Assert.Throws<InvalidOperationException>(() => game.PickUp("p1"));
-            Assert.AreEqual(12, game.View.CarriedKg); Assert.IsFalse(game.IsCollected("p1"));
+            AtPile(1); game.Inspect("p1"); game.PickUp("p1");   // 12 kg carried, 18 kg pile, 15 kg sack
+            Assert.AreEqual(15, game.View.CarriedKg); Assert.IsFalse(game.IsCollected("p1"));
+            StringAssert.StartsWith("15 kg", game.Nearby.Detail); Assert.IsTrue(game.Nearby.Inspected);
+            var full = Assert.Throws<InvalidOperationException>(() => game.PickUp("p1"));
+            Assert.AreEqual("Muatan penuh. Sortir dan jual dahulu.", full.Message);
+            Assert.AreEqual(15, game.View.CarriedKg);
         }
         [Test]
         public void LocationsAreValidatedInsideService()

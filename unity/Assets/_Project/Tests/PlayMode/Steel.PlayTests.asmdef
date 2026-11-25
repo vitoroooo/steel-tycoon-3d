@@ -2,6 +2,7 @@
   "name": "Steel.PlayTests",
   "references": [
     "Steel.Services",
+    "Steel.Core",
     "Steel.Characters",
     "Steel.Vehicles",
     "Steel.Input",
@@ -9,7 +10,8 @@
     "Steel.World",
     "Steel.UI",
     "Unity.ugui",
-    "Unity.InputSystem"
+    "Unity.InputSystem",
+    "Steel.TestServers"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"

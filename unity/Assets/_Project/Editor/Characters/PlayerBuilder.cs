@@ -10,7 +10,7 @@ namespace Steel.Editor.Characters
     {
         private const int IgnoreRaycastLayer = 2;
         private const float ColliderRadius = .3f;
-        private const float StepHeight = .3f;
+        private const float StepHeight = .3f, SkinWidth = .03f;
 
         internal static Transform Create(CityLayout layout)
         {
@@ -22,9 +22,10 @@ namespace Steel.Editor.Characters
             controller.height = spec.HeightMetres;
             controller.center = Vector3.up * spec.HeightMetres / 2;
             controller.radius = ColliderRadius;
-            controller.stepOffset = StepHeight;
-            GameObject visual = CharacterRig.Create(spec, CharacterAnimator.Controller());
+            controller.stepOffset = StepHeight; controller.skinWidth = SkinWidth;
+            GameObject visual = Toon.ToonCharacter.Create(spec.HeightMetres);
             visual.transform.SetParent(root.transform, false);
+            visual.AddComponent<Steel.Presentation.Characters.FootGrounding>();
             foreach (Transform part in root.GetComponentsInChildren<Transform>())
                 part.gameObject.layer = IgnoreRaycastLayer;
             root.AddComponent<PlayerMover>().Visual = visual.transform;

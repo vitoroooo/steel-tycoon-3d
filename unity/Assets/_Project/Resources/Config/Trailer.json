@@ -1,0 +1,14 @@
+{
+  "capacityKg": 20000,
+  "price": 900000000,
+  "maxSpeedMps": 9,
+  "reverseSpeedMps": 2,
+  "acceleration": 2,
+  "braking": 7,
+  "turnDegrees": 36,
+  "enterRange": 5,
+  "spawnX": 147.32,
+  "spawnZ": 44.10,
+  "tripRealSeconds": 3600,
+  "exitMaxSpeed": 0.6
+}

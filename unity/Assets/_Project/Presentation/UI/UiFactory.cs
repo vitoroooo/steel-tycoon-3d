@@ -28,6 +28,13 @@ namespace Steel.Presentation.UI
             text.fontSize = fontSize; text.color = Color.white; text.alignment = alignment;
             text.raycastTarget = false; return text;
         }
+        /// <summary>Text that floats over the world with no panel behind it: a dark edge keeps it readable on pale ground.</summary>
+        public static Text Edged(Text text)
+        {
+            var edge = text.gameObject.AddComponent<Outline>();
+            edge.effectColor = Ink; edge.effectDistance = new Vector2(1.6f, -1.6f);
+            return text;
+        }
         public static Button Button(Transform parent, string caption, Vector2 size, Vector2 offset,
             UnityEngine.Events.UnityAction action)
         {

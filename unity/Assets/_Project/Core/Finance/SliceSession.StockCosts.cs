@@ -29,6 +29,17 @@ namespace Steel.Core.State.Slice
             if (Yard.paved) UseAsset("pave");
         }
 
+        /// <summary>Takes stock off the yard's books as it is loaded; returns its cost and how much of it has a known cost.</summary>
+        private (double Cost, double KnownKg) IssueStock(int grade, double kg)
+        {
+            double fraction = Math.Min(1, kg / Yard.stock[grade]), cost = accounts.stockCost[grade] * fraction;
+            double known = Math.Min(kg, accounts.knownKg[grade] * fraction);
+            accounts.stockCost[grade] -= cost; accounts.knownKg[grade] -= known;
+            UseAsset("loader");
+            if (Yard.paved) UseAsset("pave");
+            return (cost, known);
+        }
+
         private void CollectShipment()
         {
             CreditProceeds(Yard.payout, accounts.shipmentMargin);

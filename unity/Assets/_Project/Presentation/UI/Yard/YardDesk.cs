@@ -18,10 +18,10 @@ namespace Steel.Presentation.UI
         private int page, grade, district;
         private static readonly string[] Pages = {"Izin & lahan","Alat sortir","Papan setoran","Cuaca",
             "Lahan & angkutan","Pabrik baja","Lini produksi","Tender pemerintah","Lapak satelit",
-            "Perawatan alat","Keuangan","Regu & warga","Pasar jaringan","Uji performa HP"};
+            "Perawatan alat","Keuangan","Regu & warga","Kejadian","Pasar jaringan","Kontrak langsung","Asosiasi","Season & grup","Uji performa HP","Catatan Pak Darto"};
         private bool forms;
         private static string Rp(double n) => "Rp" + n.ToString("N0", CultureInfo.GetCultureInfo("id-ID"));
-        internal YardDesk(CityHud hud, IGameService game, SliceInput input)
+        internal YardDesk(CityHud hud, IGameService game, SliceInput input, NetworkMarket market = null)
         {
             this.game = game; this.input = input;
             trial = hud.gameObject.AddComponent<DeviceTrial>();
@@ -36,7 +36,7 @@ namespace Steel.Presentation.UI
             UiFactory.Button(panel, "TUTUP", new Vector2(156,54), new Vector2(-285,-156), Close);
             UiFactory.Button(panel, "SEBELUMNYA", new Vector2(194,54), new Vector2(24,-156), () => Turn(-1));
             UiFactory.Button(panel, "BERIKUTNYA", new Vector2(194,54), new Vector2(271,-156), () => Turn(1));
-            BuildIndex();
+            BuildIndex(); BuildGuide();
             var tab = hud.SafeRoot.Find("Usaha"); tab.GetComponent<Image>().raycastTarget = true;
             tab.gameObject.AddComponent<OpenLedger>().Open = () =>
             {
@@ -44,6 +44,7 @@ namespace Steel.Presentation.UI
                 panel.gameObject.SetActive(true); input.IsBlocked = true; Turn(0);
             };
             panel.gameObject.SetActive(false);
+            if (market != null) { network = market; NetworkRun(network.Refresh); }
         }
         private Text Line(int size,int y,int height) =>
             UiFactory.Text(panel,"",size,new Vector2(738,height),new Vector2(0,y));
@@ -73,8 +74,13 @@ namespace Steel.Presentation.UI
             else if (page == 9) DrawMaintenance();
             else if (page == 10) DrawFinance();
             else if (page == 11) DrawCrew();
-            else if (page == 12) DrawNetwork();
-            else DrawDevice();
+            else if (page == 12) DrawEvents();
+            else if (page == 13) DrawNetwork();
+            else if (page == 14) DrawContracts();
+            else if (page == 15) DrawGuild();
+            else if (page == 16) DrawSeason();
+            else if (page == 17) DrawDevice();
+            else DrawGuide();
         }
     }
 }

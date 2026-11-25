@@ -2,6 +2,7 @@
   "name": "Steel.Editor",
   "rootNamespace": "Steel.Editor",
   "references": [
+    "Steel.Core",
     "Steel.Services",
     "Steel.Characters",
     "Steel.Player",

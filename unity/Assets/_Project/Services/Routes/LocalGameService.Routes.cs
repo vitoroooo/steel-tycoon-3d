@@ -21,7 +21,7 @@ namespace Steel.Services
                 routeConfig.Positive("district" + district + "Kg") - session.Routes.Reserved(district));
             if (purchase) kg = Math.Min(kg, Math.Floor(Math.Max(0, session.Cash -
                 (vehicle == null ? 0 : routeConfig.Positive(id + "Fuel"))) / Prices.SellToK1));
-            double seconds = vehicle?.Rules.TripRealSeconds ?? routeConfig.Positive("cartSeconds");
+            double seconds = session.RouteSeconds(vehicle?.Rules.TripRealSeconds ?? routeConfig.Positive("cartSeconds"));
             return new RouteTicket(id, district, purchase, kg, seconds, purchase ? kg * Prices.SellToK1 : 0,
                 vehicle == null ? 0 : routeConfig.Positive(id + "Fuel"));
         }
@@ -43,6 +43,7 @@ namespace Steel.Services
             var current = Ticket(preview.Carrier, preview.District, preview.Purchased);
             if (current.Kg != preview.Kg || current.Goods != preview.Goods || current.Travel != preview.Travel)
                 throw new InvalidOperationException("Penawaran berubah. Periksa biaya terbaru.");
+            if (current.Carrier == "cart" && session.Cart.Held && session.Cart.Cargo.CarriedKg == 0) ReleaseCart();
             session.Dispatch(current, session.CrewQueueLimit(queueLimit));
             if (current.Carrier == FleetCatalog.Triseda) MotorRoute = true;
         }

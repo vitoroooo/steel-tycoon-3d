@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Steel.Editor.Ground
 {
-    /// <summary>Heights: dead flat where the game is played, rolling hills beyond the boundary so the horizon is never bare.</summary>
+    /// <summary>Heights: flat where the game is played, dug out along the river, rolling hills beyond the boundary.</summary>
     internal static class GroundShape
     {
         private const float Shoulder = 10, Rise = 90;   // flat margin past the boundary, distance over which hills grow
@@ -16,7 +16,8 @@ namespace Steel.Editor.Ground
                 {
                     float x = GroundZones.Centre.x + ((float)column / (resolution - 1) - .5f) * GroundZones.Size;
                     float z = GroundZones.Centre.z + ((float)row / (resolution - 1) - .5f) * GroundZones.Size;
-                    heights[row, column] = (GroundZones.Base + Hill(zones, x, z)) / GroundZones.Depth;
+                    float dug = zones.Districts.Dig(x, z, GroundZones.CityLevel - Plan.Water.RiverBuilder.Bed);
+                    heights[row, column] = (GroundZones.Base + Hill(zones, x, z) - dug) / GroundZones.Depth;
                 }
             return heights;
         }

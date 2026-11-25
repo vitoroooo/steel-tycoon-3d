@@ -18,10 +18,13 @@ docker run --rm --network host \
 Do not add -quit: the test runner exits after completion. Results and logs are ignored.
 Never modify unity-lic or touch the unity-box container.
 Generated project/cache files may be root-owned after Docker writes them.
-ProjectSettings, Scenes/City.unity and Generated/* are generator outputs, not authored code.
+ProjectSettings, Scenes/Boot.unity, Scenes/City.unity and Generated/* are generator outputs, not authored code.
 
 ## Generate, play, build
-Open Assets/_Project/Scenes/City.unity and press Play.
+Players start in Scenes/Boot.unity (build index 0): splash, then the start menu (Lanjutkan / Karier baru /
+Grafis), then City. Open Boot to play that way, or City.unity to skip straight into the game.
+Start-screen look (title, colours, logo/hero/backdrop/font paths) is Resources/Theme/Boot.json; wording is
+Services/Launch/MenuText.cs. Menu: Steel > Generate Boot (headless: Steel.Editor.Boot.BootSceneBuilder.Generate).
 WASD / on-screen joystick walks; hold mouse-right / drag upper-right screen to orbit.
 E / bottom-right touch button: inspect, then pick up. Return to lapak to sort.
 Walk to Pabrik AI, preview price/margin, then confirm the sale (or cancel).
@@ -82,7 +85,11 @@ The demo provides a loaner, not ownership/purchase or a cash grant. Entering tra
 the backpack into its cargo; exit leaves cargo in the pikap. Sorting/sales use the
 active container. Trip time counts occupied time, pauses outside, and clamps at zero;
 the next entry after completion begins another trip. No automated delivery reward exists.
-Piles.json configures eight finite world piles; no replenishment/faucet or NPC stock purchases.
+Piles.json configures ten street piles (192 kg). Every `restockHours` game hours (0.5 = 5 real
+minutes) the site emptied longest ago refills; the order is saved. The free gerobak round (20 kg,
+30 real minutes, Rp0) is the second starter income; the HUD hint and Pak Darto's letter name both.
+Picking up takes what fits (hand sack 15 kg, gerobak 50 kg); the rest stays at the site, is saved,
+and the site only joins the refill queue once it is empty.
 Factory prices apply K1 AI buy spread and grade factors; reuse uses its reference multiplier.
 Free collection costs Rp0; margin equals proceeds. NPC sales have no player transaction tax.
 Preview does not pay; confirmation rechecks location, inventory revision and quote bucket.

@@ -23,11 +23,12 @@ namespace Steel.Editor.Performance
                 AssetDatabase.CreateAsset(pipeline, root + "MobilePipeline.asset");
             }
             pipeline.supportsCameraDepthTexture = false; pipeline.supportsCameraOpaqueTexture = false;
-            pipeline.supportsHDR = false; pipeline.msaaSampleCount = 1; pipeline.renderScale = .80f;
+            pipeline.supportsHDR = false; pipeline.msaaSampleCount = 2;   // cheap on tile GPUs, and outlines need it
+            pipeline.renderScale = .80f;
             pipeline.shadowDistance = 28; pipeline.shadowCascadeCount = 1; pipeline.useSRPBatcher = true;
             var so = new SerializedObject(pipeline);
             so.FindProperty("m_MainLightShadowmapResolution").intValue = 1024;
-            so.FindProperty("m_SoftShadowsSupported").boolValue = false;
+            so.FindProperty("m_SoftShadowsSupported").boolValue = true;   // filtered edges: a clean shadow line, not stair-steps
             so.FindProperty("m_AdditionalLightsRenderingMode").intValue = (int)LightRenderingMode.Disabled;
             so.ApplyModifiedPropertiesWithoutUndo(); EditorUtility.SetDirty(pipeline); AssetDatabase.SaveAssets();
             return pipeline;

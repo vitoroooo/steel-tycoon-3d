@@ -19,11 +19,14 @@ namespace Steel.Services
             AllowAutoRedirect = false, UseProxy = false, UseCookies = false
         }) { Timeout = TimeSpan.FromSeconds(8) };
 
-        internal static async Task<T> Request<T>(Uri endpoint, string token, string command) where T : class
+        internal static Task<T> Request<T>(Uri endpoint, string token, string command) where T : class =>
+            Send<T>(new Uri(endpoint, command == null ? "market" : "orders"), token, command);
+
+        /// <summary>GET when there is no body, POST when there is one (an empty body is still a POST).</summary>
+        internal static async Task<T> Send<T>(Uri address, string token, string command) where T : class
         {
             bool read = command == null;
-            using (var request = new HttpRequestMessage(read ? HttpMethod.Get : HttpMethod.Post,
-                new Uri(endpoint, read ? "market" : "orders")))
+            using (var request = new HttpRequestMessage(read ? HttpMethod.Get : HttpMethod.Post, address))
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 if (!read) request.Content = new StringContent(command, Encoding.UTF8, "application/json");
@@ -35,7 +38,7 @@ namespace Steel.Services
                         var error = JsonUtility.FromJson<NetworkReceipt>(text);
                         throw new NetworkRejection((int)response.StatusCode, error?.message ?? "Permintaan ditolak.");
                     }
-                    return JsonUtility.FromJson<T>(text) ?? throw new FormatException("Balasan pasar kosong.");
+                    return JsonUtility.FromJson<T>(text) ?? throw new FormatException("Balasan server kosong.");
                 }
             }
         }

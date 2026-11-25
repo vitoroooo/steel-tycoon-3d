@@ -9,6 +9,19 @@ namespace Steel.Services
         public int ibn, minimum, maximum, reference, buyers;
         public string name;
         public NetworkLot[] lots;
+        public NetworkContract[] contracts = new NetworkContract[0];
+        public string[] traders = new string[0];
+        public int caste = 1;
+        public long blockedUntil;
+        public string blockedBy = "";
+        public NetworkGuild association = new NetworkGuild();
+        public NetworkGuildEntry[] associations = new NetworkGuildEntry[0];
+        public string[] rivals = new string[0];
+        public bool Blocked => blockedUntil > gameHour;
+        public int season = 1, seasonDay = 1, seasonDaysLeft = NetworkGroup.SeasonDays;
+        public bool closing;
+        public string city = "";
+        public NetworkGroup group = new NetworkGroup();
     }
 
     [Serializable]
@@ -23,7 +36,7 @@ namespace Steel.Services
     [Serializable]
     internal sealed class NetworkReceipt
     {
-        public long lot = 0;
+        public long lot = 0, contract = 0;
         public string message = "";
     }
 

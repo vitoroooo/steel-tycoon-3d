@@ -7,7 +7,6 @@ namespace Steel.Editor.Packaging
     /// <summary>Command-line player builds. Run with -executeMethod Steel.Editor.Packaging.PlayerBuilds.Android (or .Linux).</summary>
     public static class PlayerBuilds
     {
-        private const string Scene = "Assets/_Project/Scenes/City.unity";
         private const string AndroidId = "com.steeltycoon.sukabaja";
         private const AndroidSdkVersions OldestAndroid = AndroidSdkVersions.AndroidApiLevel24;   // Android 7: first with Vulkan
 
@@ -49,7 +48,7 @@ namespace Steel.Editor.Packaging
         {
             BuildReport report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
-                scenes = new[] { Scene }, locationPathName = path, target = target, options = BuildOptions.None
+                scenes = BuildScenes.All, locationPathName = path, target = target, options = BuildOptions.None
             });
             if (report.summary.result != BuildResult.Succeeded)
                 throw new System.Exception(label + " build failed: " + report.summary.result);

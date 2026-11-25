@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 namespace Steel.Presentation.World.Mobile
 {
@@ -18,8 +19,16 @@ namespace Steel.Presentation.World.Mobile
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Start()
         {
-            if (!Application.isMobilePlatform || !Camera.main) return;
-            Apply(Camera.main); QualitySettings.vSyncCount = 0; MobileQuality.Restore();
+            if (!Application.isMobilePlatform) return;
+            QualitySettings.vSyncCount = 0; MobileQuality.Restore();
+            Follow();
         }
+        /// <summary>Trims the game camera of every scene: it arrives after the start menu, not with the first scene.</summary>
+        public static void Follow()
+        {
+            SceneManager.sceneLoaded -= Fit; SceneManager.sceneLoaded += Fit;
+            Fit(default, default);
+        }
+        private static void Fit(Scene scene, LoadSceneMode mode) { if (Camera.main) Apply(Camera.main); }
     }
 }

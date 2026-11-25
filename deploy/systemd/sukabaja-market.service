@@ -1,0 +1,18 @@
+[Unit]
+Description=Sukabaja: server pasar (kontrak, asosiasi, season)
+After=network.target
+
+[Service]
+User=sukabaja
+WorkingDirectory=/opt/sukabaja
+ExecStart=/usr/bin/python3 -m server.market --db /var/lib/sukabaja/pasar.sqlite3 serve --port 8765
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/sukabaja
+
+[Install]
+WantedBy=multi-user.target

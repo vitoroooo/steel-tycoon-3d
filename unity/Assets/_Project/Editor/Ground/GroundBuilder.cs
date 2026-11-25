@@ -7,7 +7,7 @@ namespace Steel.Editor.Ground
     /// <summary>Builds the terrain under the whole city: shape and painted layers; GroundCover adds the grass once the city stands.</summary>
     internal static class GroundBuilder
     {
-        private const int HeightSamples = 513, PaintSamples = 1024;
+        private const int HeightSamples = 1025, PaintSamples = 1024;
         private const string DataPath = CityMaterials.Generated + "Tanah.asset";
         private const string MaterialPath = CityMaterials.Generated + "Tanah.mat";
 

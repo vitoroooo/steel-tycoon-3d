@@ -13,6 +13,8 @@ namespace Steel.Services
         bool StoredUnderRoof { get; }
         double NextBikeMinutes { get; }
         bool HasSteel { get; }
+        bool GuideRead { get; }
+        void ReadGuide();
     }
     public sealed partial class LocalGameService
     {
@@ -22,6 +24,8 @@ namespace Steel.Services
         public bool StoredUnderRoof { get; private set; }
         public void ReadStory() => Story = Math.Min(2,Story+1);
         public void ReadForecast() => ReadWeather = true;
+        public bool GuideRead { get; private set; }
+        public void ReadGuide() => GuideRead = true;
         public bool HasSteel
         {
             get
@@ -41,11 +45,14 @@ namespace Steel.Services
             }
         }
         private void SaveGuide(CareerSave s)
-        { s.story = Story; s.motorRoute = MotorRoute; s.readForecast = ReadWeather; s.sheltered = StoredUnderRoof; }
+        {
+            s.story = Story; s.motorRoute = MotorRoute; s.readForecast = ReadWeather;
+            s.sheltered = StoredUnderRoof; s.streetTip = StreetTipRead; s.guideRead = GuideRead;
+        }
         private void LoadGuide(CareerSave s)
         {
             Story = s.firstSale ? 2 : Math.Max(0,Math.Min(2,s.story)); MotorRoute = s.motorRoute;
-            ReadWeather = s.readForecast; StoredUnderRoof = s.sheltered;
+            ReadWeather = s.readForecast; StoredUnderRoof = s.sheltered; StreetTipRead = s.streetTip; GuideRead = s.guideRead;
         }
     }
 }

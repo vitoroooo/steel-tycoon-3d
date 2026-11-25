@@ -11,7 +11,10 @@ HERE = Path(__file__).resolve().parent
 MODELS = HERE.parents[1] / 'unity/Assets/_Project/Models'
 sys.path.insert(0, str(HERE))
 
-from kit import scene  # noqa: E402  (needs the path above)
+from kit import lighten, scene  # noqa: E402  (needs the path above)
+
+# Models that stand in the city many times over, and the triangles each may cost.
+BUDGETS = {'kontainer': 700, 'skrap': 3000, 'cerobong': 3000, 'pisang': 2000, 'billet': 800}
 
 
 def main():
@@ -19,6 +22,8 @@ def main():
     module = importlib.import_module(asset + '.build')
     scene.reset()
     folder, name = module.build()
+    if asset in BUDGETS:
+        lighten.to_budget(BUDGETS[asset])
     target = MODELS / folder
     target.mkdir(parents=True, exist_ok=True)
     scene.export(target / (name + '.fbx'))

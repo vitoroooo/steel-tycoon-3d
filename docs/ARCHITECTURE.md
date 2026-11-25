@@ -25,6 +25,8 @@ Sumber kebutuhan: PRD §17.1, angka dari docs/ECONOMY_SPEC.md (hasil Fase 0).
 | `Core/Time` | Steel.Core | Jam game, tick, simulasi offline |
 | `Core/State` | Steel.Core | GameState + save/load (JSON) |
 | `Services` | Steel.Services | Interface + implementasi lokal (pengganti backend) |
+| `Services/Launch` | Steel.Services | Alur layar awal (splash → menu → konfirmasi → muat), teks menu, ringkasan & mulai karier |
+| `Presentation/UI/Boot` | Steel.UI | Scene Boot: splash, menu awal dua jempol, layar muat; tema di `Resources/Theme/Boot.json` |
 | `Presentation/UI` | Steel.UI | HUD (§12.1), nav bawah (§12.2), dialog konfirmasi |
 | `Presentation/World` | Steel.World | Kota 3D HD (URP), kamera third-person |
 | `Presentation/Player` | Steel.Player | Character controller dan interaksi tumpukan di dunia |
@@ -41,6 +43,13 @@ Core/State/Slice menyimpan posisi interaksi, world piles, inventori dan kas.
 Services memberi DTO untuk presentasi; inspeksi/pungut/sortir/konfirmasi jual lewat IGameService.
 Harga AI diperiksa lagi saat konfirmasi; penawaran kedaluwarsa harus diperbarui.
 City.json/Piles.json adalah data bersama untuk Core dan generator scene.
+Piles.json `restockHours` (0,5 = 5 menit nyata): tiap selang itu satu tumpukan kosong terisi lagi (urutan kosong tersimpan di save).
+Services/Guide/IncomeView merangkum sumber uang pemula (tumpukan, isi ulang, rute gerobak gratis, kiriman)
+untuk Presentation/UI/Guide (IncomeHint, DartoLetter); tes di Tests/EditMode/Income dan PlayMode/StreetIncomeTests.
+Panduan pemula ("Catatan Pak Darto"): Presentation/UI/Guide/GuideBook (angka dibaca dari game yang berjalan)
+ditampilkan YardDesk.Guide di Buku usaha lewat tombol PANDUAN. Panduan hanya terbuka bila pemain mengetuknya;
+baris prompt saat diam menunjuk ke sana sampai pemain pernah membukanya (CareerSave.guideRead). Teks panduan,
+surat, dan petunjuk ditulis dengan suara Pak Darto: kalimat pendek, "kamu", tanpa gaya buku manual. Tes: GuideBookTests, PlayMode/GuideBookPageTests.
 Editor membangun geometri detail, PBR CC0, HDRI, URP, ACES, bloom dan SSAO.
 Scenes/City.unity, Generated/* serta ProjectSettings adalah keluaran generator (boleh >100 baris).
 Input/Player/UI/World/Vehicles aktif; Core/Fleet menyimpan kapasitas pikap dan waktu trip.

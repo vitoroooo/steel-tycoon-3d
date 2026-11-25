@@ -42,14 +42,14 @@ namespace Steel.Presentation.UI
             }
             if (networkTab == NetworkTab.Lots) { DrawNetworkLots(account); return; }
             if (networkTab == NetworkTab.Sell) { DrawNetworkSale(account); return; }
-            detail.text = account.name + "   ·   Kas pasar " + Rp(account.cash) + "   ·   HMS 1 " + account.stock +
+            detail.text = account.name + (network.Shared ? "   ·   Kas " : "   ·   Kas pasar ") + Rp(account.cash) + "   ·   HMS 1 " + account.stock +
                 " kg\nIBN " + Rp(account.ibn) + "/kg   ·   Acuan " + Rp(account.reference) +
                 "/kg   ·   Jam kota " + account.gameHour + "\n" + account.lots.Length + " lot · " +
                 account.buyers + " pelanggan berbeda · Pajak 2%";
             if (networkTab == NetworkTab.Settings)
             {
                 Key(0,"Muat ulang",() => NetworkRun(network.Refresh));
-                Key(1,"Lepas akun",NetworkLogout);
+                if (!network.Shared) Key(1,"Lepas akun",NetworkLogout);
                 Key(2,"Kembali",() => NetworkOpen(NetworkTab.Account)); return;
             }
             Key(0,"Papan lot",() => NetworkOpen(NetworkTab.Lots));

@@ -1,5 +1,6 @@
 import time
 
+from .contracts import release
 from .storage import transaction
 
 
@@ -15,6 +16,7 @@ def moderate(path, name, suspend):
             if lot:
                 db.execute("UPDATE lots SET status='cancelled' WHERE id=?", (lot["id"],))
                 db.execute("UPDATE traders SET stock=stock+? WHERE id=?", (lot["kg"], trader))
+            release(db, trader)
         else:
             changed = db.execute("DELETE FROM suspensions WHERE trader=?", (trader,))
         if changed.rowcount:
