@@ -1,0 +1,11 @@
+{
+  "comment": "Poly Haven CC0 props placed by the city generator. Fetched as glTF with 1K maps.",
+  "models": [
+    "plastic_monobloc_chair_01",
+    "potted_plant_04",
+    "trashbag",
+    "utility_box_01",
+    "painted_wooden_bench",
+    "fern_02"
+  ]
+}

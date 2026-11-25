@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using Steel.Services;
+using Steel.PlayTests.Support;
 using Steel.Presentation.Input;
 using Steel.Presentation.Vehicles;
 
@@ -14,11 +15,11 @@ namespace Steel.PlayTests
         private sealed class Steering : IMoveInput { public Vector2 Move => Vector2.one; }
         [UnityTest] public IEnumerator HardSteeringBesideWallNeverPenetratesOrCrossesIt()
         {
-            yield return SceneManager.LoadSceneAsync("City"); yield return null;
-            var host = Object.FindObjectOfType<GameHost>(); var driver = Object.FindObjectOfType<PickupDriver>();
+            yield return OwnedFleet.LoadWealthyCity();
+            var host = Object.FindObjectOfType<GameHost>(); var driver = OwnedFleet.Buy(host, FleetCatalog.Pikap);
             var body = driver.GetComponent<Rigidbody>(); var box = driver.GetComponent<BoxCollider>();
             body.position = new Vector3(0, .035f, 30); body.rotation = Quaternion.identity;
-            host.Game.ReportVehicle(0, 30, 0);
+            host.Game.ReportVehicle(FleetCatalog.Pikap, 0, 30, 0);
             float end = Time.fixedTime + .12f;
             while (Time.fixedTime < end) yield return new WaitForFixedUpdate();
             host.Game.SetPosition(0, 30); driver.Toggle(); driver.MoveInput = new Steering();

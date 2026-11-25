@@ -10,6 +10,12 @@ Legal text: https://creativecommons.org/publicdomain/zero/1.0/
 - https://polyhaven.com/a/street_lamp_01
 - https://polyhaven.com/a/rollershutter_window_01
 - https://polyhaven.com/a/rollershutter_door
+- https://polyhaven.com/a/plastic_monobloc_chair_01
+- https://polyhaven.com/a/potted_plant_04
+- https://polyhaven.com/a/trashbag
+- https://polyhaven.com/a/utility_box_01
+- https://polyhaven.com/a/painted_wooden_bench
+- https://polyhaven.com/a/fern_02
 Original glTF, bin and 1K PBR maps. No attribution required.
 Downloads were verified against provider MD5 values.
 checksums.json records exact source URLs, sizes and SHA256 for every file.

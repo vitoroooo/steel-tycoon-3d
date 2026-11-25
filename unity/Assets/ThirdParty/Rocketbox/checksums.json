@@ -1,0 +1,260 @@
+{
+  "files": {
+    "Animations/f_idle_neutral_01.fbx": {
+      "sha256": "fd68b33ea9e290dc734ca8c3a71ef5842bb2dfe719853ff84f6336d06d39fdcb",
+      "source": "Assets/Animations/all_animations_max_motextr_static/f_idle_neutral_01.max.fbx"
+    },
+    "Animations/f_walk_neutral.fbx": {
+      "sha256": "e210c9e34949a4eacad0a85021d4d1a59aab177ca1737e6038309896147ebae2",
+      "source": "Assets/Animations/all_animations_max_motextr_xy/f_walk_neutral.max.fbx"
+    },
+    "Animations/m_crouch_idle.fbx": {
+      "sha256": "d3704294853eda39d566cb31b0e6a6c50bd3cc3c1bda9102c1156c1537c12eeb",
+      "source": "Assets/Animations/all_animations_max_motextr_static/m_crouch_idle.max.fbx"
+    },
+    "Animations/m_gestic_talk_relaxed_01.fbx": {
+      "sha256": "560c369eeec15c56534cdd8a87bdebd76f365a783c43b473e879a1707721be07",
+      "source": "Assets/Animations/all_animations_max_motextr_static/m_gestic_talk_relaxed_01.max.fbx"
+    },
+    "Animations/m_idle_look_around_01.fbx": {
+      "sha256": "018b19ad26695c5ebbd4131e0506da69dc76f4001a8100a9e38fcdb9a202b7a4",
+      "source": "Assets/Animations/all_animations_max_motextr_static/m_idle_look_around_01.max.fbx"
+    },
+    "Animations/m_idle_neutral_01.fbx": {
+      "sha256": "818cc185af21390575f7fbfdeb3012ba2ce5969fbcb220ea725a2617b339a6e2",
+      "source": "Assets/Animations/all_animations_max_motextr_static/m_idle_neutral_01.max.fbx"
+    },
+    "Animations/m_run_neutral.fbx": {
+      "sha256": "2f5647b86022ddbb702819ce939c7012e3636796fff93d1b979ea716a71dff5f",
+      "source": "Assets/Animations/all_animations_max_motextr_xy/m_run_neutral.max.fbx"
+    },
+    "Animations/m_sit_chair_idle_look_around.fbx": {
+      "sha256": "08fbd2b1a75fa6c697e652905749187bc0cd5647d20bc6184d618032972cf3c2",
+      "source": "Assets/Animations/all_animations_max_motextr_static/m_sit_chair_idle_look_around.max.fbx"
+    },
+    "Animations/m_walk_neutral.fbx": {
+      "sha256": "93089851a370e3a117a6bd04c002815f7133fce41c6271e9eb448ca1228b154f",
+      "source": "Assets/Animations/all_animations_max_motextr_xy/m_walk_neutral.max.fbx"
+    },
+    "Animations/m_work_mid.fbx": {
+      "sha256": "ee757d60b1b63b09d5cea245ba23d8435d2f03a173ca08b270142ec3d57e2e2a",
+      "source": "Assets/Animations/all_animations_max_motextr_static/m_work_mid.max.fbx"
+    },
+    "Construction_Male_03/Construction_Male_03.fbx": {
+      "sha256": "2526789e8fba729d71c7faae22130a73fe89800578ba5171165805db97ae696d",
+      "source": "Assets/Avatars/Professions/Construction_Male_03/Export/Construction_Male_03.fbx"
+    },
+    "Construction_Male_03/Textures/m102_body_color.jpg": {
+      "sha256": "71f466a8b0fbc104c352f4b0932851299f7f14257708fe3b1ae243574ce3b9ef",
+      "source": "Assets/Avatars/Professions/Construction_Male_03/Textures/m102_body_color.tga",
+      "source_sha256": "b12140e2779ead0a02bae99e6aa8eb0cd380286800f92e3c7acb73200f046189"
+    },
+    "Construction_Male_03/Textures/m102_body_normal.png": {
+      "sha256": "9a44fd6203fc73d759ea6f3d6bfa1b8032b74ac3950f1526c2383de0e1b1654f",
+      "source": "Assets/Avatars/Professions/Construction_Male_03/Textures/m102_body_normal.tga",
+      "source_sha256": "ce26d6b0bcdd8865be59b38548decd06bb8829a67496eac69379274dc7029a33"
+    },
+    "Construction_Male_03/Textures/m102_body_specular.jpg": {
+      "sha256": "49cacf67812ad1321431858b496595c4be0995c119027921c0f171909e8886d0",
+      "source": "Assets/Avatars/Professions/Construction_Male_03/Textures/m102_body_specular.tga",
+      "source_sha256": "3c63cb76cc085dd995de8762d767890d206dd36ff216df7b4bdb37f6ac338eca"
+    },
+    "Construction_Male_03/Textures/m102_head_color.jpg": {
+      "sha256": "0a0fb65f99368b850899d6d5f4232cf15d93a2aca83b82cfb986385c5df4c6ac",
+      "source": "Assets/Avatars/Professions/Construction_Male_03/Textures/m102_head_color.tga",
+      "source_sha256": "243f0cf421a8c8f150284d50a4095f8f5e9ac7f4097b538f22d2fe40b030f696"
+    },
+    "Construction_Male_03/Textures/m102_head_normal.png": {
+      "sha256": "312ec7b6061ffce84bb7f1f12586b3be6af09295eed8c895e4878e3e454a7793",
+      "source": "Assets/Avatars/Professions/Construction_Male_03/Textures/m102_head_normal.tga",
+      "source_sha256": "97c2fbe230cba847f70cb070f9efec611bdb342685afcd6dd58403795537c9da"
+    },
+    "Construction_Male_03/Textures/m102_head_specular.jpg": {
+      "sha256": "e3ed08627d17eb90977d7a07223a06cfe48abc4ee7685b78418ffda41a57fe41",
+      "source": "Assets/Avatars/Professions/Construction_Male_03/Textures/m102_head_specular.tga",
+      "source_sha256": "76d14bd31654979f5f5efff20c37821f44e0e86b7935785fe9e76222de8f3248"
+    },
+    "Construction_Male_03/Textures/m102_helmet_color.jpg": {
+      "sha256": "f7e65989657daa4f58800335c688d78d1591c05819384fd3cb60e4f148da9e9a",
+      "source": "Assets/Avatars/Professions/Construction_Male_03/Textures/m102_helmet_color.tga",
+      "source_sha256": "5b9f70e2cefb06ad4fdc76a5e3e84b35f9c72f07f397100c2ecc7eeccc3ea5b2"
+    },
+    "Construction_Male_03/Textures/m102_helmet_normal.png": {
+      "sha256": "c0efc365511efb5260df56ad7c923efa09b6fa8f12deaa1511022790fd21d6a1",
+      "source": "Assets/Avatars/Professions/Construction_Male_03/Textures/m102_helmet_normal.tga",
+      "source_sha256": "0e9b4e8f07834e13b3b0ff8c19ce963af9efe9438e51a298238784cb18d0b83f"
+    },
+    "Construction_Male_03/Textures/m102_helmet_specular.jpg": {
+      "sha256": "05f1fde32456dcd7b2bdc058a56f9ad9048eb0c1c39c1824f3df0d770e334659",
+      "source": "Assets/Avatars/Professions/Construction_Male_03/Textures/m102_helmet_specular.tga",
+      "source_sha256": "6f095412410905caffe84a053c956249effe2ed3dd986033fa70b64e6a8a24dc"
+    },
+    "Construction_Male_03/Textures/m102_tools_color.jpg": {
+      "sha256": "007cc1fcffd9abf145aa733a896c877e04eb0ae808c8eaa06b4c330c4be3e22a",
+      "source": "Assets/Avatars/Professions/Construction_Male_03/Textures/m102_tools_color.tga",
+      "source_sha256": "a2c99065c0abbc80edd4f509101c003cd1c564c9887b5ec60755c0772d4466e1"
+    },
+    "Construction_Male_03/Textures/m102_tools_normal.png": {
+      "sha256": "eb33a4f234fe347ac95103a74873101a9a9db404bb72d1e1794fbc7a794dd527",
+      "source": "Assets/Avatars/Professions/Construction_Male_03/Textures/m102_tools_normal.tga",
+      "source_sha256": "81ab5dfd694d0800c5704d018f7dedcf88f6abaa4cd87e077b8ab742bb6245d4"
+    },
+    "Construction_Male_03/Textures/m102_tools_specular.jpg": {
+      "sha256": "073343c5496ed5ef1885dea416b1d83e5757992fa0eeaeb1cf94396a51d72d97",
+      "source": "Assets/Avatars/Professions/Construction_Male_03/Textures/m102_tools_specular.tga",
+      "source_sha256": "efa65990f64f9b0a18a4ae27cd6ea59d0f75a8bbb3a15b30576619af5daf6caa"
+    },
+    "Female_Adult_06/Female_Adult_06.fbx": {
+      "sha256": "ba3d6050d57d806b1461af48af446de5841a16d181d24f9c893f78949c193b20",
+      "source": "Assets/Avatars/Adults/Female_Adult_06/Export/Female_Adult_06.fbx"
+    },
+    "Female_Adult_06/Textures/f202_body_color.jpg": {
+      "sha256": "a2bd30383832a9d6fcfe375fece2b6894354fa055e8c720ff94aab8fbe6ac6d3",
+      "source": "Assets/Avatars/Adults/Female_Adult_06/Textures/f202_body_color.tga",
+      "source_sha256": "df4f7dfa0dd1b7fea8ec723be18d00cbb511698a933a05add9d219860e71e51f"
+    },
+    "Female_Adult_06/Textures/f202_body_normal.png": {
+      "sha256": "27ba405df94f1bf5cd16933a94e8cf69f2e79b4dfe52789ba31e96828c0d241b",
+      "source": "Assets/Avatars/Adults/Female_Adult_06/Textures/f202_body_normal.tga",
+      "source_sha256": "2695e77a9bf3bceee2afb4d2e233c08eae01b37bb14c460d6ff27c00767f63ee"
+    },
+    "Female_Adult_06/Textures/f202_body_specular.jpg": {
+      "sha256": "492350c03635aac1ec3d271fb9b33e0dbd387e038e57cb8f6a20085ba7e6b60e",
+      "source": "Assets/Avatars/Adults/Female_Adult_06/Textures/f202_body_specular.tga",
+      "source_sha256": "39fdcd1d75704d94653ad7e61b50326165495cf077f907e3be941d6099544de4"
+    },
+    "Female_Adult_06/Textures/f202_head_color.jpg": {
+      "sha256": "8d338ba17fa49fcf861cdbf8fa7823c85d5730a858e1fce0b3eb9c9845ea4f76",
+      "source": "Assets/Avatars/Adults/Female_Adult_06/Textures/f202_head_color.tga",
+      "source_sha256": "1b625b6c5a3861c72284fe03707a27bca50ded1c33d0b563b867aad9aaf5d828"
+    },
+    "Female_Adult_06/Textures/f202_head_normal.png": {
+      "sha256": "8a881ce077c73df075b26af72a809cf6a59bee519feadddaaeb08ecb84924718",
+      "source": "Assets/Avatars/Adults/Female_Adult_06/Textures/f202_head_normal.tga",
+      "source_sha256": "1c75e22ee39269e831b5fe7458780d290578fd2bb79e3bc26e95a91dc6e798f9"
+    },
+    "Female_Adult_06/Textures/f202_head_specular.jpg": {
+      "sha256": "d04cf6ae634f62aa43496c7a9da0baa44a7335f01111c439a309ea75fafd4992",
+      "source": "Assets/Avatars/Adults/Female_Adult_06/Textures/f202_head_specular.tga",
+      "source_sha256": "85eea7a9528902d55711b9a3c36dfb369c4a4936b01a18854d1976ea2d063235"
+    },
+    "Female_Adult_06/Textures/f202_opacity_color.png": {
+      "sha256": "9f481cf6a943ffb2c07c3677f359aeca41ac672bd40b049ab00f684ed556e7cc",
+      "source": "Assets/Avatars/Adults/Female_Adult_06/Textures/f202_opacity_color.tga",
+      "source_sha256": "8c7268f2057365ebd3b318e9e2802871185ee7e44b5ff401d4ce8a14f0cebf70"
+    },
+    "Male_Adult_06/Male_Adult_06.fbx": {
+      "sha256": "537284add0fb8bd3bf9dd9459cba2c6d4d34de50b86dfdfef09c2c57cbf1a878",
+      "source": "Assets/Avatars/Adults/Male_Adult_06/Export/Male_Adult_06.fbx"
+    },
+    "Male_Adult_06/Textures/m011_body_color.jpg": {
+      "sha256": "57502e0bc0faf19e5736381b02ff8ac4c6668dec8f31b2e42de1cb3ef2f9d610",
+      "source": "Assets/Avatars/Adults/Male_Adult_06/Textures/m011_body_color.tga",
+      "source_sha256": "f92110adc6f33c8802652e4c2f5282226e3fbee672f510b3fb765a1599dd3f91"
+    },
+    "Male_Adult_06/Textures/m011_body_normal.png": {
+      "sha256": "dba78057a5bf63016e85a24ab017084f433de91e141a037da475c74f8765d9cc",
+      "source": "Assets/Avatars/Adults/Male_Adult_06/Textures/m011_body_normal.tga",
+      "source_sha256": "7416e297789e42ce3f23af46a3dea9d372046034e2b18c0bf4a3b18569a97c72"
+    },
+    "Male_Adult_06/Textures/m011_body_specular.jpg": {
+      "sha256": "26ad567bd191f9cc533887d2bd2702ba5f6d3d159e8a96d3d9aa144f286b7d35",
+      "source": "Assets/Avatars/Adults/Male_Adult_06/Textures/m011_body_specular.tga",
+      "source_sha256": "ea260e6d6464b5deac4ab187e046472fd0ef27141b56eccec861bbc3d454fde7"
+    },
+    "Male_Adult_06/Textures/m011_head_color.jpg": {
+      "sha256": "72a70507f74f63725e80f813ec29fe4510f36eb81cf41c523250a3dc40eafa5b",
+      "source": "Assets/Avatars/Adults/Male_Adult_06/Textures/m011_head_color.tga",
+      "source_sha256": "b3f7731c506ae105bead54cb558c366ed9e72463565f78727365e52a90b841c5"
+    },
+    "Male_Adult_06/Textures/m011_head_normal.png": {
+      "sha256": "546c60cbe1e465f3edc35391980e3d7515195afcfe55e41171326e25c8796704",
+      "source": "Assets/Avatars/Adults/Male_Adult_06/Textures/m011_head_normal.tga",
+      "source_sha256": "1710343a59dfb60f8369772aebfafbb3c507f2b1f62f4341effe7ed07ee431b9"
+    },
+    "Male_Adult_06/Textures/m011_head_specular.jpg": {
+      "sha256": "4274fa115bcf9f8c81335b6a84c05489345f557df7630d0246c627d8b70a6c79",
+      "source": "Assets/Avatars/Adults/Male_Adult_06/Textures/m011_head_specular.tga",
+      "source_sha256": "75ff79448342413273d4ce225887fa46d98671bb0a97460134a1c2971b4e2719"
+    },
+    "Male_Adult_06/Textures/m011_opacity_color.png": {
+      "sha256": "4d773dc20e26819bda9961ae867e19d857f1ed34bdf4a9e214fb58c166b6e77c",
+      "source": "Assets/Avatars/Adults/Male_Adult_06/Textures/m011_opacity_color.tga",
+      "source_sha256": "7cb2146e511c1bd207f5e7f061c8b66915db1bbc15c3748c6d98469630fd346d"
+    },
+    "Male_Adult_09/Male_Adult_09.fbx": {
+      "sha256": "ebb89800dbad28b4352369c7149314e010806268a28d7f5bb954a4393bba3d00",
+      "source": "Assets/Avatars/Adults/Male_Adult_09/Export/Male_Adult_09.fbx"
+    },
+    "Male_Adult_09/Textures/m017_body_color.jpg": {
+      "sha256": "8a11039a5b42c7aa2ac74689427e5f8dee7c32413e5a1567fb2bb56992a70207",
+      "source": "Assets/Avatars/Adults/Male_Adult_09/Textures/m017_body_color.tga",
+      "source_sha256": "6959a7dca441963ac10b0f86df4b3191ad5da839c16a1fc972da8464b6807b65"
+    },
+    "Male_Adult_09/Textures/m017_body_normal.png": {
+      "sha256": "efcacd12f219397c514a8aece6cc294fade79494dc87e52860bd881adce14ea3",
+      "source": "Assets/Avatars/Adults/Male_Adult_09/Textures/m017_body_normal.tga",
+      "source_sha256": "f537feb3af08b044db6fcff7f64f80b1d5b0f6ca754165bb1534e6e6aa7d2f7c"
+    },
+    "Male_Adult_09/Textures/m017_body_specular.jpg": {
+      "sha256": "a74e593ccafb14cb6dda4dae6c68445558c4fc26168c673b733f53beb91e7e04",
+      "source": "Assets/Avatars/Adults/Male_Adult_09/Textures/m017_body_specular.tga",
+      "source_sha256": "48f7aa4547e0a1188c4cbfbffe146a5bbff2d55d7c96905f5be8db684e98b5b6"
+    },
+    "Male_Adult_09/Textures/m017_head_color.jpg": {
+      "sha256": "2ab5febf1eb57f969ca25ab8c4e12a3fecae01ffe4afb8afcdafad153244e266",
+      "source": "Assets/Avatars/Adults/Male_Adult_09/Textures/m017_head_color.tga",
+      "source_sha256": "5e4b4af1dc24660607fb96cebdafacae649f36d4a7bc8af99178634126664cb8"
+    },
+    "Male_Adult_09/Textures/m017_head_normal.png": {
+      "sha256": "95890fdd157ec24106e56d3c7fc55afb63134b8066781f2ffdf9101386ba8819",
+      "source": "Assets/Avatars/Adults/Male_Adult_09/Textures/m017_head_normal.tga",
+      "source_sha256": "0198600cca68ce2fd7390593d547bb4b7c51cbbaaaca7f33599ba4750d351e53"
+    },
+    "Male_Adult_09/Textures/m017_head_specular.jpg": {
+      "sha256": "c27b9f33b0ae2564cee769cab9a7058dc40ce1a2f8074f2eaf0fd96da666eae7",
+      "source": "Assets/Avatars/Adults/Male_Adult_09/Textures/m017_head_specular.tga",
+      "source_sha256": "9887bb81d471d166d74f3c98cd91d4e3c07b1a40f256dd77eec901e1c210ccc2"
+    },
+    "Male_Adult_09/Textures/m017_opacity_color.png": {
+      "sha256": "f3bb655bcdbb29760addd69d9fbaf78b13af7cc81148a46705b01c356f5a38a7",
+      "source": "Assets/Avatars/Adults/Male_Adult_09/Textures/m017_opacity_color.tga",
+      "source_sha256": "510c4b20b534a1b3d488638a33319968c4108f1aac887ab50188a77980cf1bc0"
+    },
+    "Male_Adult_14/Male_Adult_14.fbx": {
+      "sha256": "9d3ecf5c94a84e22b081ddadebf57da18d79541e48e792fa598335553f2dc399",
+      "source": "Assets/Avatars/Adults/Male_Adult_14/Export/Male_Adult_14.fbx"
+    },
+    "Male_Adult_14/Textures/m012_body_color.jpg": {
+      "sha256": "edfa92b0af770c4ceb1565b57fa2f1cf240a127d796659969c717b1814d91d6f",
+      "source": "Assets/Avatars/Adults/Male_Adult_14/Textures/m012_body_color.tga",
+      "source_sha256": "04b656f0f0119ca6b5a4aa00fdccc19918fd18976a446f2f192753a4e73f0147"
+    },
+    "Male_Adult_14/Textures/m012_body_normal.png": {
+      "sha256": "008a0766d1b6fae602f417523811287c2c2cfaeab934dfa5a4b72a5491a954aa",
+      "source": "Assets/Avatars/Adults/Male_Adult_14/Textures/m012_body_normal.tga",
+      "source_sha256": "4d65bd9f3bfeaaf381a6cb7eeb4ed4afdf0b7c96cefda55a26334cf5114cb784"
+    },
+    "Male_Adult_14/Textures/m012_body_specular.jpg": {
+      "sha256": "f83e134aef683b80692060bffc351fd153b3814a040e32ccc11dc0963cd23619",
+      "source": "Assets/Avatars/Adults/Male_Adult_14/Textures/m012_body_specular.tga",
+      "source_sha256": "d182fea9c04c5f4d7b13e9f8403cef765406e077eed8e547d56f601ac9b583c8"
+    },
+    "Male_Adult_14/Textures/m012_head_color.jpg": {
+      "sha256": "dd211353f9ea6bd67168572fa2fe9b80c3cc75155618a6cfe0376f91808bfbe5",
+      "source": "Assets/Avatars/Adults/Male_Adult_14/Textures/m012_head_color.tga",
+      "source_sha256": "520e067d7c117af8471f32e6e66dd80b0e87717c1218f0a3759dfd6db504a729"
+    },
+    "Male_Adult_14/Textures/m012_head_normal.png": {
+      "sha256": "b3e22684f4a42aa322fd9f803adaba97ef79b8e91b3bdadd4098403d14e0b9e0",
+      "source": "Assets/Avatars/Adults/Male_Adult_14/Textures/m012_head_normal.tga",
+      "source_sha256": "0b6a9318003c5485de34c0de36bf3ddf1a19bb06a431f6146d9f95534d3dc820"
+    },
+    "Male_Adult_14/Textures/m012_head_specular.jpg": {
+      "sha256": "586d50bfc7c5f23be7af6a1de81a4e06f47427fc2bd4fc7c923b1d10e99b6b44",
+      "source": "Assets/Avatars/Adults/Male_Adult_14/Textures/m012_head_specular.tga",
+      "source_sha256": "10e23bf49f35b333879c5e90f31af0bae3bb6b3068c1f187584e004a7d73d586"
+    }
+  },
+  "repository": "https://github.com/microsoft/Microsoft-Rocketbox"
+}

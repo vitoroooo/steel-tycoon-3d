@@ -24,21 +24,6 @@ namespace Steel.Editor
             CityGeometry.Sign("LAPAK ANDA  /  SORTIR", h + new Vector3(-3, 3.2f, -5.65f), .23f, new Color(1, .8f, .4f));
             var marker = CityGeometry.Shape("Area sortir", PrimitiveType.Cylinder, h + Vector3.up * .08f,
                 new Vector3(3, .015f, 3), CityMaterials.Plain("Zona emas", new Color(.75f, .49f, .12f), .2f, .4f), false);
-            Vector3 f = new Vector3(layout.Factory.X, 0, layout.Factory.Z);
-            CityGeometry.Box("Pabrik / beton", f + new Vector3(9, 3.5f, 9), new Vector3(22, 7, 15), concrete);
-            CityGeometry.Box("Pabrik / cladding", f + new Vector3(9, 7.5f, 9), new Vector3(22.4f, 1.2f, 15.4f), iron);
-            CityGeometry.Box("Gerbang pabrik", f + new Vector3(7, 2.3f, 1.4f), new Vector3(6, 4.6f, .25f), rust);
-            CityGeometry.Box("Kanopi penerimaan", f + new Vector3(1, 4, .4f), new Vector3(8, .18f, 6), iron);
-            CityGeometry.Box("Papan pabrik", f + new Vector3(9, 5.8f, 1.3f), new Vector3(20, 1.5f, .3f), dark, false);
-            CityGeometry.Sign("BAJA NUSANTARA  /  PABRIK AI", f + new Vector3(9, 5.8f, 1.08f), .34f, new Color(1, .81f, .48f));
-            CityGeometry.Box("Timbangan jual", f + new Vector3(0, .1f, 0), new Vector3(3, .2f, 3), rust, false);
-            for (int i = 0; i < 3; i++)
-            {
-                CityGeometry.Shape("Tangki baja", PrimitiveType.Cylinder, f + new Vector3(5 + i * 4, 10, 10),
-                    new Vector3(2.3f, 2.6f, 2.3f), rust);
-                CityGeometry.Shape("Pipa industri", PrimitiveType.Cylinder, f + new Vector3(5 + i * 4, 13, 10),
-                    new Vector3(.35f, 1.5f, .35f), dark);
-            }
         }
     }
 }

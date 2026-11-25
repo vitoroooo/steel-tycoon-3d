@@ -2,6 +2,7 @@
   "name": "Steel.PlayTests",
   "references": [
     "Steel.Services",
+    "Steel.Characters",
     "Steel.Vehicles",
     "Steel.Input",
     "Steel.Player",

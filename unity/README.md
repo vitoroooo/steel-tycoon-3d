@@ -35,11 +35,13 @@ the test arguments (after -projectPath /repo/unity) with:
 ```sh
 -executeMethod Steel.Editor.CityBuilder.Generate -quit -logFile /repo/unity/Logs/generate-city.log
 -runTests -testPlatform PlayMode -testResults /repo/unity/test-results-play.xml
--executeMethod Steel.Editor.CityBuilder.BuildLinux -quit -logFile /repo/unity/Logs/build-linux.log
+-executeMethod Steel.Editor.Packaging.PlayerBuilds.Linux -quit -logFile /repo/unity/Logs/build-linux.log
 ```
 These are three separate invocations. Generation replaces City deterministically.
 If the image lacks /root/.cache, mount a writable cache there (not the license directory).
 Linux build: unity/Build/Linux/SteelTycoon.x86_64 (generated, ignored).
+Android APK: use the `unityci/editor:ubuntu-2022.3.62f1-android-3` image with
+`-buildTarget Android -executeMethod Steel.Editor.Packaging.PlayerBuilds.Android`; output unity/Build/Android/SteelTycoon.apk.
 Run with DISPLAY=:0 and optional -screenshot /home/ubuntu/shots/hd-walking.png.
 The screenshot argument captures the actual player after four seconds.
 See Assets/ThirdParty/PolyHaven/LICENSES.md for CC0 sources and checksum provenance.

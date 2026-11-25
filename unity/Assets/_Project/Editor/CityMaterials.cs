@@ -6,7 +6,8 @@ namespace Steel.Editor
     internal static class CityMaterials
     {
         internal const string Generated = "Assets/_Project/Generated/";
-        internal static Material Surface(string id, Vector2 tiling)
+        /// <summary>A PBR surface; pass a name to get a separate material with its own tiling.</summary>
+        internal static Material Surface(string id, Vector2 tiling, string name = null, Color? tint = null)
         {
             string path = "Assets/ThirdParty/PolyHaven/" + id + "/";
             var normal = (TextureImporter)AssetImporter.GetAtPath(path + "normal.jpg");
@@ -14,8 +15,8 @@ namespace Steel.Editor
             { normal.textureType = TextureImporterType.NormalMap; normal.SaveAndReimport(); }
             var mask = (TextureImporter)AssetImporter.GetAtPath(path + "mask.png");
             if (mask.sRGBTexture) { mask.sRGBTexture = false; mask.SaveAndReimport(); }
-            var mat = Plain(id, Color.white, 0, .5f);
-            mat.SetColor("_BaseColor", id == "asphalt_02" ? new Color(.4f, .44f, .48f) :
+            var mat = Plain(name ?? id, Color.white, 0, .5f);
+            mat.SetColor("_BaseColor", tint.HasValue ? tint.Value : id == "asphalt_02" ? new Color(.4f, .44f, .48f) :
                 id == "brown_mud_02" ? new Color(.6f, .58f, .52f) :
                 id == "concrete_floor_02" ? new Color(.75f, .78f, .8f) : Color.white);
             mat.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>(path + "color.jpg"));
